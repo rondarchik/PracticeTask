@@ -1,6 +1,5 @@
 # Задание на практику (ЦИИР - 2024)
 ## Довгун Виктория
-### [Ссылка на SonarCloud](https://sonarcloud.io/project/overview?id=rondarchik_Practice "SonarCloud")
 ### [Ссылка на схему БД](https://drawsql.app/teams/rondarchik/diagrams/credit-management-system "Схема БД - Система управления кредитами")
 
 ## Задание
