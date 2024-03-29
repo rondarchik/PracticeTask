@@ -3,34 +3,34 @@ DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
 
 -- create tables
-CREATE TABLE IF NOT EXISTS "User"(
-    "id" UUID PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS "user" (
+    "id" UUID PRIMARY KEY NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "surname" VARCHAR(100) NOT NULL,
-	"login" VARCHAR(100) NOT NULL UNIQUE,
     "email" VARCHAR(100) NOT NULL UNIQUE,
-	"birth_date" DATE,
+    "birth_date" DATE,
 	"password_hash" VARCHAR(255) NOT NULL
 );
 
 	
-CREATE TABLE IF NOT EXISTS "Role"(
-    "id" UUID PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS "role" (
+    "id" UUID PRIMARY KEY NOT NULL,
     "role_name" VARCHAR(100) NOT NULL UNIQUE
 );
 
 
-CREATE TABLE IF NOT EXISTS "User_Role"(
-    "user_id" UUID NOT NULL,
-    "role_id" UUID NOT NULL,
+CREATE TABLE IF NOT EXISTS "user_role" (
+	"id" UUID PRIMARY KEY NOT NULL,
+    "id_user" UUID NOT NULL,
+    "id_role" UUID NOT NULL,
 	
-	CONSTRAINT FK_on_User FOREIGN KEY (user_id) REFERENCES "User"(id) ON DELETE CASCADE,
-	CONSTRAINT FK_on_Role FOREIGN KEY (role_id) REFERENCES "Role"(id) ON DELETE CASCADE
+	CONSTRAINT fk_user FOREIGN KEY (id_user) REFERENCES "user"(id) ON DELETE CASCADE,
+	CONSTRAINT fk_role FOREIGN KEY (id_role) REFERENCES "role"(id) ON DELETE CASCADE
 );	
 
 	
-CREATE TABLE IF NOT EXISTS "Credit_Type"(
-    "id" UUID PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS "credit_type" (
+    "id" UUID PRIMARY KEY NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "credit_amount" DECIMAL(15, 2) NOT NULL,
     "interest_rate" DECIMAL(2, 2) NOT NULL,
@@ -38,61 +38,47 @@ CREATE TABLE IF NOT EXISTS "Credit_Type"(
 );
 
 	
-CREATE TABLE IF NOT EXISTS "Credit"(
-    "id" UUID PRIMARY KEY,
-    "client_id" UUID NOT NULL,
-    "credit_type_id" UUID NOT NULL,
+CREATE TABLE IF NOT EXISTS "credit" (
+    "id" UUID PRIMARY KEY NOT NULL,
+    "id_client" UUID NOT NULL,
+    "id_credit_type" UUID NOT NULL,
 	"paid_amount" DECIMAL(15,2),
     "start_date" DATE NOT NULL,
     "end_date" DATE NOT NULL,
     "status" BOOLEAN NOT NULL,
 	
-	CONSTRAINT FK_on_Client FOREIGN KEY (client_id) REFERENCES "User"(id) ON DELETE CASCADE,
-	CONSTRAINT FK_on_CreditType FOREIGN KEY (credit_type_id) REFERENCES "Credit_Type"(id) ON DELETE CASCADE
+	CONSTRAINT fk_client FOREIGN KEY (id_client) REFERENCES "user"(id) ON DELETE CASCADE,
+	CONSTRAINT fk_credit_type FOREIGN KEY (id_credit_type) REFERENCES "credit_type"(id) ON DELETE CASCADE
 );
 
 
-CREATE TABLE IF NOT EXISTS "Request_Status"(
-	"id" UUID PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS "request_status" (
+	"id" UUID PRIMARY KEY NOT NULL,
 	"status" VARCHAR(100) NOT NULL UNIQUE
 );
 
 
-CREATE TABLE IF NOT EXISTS "Credit_Request"(
-    "id" UUID PRIMARY KEY,
-    "manager_id" UUID NOT NULL,
-    "credit_id" UUID NOT NULL,
+CREATE TABLE IF NOT EXISTS "credit_request" (
+    "id" UUID PRIMARY KEY NOT NULL,
+    "id_manager" UUID NOT NULL,
+    "id_credit" UUID NOT NULL,
     "date_of_request" DATE NOT NULL,
-    "status_id" UUID NOT NULL,
+    "id_status" UUID NOT NULL,
 	"rejection_message" TEXT,
 	
-	CONSTRAINT FK_on_Manager FOREIGN KEY (manager_id) REFERENCES "User"(id) ON DELETE CASCADE,
-	CONSTRAINT FK_on_Credit FOREIGN KEY (credit_id) REFERENCES "Credit"(id) ON DELETE CASCADE,
-	CONSTRAINT FK_on_Status FOREIGN KEY (status_id) REFERENCES "Request_Status"(id) ON DELETE CASCADE
+	CONSTRAINT fk_manager FOREIGN KEY (id_manager) REFERENCES "user"(id) ON DELETE CASCADE,
+	CONSTRAINT fk_credit FOREIGN KEY (id_credit) REFERENCES "credit"(id) ON DELETE CASCADE,
+	CONSTRAINT fk_status FOREIGN KEY (id_status) REFERENCES "request_status"(id) ON DELETE CASCADE
 );
 
 
-CREATE TABLE IF NOT EXISTS "Payment"(
-    "id" UUID PRIMARY KEY,
-    "client_id" UUID NOT NULL,
-    "credit_id" UUID NOT NULL,
+CREATE TABLE IF NOT EXISTS "payment" (
+    "id" UUID PRIMARY KEY NOT NULL,
+    "id_client" UUID NOT NULL,
+    "id_credit" UUID NOT NULL,
 	"amount" DECIMAL(15,2) NOT NULL,
 	"payment_date" DATE NOT NULL,
 	
-	CONSTRAINT FK_on_Client FOREIGN KEY (client_id) REFERENCES "User"(id) ON DELETE CASCADE,
-	CONSTRAINT FK_on_Credit FOREIGN KEY (credit_id) REFERENCES "Credit"(id) ON DELETE CASCADE
+	CONSTRAINT fk_client FOREIGN KEY (id_client) REFERENCES "user"(id) ON DELETE CASCADE,
+	CONSTRAINT fk_credit FOREIGN KEY (id_credit) REFERENCES "credit"(id) ON DELETE CASCADE
 );
-
-	
--- CREATE TABLE IF NOT EXISTS Client(
---     client_id UUID PRIMARY KEY,
---     birth_date DATE NOT NULL,
-	
--- 	CONSTRAINT FK_on_User FOREIGN KEY (client_id) REFERENCES User(id) ON DELETE CASCADE
--- );
-	
--- CREATE TABLE IF NOT EXISTS Manager(
--- 	manager_id UUID PRIMARY KEY,
-	
--- 	CONSTRAINT FK_on_User FOREIGN KEY (manager_id) REFERENCES User(id) ON DELETE CASCADE
--- );
