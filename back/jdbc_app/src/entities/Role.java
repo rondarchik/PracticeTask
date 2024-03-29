@@ -3,8 +3,8 @@ package entities;
 import java.util.UUID;
 
 public class Role {
-    protected UUID id;
-    protected String roleName;
+    private UUID id;
+    private String roleName;
 
     public UUID getId() {
         return this.id;

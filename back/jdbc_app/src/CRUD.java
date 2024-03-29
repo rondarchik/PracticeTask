@@ -38,7 +38,7 @@ public class CRUD {
     // Role CRUD
     public ArrayList<Role> readRoleTable() throws SQLException {
         ArrayList<Role> roles = new ArrayList<>();
-        String query = "SELECT * FROM Roles";
+        String query = "SELECT * FROM role;";
 
         try (var statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
@@ -46,8 +46,7 @@ public class CRUD {
                 System.out.println("0 rows selected");
             }
             while (rs.next()) {
-                roles.add(new Role(UUID.fromString(rs.getString("id")),
-                        rs.getString("role_name")));
+                roles.add(new Role(UUID.fromString(rs.getString("id")), rs.getString("role_name")));
                 System.out.println(STR."\{rs.getString("id")}, \{rs.getString("role_name")}");
             }
         } catch (SQLException e) {
@@ -57,28 +56,8 @@ public class CRUD {
         return roles;
     }
 
-    public Role readRoleRecord(String roleName) throws SQLException {
-        String query = String.format("SELECT * FROM Roles WHERE role_name = '%s';", roleName);
-        Role role = new Role();
-        try (var statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(query);
-            if (!rs.next()) {
-                System.out.println("0 rows selected");
-            }
-            while (rs.next()) {
-                role = new Role(UUID.fromString(rs.getString("id")),
-                        rs.getString("role_name"));
-                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("role_name")}");
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-
-        return role;
-    }
-
     public UUID getRoleID(String roleName) throws SQLException {
-        String query = String.format("SELECT id FROM Roles WHERE role_name = '%s';", roleName);
+        String query = String.format("SELECT id FROM role WHERE role_name = '%s';", roleName);
         UUID role = null;
         try (var statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
@@ -96,7 +75,7 @@ public class CRUD {
     }
 
     public void createRole(String roleName) throws SQLException {
-        String query = String.format("INSERT INTO Roles VALUES ('%s', '%s');",
+        String query = String.format("INSERT INTO role VALUES ('%s', '%s');",
                 generateUUID(), roleName);
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
@@ -107,8 +86,8 @@ public class CRUD {
     }
 
     public void updateRole(String oldRoleName, String newRoleName) throws SQLException {
-        String query = String.format("UPDATE Roles SET role_name = '%s' WHERE role_name = '%s';",
-                oldRoleName, newRoleName);
+        String query = String.format("UPDATE role SET role_name = '%s' WHERE role_name = '%s';",
+                newRoleName, oldRoleName);
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
             System.out.println("Record updated.");
@@ -117,8 +96,8 @@ public class CRUD {
         }
     }
 
-    public void deleteRole(String roleName) throws SQLException {
-        String query = String.format("DELETE FROM Roles WHERE role_name = '%s';", roleName);
+    public void deleteRole(UUID id) throws SQLException {
+        String query = String.format("DELETE FROM role WHERE id = '%s';", id.toString());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
             System.out.println("Record deleted.");
@@ -130,7 +109,7 @@ public class CRUD {
     // User CRUD
     public ArrayList<User> readUserTable() throws SQLException {
         ArrayList<User> users = new ArrayList<>();
-        String query = "SELECT * FROM Users";
+        String query = "SELECT * FROM user;";
 
         try (var statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
@@ -141,8 +120,11 @@ public class CRUD {
                 users.add(new User(UUID.fromString(rs.getString("id")),
                         rs.getString("name"),
                         rs.getString("surname"),
-                        rs.getString("email")));
-                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("name")}, \{rs.getString("surname")}, \{rs.getString("email")}");
+                        rs.getString("email"),
+                        rs.getDate("birth_date"),
+                        rs.getString("password_hash")));
+
+                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("name")}, \{rs.getString("surname")}, \{rs.getString("email")}, \{rs.getDate("birth_date")}");
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -151,30 +133,8 @@ public class CRUD {
         return users;
     }
 
-    public User readUserRecord(UUID id) throws SQLException {
-        String query = String.format("SELECT * FROM Users WHERE id = '%s';", id.toString());
-        User user = new User();
-        try (var statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(query);
-            if (!rs.next()) {
-                System.out.println("0 rows selected");
-            }
-            while (rs.next()) {
-                user = new User(UUID.fromString(rs.getString("id")),
-                        rs.getString("name"),
-                        rs.getString("surname"),
-                        rs.getString("email"));
-                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("name")}, \{rs.getString("surname")}, \{rs.getString("email")}");
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-
-        return user;
-    }
-
     public UUID getUserID(String email) throws SQLException {
-        String query = String.format("SELECT id FROM Users WHERE email = '%s';", email);
+        String query = String.format("SELECT id FROM user WHERE email = '%s';", email);
         UUID user = null;
         try (var statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
@@ -191,114 +151,28 @@ public class CRUD {
         return user;
     }
 
-    public void createUser(String name, String surname, String email) throws SQLException {
-        String query = String.format("INSERT INTO Users VALUES ('%s', '%s', '%s', '%s');",
-                generateUUID(), name, surname, email);
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            System.out.println("Record created.");
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-    }
+    public void createUser(String name, String surname, String email,
+                           Date birthDate, String password, String roleName) throws SQLException {
+        var userID = generateUUID();
+        String queryUser = String.format("INSERT INTO user VALUES ('%s', '%s', '%s', '%s', '%s', '%s');",
+                userID, name, surname, email, birthDate, password);
 
-    public void updateUser(String name, String surname, String email, UUID id) throws SQLException {
-        String query = String.format("UPDATE Users SET name = '%s', surname = '%s', email = '%s' " +
-                        "WHERE id = '%s'",
-                name, surname, email, id.toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            System.out.println("Record updated.");
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-    }
-
-    public void deleteUser(String email) throws SQLException {
-        String query = String.format("DELETE FROM Users WHERE email = '%s';", email);
+        var roleID = getRoleID(roleName);
+        String queryUserRole = String.format("INSERT INTO user_role VALUES ('%s', '%s', '%s');",
+                generateUUID(), userID.toString(), roleID.toString());
 
         try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            System.out.println("Record deleted.");
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-    }
-
-    // Client CRUD
-    public ArrayList<Client> readClientTable() throws SQLException {
-        ArrayList<Client> clients = new ArrayList<>();
-        String query = "SELECT * FROM Clients;";
-
-        try (var statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(query);
-            if (!rs.next()) {
-                System.out.println("0 rows selected");
-            }
-            while (rs.next()) {
-                clients.add(new Client(UUID.fromString(rs.getString("client_id")),
-                        rs.getDate("birth_date")));
-                System.out.println(STR."\{rs.getString("client_id")}, \{rs.getString("birth_date")}");
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-
-        return clients;
-    }
-
-    public Client readClientRecord(UUID clientID) throws SQLException {
-        String query = String.format("SELECT * FROM Clients WHERE client_id = '%s';", clientID.toString());
-        Client client = new Client();
-        try (var statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(query);
-            if (!rs.next()) {
-                System.out.println("0 rows selected");
-            }
-            while (rs.next()) {
-                client = new Client(UUID.fromString(rs.getString("client_id")),
-                        rs.getDate("birth_date"));
-                System.out.println(STR."\{rs.getString("client_id")}, \{rs.getString("birth_date")}");
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-
-        return client;
-    }
-
-    // if user exists
-    public void createClient(String email, Date birthDate) throws SQLException {
-        final String roleName = "Client";
-
-        UUID roleID = getRoleID(roleName);
-        UUID userID = getUserID(email);
-        String queryClient = String.format("INSERT INTO Clients VALUES ('%s', '%s');",
-                userID.toString(), birthDate.toString());
-        // also add to UserRoles Table (m2m)
-        String queryUserRoles = String.format("INSERT INTO User_Roles VALUES ('%s', '%s');",
-                userID.toString(), roleID.toString());
-
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(queryClient);
-            statement.executeUpdate(queryUserRoles);
+            statement.executeUpdate(queryUser);
+            statement.executeUpdate(queryUserRole);
             System.out.println("Records created.");
         } catch (SQLException e) {
             printSQLException(e);
         }
     }
 
-    // if user not exists
-    public void createClient(String name, String surname,
-                             String email, Date birthDate) throws SQLException {
-        createUser(name, surname, email);
-
-        createClient(email, birthDate);
-    }
-
-    public void updateClient(Date birthDate, UUID id) throws SQLException {
-        String query = String.format("UPDATE Clients SET birth_date = '%s' " +
-                "WHERE client_id = '%s'", birthDate.toString(), id.toString());
+    public void updateUser(String name, String surname, String email, Date birthDate, UUID id) throws SQLException {
+        String query = String.format("UPDATE user SET name = '%s', surname = '%s', email = '%s', birth_date = '%s' WHERE id = '%s'",
+                name, surname, email, birthDate.toString(), id.toString());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
             System.out.println("Record updated.");
@@ -307,85 +181,14 @@ public class CRUD {
         }
     }
 
-    public void deleteClient(UUID id) throws SQLException {
-        String queryClient = String.format("DELETE FROM Clients WHERE client_id = '%s';", id.toString());
-        // and also need delete from user_roles
-        String queryUserRoles = String.format("DELETE FROM User_Roles WHERE user_id = '%s';", id.toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(queryClient);
-            statement.executeUpdate(queryUserRoles);
-            System.out.println("Record deleted.");
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-    }
-
-    // Manager CRUD
-    public ArrayList<Manager> readManagerTable() throws SQLException {
-        ArrayList<Manager> managers = new ArrayList<>();
-        String query = "SELECT * FROM Managers";
+    public void deleteUser(UUID id) throws SQLException {
+        String queryUser = String.format("DELETE FROM user WHERE id = '%s';", id.toString());
+        String queryUserRole = String.format("DELETE FROM user_role WHERE id_user = '%s';", id.toString());
 
         try (var statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(query);
-            if (!rs.next()) {
-                System.out.println("0 rows selected");
-            }
-            while (rs.next()) {
-                managers.add(new Manager(UUID.fromString(rs.getString("manager_id"))));
-                System.out.println(STR."\{rs.getString("manager_id")}");
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-
-        return managers;
-    }
-
-    // if user exists
-    public void createManager(String email) throws SQLException {
-        final String roleName = "Manager";
-
-        UUID roleID = getRoleID(roleName);
-        UUID userID = getUserID(email);
-        String queryManager = String.format("INSERT INTO Managers VALUES ('%s');", userID.toString());
-        // also add to UserRoles Table (m2m)
-        String queryUserRoles = String.format("INSERT INTO User_Roles VALUES ('%s', '%s');", userID.toString(), roleID.toString());
-
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(queryManager);
-            statement.executeUpdate(queryUserRoles);
-            System.out.println("Records created.");
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-    }
-
-    // if user not exists
-    public void createManager(String name, String surname, String email) throws SQLException {
-        createUser(name, surname, email);
-
-        createManager(email);
-    }
-
-    // manager has only one field id - and it is unchangeable
-    /*public void updateManager(UUID id) throws SQLException {
-        String query = String.format("UPDATE Managers SET ???? " +
-                "WHERE client_id = '%s'", id.toString());
-        try (var statement = conn.createStatement()) {
-            statement.executeUpdate(query);
-            System.out.println("Record updated.");
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-    }*/
-
-    public void deleteManager(UUID id) throws SQLException {
-        String queryManager = String.format("DELETE FROM Managers WHERE manager_id = '%s';", id.toString());
-        // and also need delete from user_roles
-        String queryUserRoles = String.format("DELETE FROM User_Roles WHERE user_id = '%s';", id.toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(queryManager);
-            statement.executeUpdate(queryUserRoles);
+            statement.executeUpdate(queryUser);
+            statement.executeUpdate(queryUserRole);
+            System.out.println("Records deleted.");
         } catch (SQLException e) {
             printSQLException(e);
         }
@@ -394,7 +197,7 @@ public class CRUD {
     // Credit Type CRUD
     public ArrayList<CreditType> readCreditTypeTable() throws SQLException {
         ArrayList<CreditType> creditTypes = new ArrayList<>();
-        String query = "SELECT * FROM Credit_Types;";
+        String query = "SELECT * FROM credit_type;";
 
         try (var statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
@@ -407,6 +210,7 @@ public class CRUD {
                         rs.getDouble("credit_amount"),
                         rs.getDouble("interest_rate"),
                         rs.getInt("term_in_months")));
+
                 System.out.println(STR."\{rs.getString("id")}, \{rs.getString("name")}, \{rs.getDouble("credit_amount")}, \{rs.getDouble("interest_rate")}, \{rs.getInt("term_in_months")}");
             }
         } catch (SQLException e) {
@@ -416,50 +220,27 @@ public class CRUD {
         return creditTypes;
     }
 
-    public CreditType readCreditTypeRecord(String creditName) throws SQLException {
-        String query = String.format("SELECT * FROM Credit_Types WHERE name = '%s';", creditName);
-        CreditType creditType = new CreditType();
-        try (var statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(query);
-            if (!rs.next()) {
-                System.out.println("0 rows selected");
-            }
-            while (rs.next()) {
-                creditType = new CreditType(UUID.fromString(rs.getString("id")),
-                        rs.getString("name"),
-                        rs.getDouble("credit_amount"),
-                        rs.getDouble("interest_rate"),
-                        rs.getInt("term_in_months"));
-                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("name")}, \{rs.getDouble("credit_amount")}, \{rs.getDouble("interest_rate")}, \{rs.getInt("term_in_months")}");
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-
-        return creditType;
-    }
-
     public UUID getCreditTypeID(String creditName) throws SQLException {
-        String query = String.format("SELECT id FROM Credit_Types WHERE name = '%s';", creditName);
-        UUID type = null;
+        String query = String.format("SELECT id FROM credit_types WHERE name = '%s';", creditName);
+        UUID typeID = null;
         try (var statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
             if (!rs.next()) {
                 System.out.println("0 rows selected");
             }
             while (rs.next()) {
-                type = UUID.fromString(rs.getString("id"));
+                typeID = UUID.fromString(rs.getString("id"));
             }
         } catch (SQLException e) {
             printSQLException(e);
         }
 
-        return type;
+        return typeID;
     }
 
     public void createCreditType(String name, Double creditAmount,
                                  Double interestRate, int termInMonths) throws SQLException {
-        String query = String.format("INSERT INTO Credit_Types VALUES ('%s', '%s', '%s', '%s', '%s');",
+        String query = String.format("INSERT INTO credit_type VALUES ('%s', '%s', '%s', '%s', '%s');",
                 generateUUID(), name, creditAmount, interestRate, termInMonths);
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
@@ -471,8 +252,7 @@ public class CRUD {
 
     public void updateCreditType(String name, Double creditAmount,
                                  Double interestRate, int termInMonths, UUID id) throws SQLException {
-        String query = String.format("UPDATE Credit_Types SET name = '%s', credit_amount = '%s', interest_rate = '%s', " +
-                        "term_in_months = '%s' WHERE id = '%s'",
+        String query = String.format("UPDATE credit_type SET name = '%s', credit_amount = '%s', interest_rate = '%s', term_in_months = '%s' WHERE id = '%s'",
                 name, creditAmount.toString(), interestRate.toString(), termInMonths, id.toString());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
@@ -482,8 +262,79 @@ public class CRUD {
         }
     }
 
-    public void deleteCreditType(String creditName) throws SQLException {
-        String query = String.format("DELETE FROM Credit_Types WHERE name = '%s';", creditName);
+    public void deleteCreditType(UUID id) throws SQLException {
+        String query = String.format("DELETE FROM credit_type WHERE id = '%s';", id.toString());
+        try (var statement = connection.createStatement()) {
+            statement.executeUpdate(query);
+            System.out.println("Record deleted.");
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    // Credit Request Status CRUD
+    public ArrayList<RequestStatus> readRequestStatusTable() throws SQLException {
+        ArrayList<RequestStatus> requestStatuses = new ArrayList<>();
+        String query = "SELECT * FROM request_status;";
+
+        try (var statement = connection.createStatement()) {
+            ResultSet rs = statement.executeQuery(query);
+            if (!rs.next()) {
+                System.out.println("0 rows selected");
+            }
+            while (rs.next()) {
+                requestStatuses.add(new RequestStatus(UUID.fromString(rs.getString("id")), rs.getString("status")));
+                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("status")}");
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+
+        return requestStatuses;
+    }
+
+    public UUID getRequestStatusID(String status) throws SQLException {
+        String query = String.format("SELECT id FROM request_status WHERE status = '%s';", status);
+        UUID statusID = null;
+        try (var statement = connection.createStatement()) {
+            ResultSet rs = statement.executeQuery(query);
+            if (!rs.next()) {
+                System.out.println("0 rows selected");
+            }
+            while (rs.next()) {
+                statusID = UUID.fromString(rs.getString("id"));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+
+        return statusID;
+    }
+
+    public void createRequestStatus(String status) throws SQLException {
+        String query = String.format("INSERT INTO request_status VALUES ('%s', '%s');",
+                generateUUID(), status);
+        try (var statement = connection.createStatement()) {
+            statement.executeUpdate(query);
+            System.out.println("Record created.");
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public void updateRequestStatus(String oldStatusName, String newStatusName) throws SQLException {
+        String query = String.format("UPDATE request_status SET status = '%s' WHERE status = '%s';",
+                newStatusName, oldStatusName);
+        try (var statement = connection.createStatement()) {
+            statement.executeUpdate(query);
+            System.out.println("Record updated.");
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public void deleteRequestStatus(UUID id) throws SQLException {
+        String query = String.format("DELETE FROM request_status WHERE id = '%s';", id.toString());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
             System.out.println("Record deleted.");
@@ -495,7 +346,7 @@ public class CRUD {
     // Credit Request CRUD
     public ArrayList<CreditRequest> readCreditRequestTable() throws SQLException {
         ArrayList<CreditRequest> creditRequests = new ArrayList<>();
-        String query = "SELECT * FROM Credit_Request;";
+        String query = "SELECT * FROM credit_request;";
 
         try (var statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
@@ -504,12 +355,12 @@ public class CRUD {
             }
             while (rs.next()) {
                 creditRequests.add(new CreditRequest(UUID.fromString(rs.getString("id")),
-                        UUID.fromString(rs.getString("manager_id")),
-                        UUID.fromString(rs.getString("client_id")),
-                        UUID.fromString(rs.getString("credit_type_id")),
+                        UUID.fromString(rs.getString("id_manager")),
+                        UUID.fromString(rs.getString("id_credit")),
                         rs.getDate("date_of_request"),
-                        rs.getBoolean("status")));
-                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("manager_id")}, \{rs.getString("client_id")}, \{rs.getString("credit_type_id")}, \{rs.getDate("date_of_request")}, \{rs.getBoolean("status")}");
+                        UUID.fromString(rs.getString("id_status")),
+                        rs.getString("rejection_message")));
+                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("id_manager")}, \{rs.getString("id_credit")}, \{rs.getDate("date_of_request")}, \{rs.getString("id_status")}, \{rs.getString("rejection_message")}");
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -518,52 +369,11 @@ public class CRUD {
         return creditRequests;
     }
 
-    public CreditRequest readCreditRequestRecord(UUID id) throws SQLException {
-        String query = String.format("SELECT * FROM Credit_Request WHERE id = '%s';", id.toString());
-        CreditRequest creditRequest = new CreditRequest();
-        try (var statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(query);
-            if (!rs.next()) {
-                System.out.println("0 rows selected");
-            }
-            while (rs.next()) {
-                creditRequest = new CreditRequest(UUID.fromString(rs.getString("id")),
-                        UUID.fromString(rs.getString("manager_id")),
-                        UUID.fromString(rs.getString("client_id")),
-                        UUID.fromString(rs.getString("credit_type_id")),
-                        rs.getDate("date_of_request"),
-                        rs.getBoolean("status"));
-                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("manager_id")}, \{rs.getString("client_id")}, \{rs.getString("credit_type_id")}, \{rs.getDate("date_of_request")}, \{rs.getBoolean("status")}");
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-
-        return creditRequest;
-    }
-
-    public UUID getCreditRequestID(UUID id) throws SQLException {
-        String query = String.format("SELECT id FROM Credit_Request WHERE id = '%s';", id.toString());
-        UUID request = null;
-        try (var statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(query);
-            if (!rs.next()) {
-                System.out.println("0 rows selected");
-            }
-            while (rs.next()) {
-                request = UUID.fromString(rs.getString("id"));
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-
-        return request;
-    }
-
-    public void createCreditRequest(UUID managerID, UUID clientID,
-                                    UUID creditTypeID, Date dateOfRequest, Boolean status) throws SQLException {
-        String query = String.format("INSERT INTO Credit_Request VALUES ('%s', '%s', '%s', '%s', '%s', '%s');",
-                generateUUID(), managerID.toString(), clientID.toString(), creditTypeID.toString(), dateOfRequest.toString(), status.toString());
+    public void createCreditRequest(UUID managerID, UUID creditID, Date dateOfRequest,
+                                    UUID statusID, String rejectionMessage) throws SQLException {
+        String query = String.format("INSERT INTO credit_request VALUES ('%s', '%s', '%s', '%s', '%s', '%s');",
+                generateUUID(), managerID.toString(), creditID.toString(),
+                dateOfRequest.toString(), statusID.toString(), rejectionMessage);
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
             System.out.println("Record created.");
@@ -572,12 +382,11 @@ public class CRUD {
         }
     }
 
-    public void updateCreditRequest(UUID managerID, UUID clientID, UUID creditTypeID,
-                                    Date dateOfRequest, Boolean status, UUID id) throws SQLException {
-        String query = String.format("UPDATE Credit_Request SET manager_id = '%s', client_id = '%s', credit_type_id = '%s', " +
-                        "date_of_request = '%s', status = '%s' WHERE id = '%s'",
-                managerID.toString(), clientID.toString(), creditTypeID.toString(), dateOfRequest.toString(),
-                status.toString(), id.toString());
+    public void updateCreditRequest(UUID managerID, UUID creditID, Date dateOfRequest,
+                                    UUID statusID, String rejectionMessage, UUID id) throws SQLException {
+        String query = String.format("UPDATE credit_request SET id_manager = '%s', id_client = '%s', date_of_request = '%s', id_status = '%s', rejection_message = '%s' WHERE id = '%s'",
+                managerID.toString(), creditID.toString(), dateOfRequest.toString(),
+                statusID.toString(), rejectionMessage, id.toString());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
             System.out.println("Record updated.");
@@ -587,7 +396,7 @@ public class CRUD {
     }
 
     public void deleteCreditRequest(UUID id) throws SQLException {
-        String query = String.format("DELETE FROM Credit_Request WHERE id = '%s';", id.toString());
+        String query = String.format("DELETE FROM credit_request WHERE id = '%s';", id.toString());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
             System.out.println("Record deleted.");
@@ -599,7 +408,7 @@ public class CRUD {
     // Credit CRUD
     public ArrayList<Credit> readCreditTable() throws SQLException {
         ArrayList<Credit> credits = new ArrayList<>();
-        String query = "SELECT * FROM Credits;";
+        String query = "SELECT * FROM credit;";
 
         try (var statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
@@ -608,12 +417,13 @@ public class CRUD {
             }
             while (rs.next()) {
                 credits.add(new Credit(UUID.fromString(rs.getString("id")),
-                        UUID.fromString(rs.getString("client_id")),
-                        UUID.fromString(rs.getString("credit_type_id")),
+                        UUID.fromString(rs.getString("id_client")),
+                        UUID.fromString(rs.getString("id_credit_type")),
+                        rs.getDouble("paid_amount"),
                         rs.getDate("start_date"),
                         rs.getDate("end_date"),
                         rs.getBoolean("status")));
-                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("client_id")}, \{rs.getString("credit_type_id")}, \{rs.getDate("start_date")}, \{rs.getDate("end_date")}, \{rs.getBoolean("status")}");
+                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("id_client")}, \{rs.getString("id_credit_type")}, \{rs.getDouble("paid_amount")}, \{rs.getDate("start_date")}, \{rs.getDate("end_date")}, \{rs.getBoolean("status")}");
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -622,52 +432,10 @@ public class CRUD {
         return credits;
     }
 
-    public Credit readCreditRecord(UUID id) throws SQLException {
-        String query = String.format("SELECT * FROM Credits WHERE id = '%s';", id.toString());
-        Credit credit = new Credit();
-        try (var statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(query);
-            if (!rs.next()) {
-                System.out.println("0 rows selected");
-            }
-            while (rs.next()) {
-                credit = new Credit(UUID.fromString(rs.getString("id")),
-                        UUID.fromString(rs.getString("client_id")),
-                        UUID.fromString(rs.getString("credit_type_id")),
-                        rs.getDate("start_date"),
-                        rs.getDate("end_date"),
-                        rs.getBoolean("status"));
-                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("client_id")}, \{rs.getString("credit_type_id")}, \{rs.getDate("start_date")}, \{rs.getDate("end_date")}, \{rs.getBoolean("status")}");
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-
-        return credit;
-    }
-
-    public UUID getCreditID(UUID id) throws SQLException {
-        String query = String.format("SELECT id FROM Credits WHERE id = '%s';", id.toString());
-        UUID credit = null;
-        try (var statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(query);
-            if (!rs.next()) {
-                System.out.println("0 rows selected");
-            }
-            while (rs.next()) {
-                credit = UUID.fromString(rs.getString("id"));
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-
-        return credit;
-    }
-
-    public void createCredit(UUID clientID, UUID creditTypeID,
+    public void createCredit(UUID clientID, UUID creditTypeID, Double paidAmount,
                              Date startDate, Date endDate, Boolean status) throws SQLException {
-        String query = String.format("INSERT INTO Credits VALUES ('%s', '%s', '%s', '%s', '%s', '%s');",
-                generateUUID(), clientID.toString(), creditTypeID.toString(),
+        String query = String.format("INSERT INTO credit VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+                generateUUID(), clientID.toString(), creditTypeID.toString(), paidAmount.toString(),
                 startDate.toString(), endDate.toString(), status.toString());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
@@ -677,12 +445,11 @@ public class CRUD {
         }
     }
 
-    public void updateCredit(UUID clientID, UUID creditTypeID,
+    public void updateCredit(UUID clientID, UUID creditTypeID, Double paidAmount,
                              Date startDate, Date endDate, Boolean status, UUID id) throws SQLException {
-        String query = String.format("UPDATE Credits SET client_id = '%s', credit_type_id = '%s', " +
-                        "start_date = '%s', end_date = '%s', status = '%s' WHERE id = '%s'",
-                clientID.toString(), creditTypeID.toString(), startDate.toString(), endDate.toString(),
-                status.toString(), id.toString());
+        String query = String.format("UPDATE credit SET id_client = '%s', id_credit_type = '%s', paid_amount = '%s', start_date = '%s', end_date = '%s', status = '%s' WHERE id = '%s'",
+                clientID.toString(), creditTypeID.toString(), paidAmount.toString(),
+                startDate.toString(), endDate.toString(), status.toString(), id.toString());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
             System.out.println("Record updated.");
@@ -692,7 +459,7 @@ public class CRUD {
     }
 
     public void deleteCredit(UUID id) throws SQLException {
-        String query = String.format("DELETE FROM Credits WHERE id = '%s';", id.toString());
+        String query = String.format("DELETE FROM credit WHERE id = '%s';", id.toString());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
             System.out.println("Record deleted.");
@@ -701,4 +468,61 @@ public class CRUD {
         }
     }
 
+    // Credit Payment CRUD
+    public ArrayList<Payment> readPaymentTable() throws SQLException {
+        ArrayList<Payment> payments = new ArrayList<>();
+        String query = "SELECT * FROM payment;";
+
+        try (var statement = connection.createStatement()) {
+            ResultSet rs = statement.executeQuery(query);
+            if (!rs.next()) {
+                System.out.println("0 rows selected");
+            }
+            while (rs.next()) {
+                payments.add(new Payment(UUID.fromString(rs.getString("id")),
+                        UUID.fromString(rs.getString("id_client")),
+                        UUID.fromString(rs.getString("id_credit")),
+                        rs.getDouble("amount"),
+                        rs.getDate("payment_date")));
+                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("id_client")}, \{rs.getString("id_credit")}, \{rs.getDouble("amount")}, \{rs.getDate("payment_date")}");
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+
+        return payments;
+    }
+
+    public void createPayment(UUID clientID, UUID creditID, Double amount, Date paymentDate) throws SQLException {
+        String query = String.format("INSERT INTO payment VALUES ('%s', '%s', '%s', '%s', '%s');",
+                generateUUID(), clientID.toString(), creditID.toString(), amount.toString(), paymentDate.toString());
+        try (var statement = connection.createStatement()) {
+            statement.executeUpdate(query);
+            System.out.println("Record created.");
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public void updatePayment(UUID clientID, UUID creditID, Double amount,
+                              Date paymentDate, UUID id) throws SQLException {
+        String query = String.format("UPDATE payment SET id_client = '%s', id_credit = '%s', amount = '%s', payment_date = '%s' WHERE id = '%s'",
+                clientID.toString(), creditID.toString(), amount.toString(), paymentDate.toString(), id.toString());
+        try (var statement = connection.createStatement()) {
+            statement.executeUpdate(query);
+            System.out.println("Record updated.");
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public void deletePayment(UUID id) throws SQLException {
+        String query = String.format("DELETE FROM payment WHERE id = '%s';", id.toString());
+        try (var statement = connection.createStatement()) {
+            statement.executeUpdate(query);
+            System.out.println("Record deleted.");
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
 }

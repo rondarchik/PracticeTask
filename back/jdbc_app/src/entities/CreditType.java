@@ -3,11 +3,11 @@ package entities;
 import java.util.UUID;
 
 public class CreditType {
-    protected UUID id;
-    protected String name;
-    protected Double creditAmount;
-    protected Double interestRate;
-    protected int termInMonths;
+    private UUID id;
+    private String name;
+    private Double creditAmount;
+    private Double interestRate;
+    private int termInMonths;
 
     public UUID getId() {
         return id;
@@ -51,8 +51,7 @@ public class CreditType {
 
     public CreditType() {}
 
-    public CreditType(UUID id, String name, Double creditAmount,
-                      Double interestRate, int termInMonths) {
+    public CreditType(UUID id, String name, Double creditAmount, Double interestRate, int termInMonths) {
         this.id = id;
         this.name = name;
         this.creditAmount = creditAmount;

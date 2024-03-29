@@ -4,12 +4,12 @@ import java.util.Date;
 import java.util.UUID;
 
 public class CreditRequest {
-    protected UUID id;
-    protected UUID managerID;
-    protected UUID clientID;
-    protected UUID creditTypeID;
-    protected Date dateOfRequest;
-    protected Boolean status;
+    private UUID id;
+    private UUID managerID;
+    private UUID creditID;
+    private Date dateOfRequest;
+    private UUID statusID;
+    private String rejectionMessage;
 
     public UUID getId() {
         return id;
@@ -27,20 +27,12 @@ public class CreditRequest {
         this.managerID = managerID;
     }
 
-    public UUID getClientID() {
-        return clientID;
+    public UUID getCreditID() {
+        return creditID;
     }
 
-    public void setClientID(UUID clientID) {
-        this.clientID = clientID;
-    }
-
-    public UUID getCreditTypeID() {
-        return creditTypeID;
-    }
-
-    public void setCreditTypeID(UUID creditTypeID) {
-        this.creditTypeID = creditTypeID;
+    public void setCreditID(UUID creditID) {
+        this.creditID = creditID;
     }
 
     public Date getDateOfRequest() {
@@ -51,23 +43,31 @@ public class CreditRequest {
         this.dateOfRequest = dateOfRequest;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public UUID getStatus() {
+        return statusID;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setStatus(UUID statusID) {
+        this.statusID = statusID;
+    }
+
+    public String getRejectionMessage() {
+        return rejectionMessage;
+    }
+
+    public void setRejectionMessage(String rejectionMessage) {
+        this.rejectionMessage = rejectionMessage;
     }
 
     public CreditRequest() {}
 
-    public CreditRequest(UUID id, UUID managerID, UUID clientID,
-                         UUID creditTypeID, Date dateOfRequest, Boolean status) {
+    public CreditRequest(UUID id, UUID managerID, UUID creditID, Date dateOfRequest,
+                         UUID statusID, String rejectionMessage) {
         this.id = id;
         this.managerID = managerID;
-        this.clientID = clientID;
-        this.creditTypeID = creditTypeID;
+        this.creditID = creditID;
         this.dateOfRequest = dateOfRequest;
-        this.status = status;
+        this.statusID = statusID;
+        this.rejectionMessage = rejectionMessage;
     }
 }

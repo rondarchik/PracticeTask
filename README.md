@@ -1,9 +1,6 @@
 # Internship labs
 # Тема проекта: Система управления кредитами
 
-### [Ссылка на схему БД](https://drawsql.app/teams/rondarchik/diagrams/credit-management-system "Схема БД - Система управления кредитами")
-### [Ссылка на ветку JDBC](https://github.com/rondarchik/PracticeTask/tree/jdbc "Ветка для JDBC приложения")  
-
 ### Задание 1
 * Придумать схему согласно теме проекта (минимум 7 таблиц). 
 * Обязательное наличие связи многие ко многим. 

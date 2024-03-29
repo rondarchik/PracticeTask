@@ -4,12 +4,13 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Credit {
-    protected UUID id;
-    protected UUID clientID;
-    protected UUID creditTypeID;
-    protected Date startDate;
-    protected Date endDate;
-    protected Boolean status;
+    private UUID id;
+    private UUID clientID;
+    private UUID creditTypeID;
+    private Double paidAmount;
+    private Date startDate;
+    private Date endDate;
+    private Boolean status;
 
     public UUID getId() {
         return id;
@@ -33,6 +34,14 @@ public class Credit {
 
     public void setCreditTypeID(UUID creditTypeID) {
         this.creditTypeID = creditTypeID;
+    }
+
+    public Double getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(Double paidAmount) {
+        this.paidAmount = paidAmount;
     }
 
     public Date getStartDate() {
@@ -61,11 +70,12 @@ public class Credit {
 
     public Credit() {}
 
-    public Credit(UUID id, UUID clientID, UUID creditTypeID,
+    public Credit(UUID id, UUID clientID, UUID creditTypeID, Double paidAmount,
                   Date startDate, Date endDate, Boolean status) {
         this.id = id;
         this.clientID = clientID;
         this.creditTypeID = creditTypeID;
+        this.paidAmount = paidAmount;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
