@@ -9,14 +9,11 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.UUID;
 
 import static java.lang.System.console;
 
 public class UserScreen {
-    private static final Scanner in = new Scanner(System.in);
-
     private UserScreen() {}
 
     public static void interactionWithUser(Connection connection) throws ParseException, SQLException {
@@ -27,7 +24,7 @@ public class UserScreen {
             Base.printActionSelect();
 
             console().printf("Enter the action value: ");
-            int action = in.nextInt();
+            int action = Base.in.nextInt();
 
             if (action == 0) {
                 break;
@@ -36,17 +33,17 @@ public class UserScreen {
             switch (action) {
                 case 1:
                     console().printf("Enter the name: ");
-                    String name = in.nextLine();
+                    String name = Base.in.nextLine();
                     console().printf("Enter the surname: ");
-                    String surname = in.nextLine();
+                    String surname = Base.in.nextLine();
                     console().printf("Enter the email: ");
-                    String email = in.nextLine();
+                    String email = Base.in.nextLine();
                     console().printf("Enter the birth date (yyyy-mm-dd): ");
-                    Date birthDate = new SimpleDateFormat(Base.datePattern).parse(in.nextLine());
+                    Date birthDate = new SimpleDateFormat(Base.datePattern).parse(Base.in.nextLine());
                     console().printf("Enter the password: ");
-                    String password = in.nextLine();
+                    String password = Base.in.nextLine();
                     console().printf("Enter the role name: ");
-                    String roleName = in.nextLine();
+                    String roleName = Base.in.nextLine();
                     repository.createUser(name, surname, email, birthDate, password, roleRepository.getRoleID(roleName));
                     break;
                 case 2:
@@ -54,20 +51,20 @@ public class UserScreen {
                     break;
                 case 3:
                     console().printf("Enter the user ID you want to change: ");
-                    UUID id = UUID.fromString(in.nextLine());
+                    UUID id = UUID.fromString(Base.in.nextLine());
                     console().printf("Enter the new name: ");
-                    String newName = in.nextLine();
+                    String newName = Base.in.nextLine();
                     console().printf("Enter the new surname: ");
-                    String newSurname = in.nextLine();
+                    String newSurname = Base.in.nextLine();
                     console().printf("Enter the new email: ");
-                    String newEmail = in.nextLine();
+                    String newEmail = Base.in.nextLine();
                     console().printf("Enter the new birth date (yyyy-mm-dd): ");
-                    Date newBirthDate = new SimpleDateFormat(Base.datePattern).parse(in.nextLine());
+                    Date newBirthDate = new SimpleDateFormat(Base.datePattern).parse(Base.in.nextLine());
                     repository.updateUser(newName, newSurname, newEmail, newBirthDate, id);
                     break;
                 case 4:
                     console().printf("Enter the user ID you want to delete: ");
-                    UUID userID = UUID.fromString(in.nextLine());
+                    UUID userID = UUID.fromString(Base.in.nextLine());
                     repository.deleteUser(userID);
                     break;
                 default:

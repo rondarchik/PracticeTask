@@ -1,17 +1,14 @@
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Scanner;
 
 import config.DatabaseConfig;
 import screens.*;
+import utils.Base;
 
 import static java.lang.System.*;
 
 public class Main {
-    private static final Scanner in = new Scanner(System.in);
-
-
     public static void main(String[] args) throws SQLException, ParseException {
         // Get database credentials from DatabaseConfig class
         var jdbcUrl = DatabaseConfig.getDbUrl();
@@ -31,7 +28,7 @@ public class Main {
                 console().printf("\t0 - EXIT\n");
 
                 console().printf("Enter the action value: ");
-                int selectTableAction = in.nextInt();
+                int selectTableAction = Base.in.nextInt();
                 if (selectTableAction == 0) {
                     break;
                 }
@@ -65,7 +62,7 @@ public class Main {
 
         } catch (SQLException  e) {
             console().printf(e.getMessage());
-        } 
+        }
     }
 }
 

@@ -1,12 +1,16 @@
 package utils;
 
 import java.sql.SQLException;
+import java.util.Scanner;
 import java.util.UUID;
 
 import static java.lang.System.console;
 
 public class Base {
     public final static String datePattern = "yyyy-MM-dd";
+
+    public static final Scanner in = new Scanner(System.in);
+
     private Base() {}
 
     public static String generateUUID() {
