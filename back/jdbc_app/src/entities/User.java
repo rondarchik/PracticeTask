@@ -9,7 +9,7 @@ public class User {
     private String surname;
     private String email;
     private Date birthDate;
-    private String passwordHash;
+    private String passwordHash;  //while without hash
 
     public UUID getId() {
         return id;

@@ -1,17 +1,18 @@
-import java.io.Console;
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Scanner;
 
-import databaseconfig.java.DatabaseConfig;
+import config.DatabaseConfig;
+import screens.*;
+
+import static java.lang.System.*;
 
 public class Main {
-    private static final Console obj = System.console();
     private static final Scanner in = new Scanner(System.in);
 
-    public static Connection connect() {
 
+    public static void main(String[] args) throws SQLException, ParseException {
         try {
             // Get database credentials from DatabaseConfig class
             var jdbcUrl = DatabaseConfig.getDbUrl();
@@ -19,52 +20,56 @@ public class Main {
             var password = DatabaseConfig.getDbPassword();
 
             // Open a connection
-            return DriverManager.getConnection(jdbcUrl, user, password);
+            var connection =  DriverManager.getConnection(jdbcUrl, user, password);
+
+            while (true) {
+                console().printf("Select a table: \n");
+                console().printf("\t1 - Role\n");
+                console().printf("\t2 - User\n");
+                console().printf("\t3 - Credit Type\n");
+                console().printf("\t4 - Credit\n");
+                console().printf("\t5 - Credit Request\n");
+                console().printf("\t6 - Request Status\n");
+                console().printf("\t7 - Payment\n");
+                console().printf("\t0 - EXIT\n");
+
+                console().printf("Enter the action value: ");
+                int selectTableAction = in.nextInt();
+                if (selectTableAction == 0) {
+                    break;
+                }
+
+                switch (selectTableAction) {
+                    case 1:
+                        RoleScreen.interactionWithRole(connection);
+                        break;
+                    case 2:
+                        UserScreen.interactionWithUser(connection);
+                        break;
+                    case 3:
+                        CreditTypeScreen.interactionWithCreditType(connection);
+                        break;
+                    case 4:
+                        CreditScreen.interactionWithCredit(connection);
+                        break;
+                    case 5:
+                        CreditRequestScreen.interactionWithCreditRequest(connection);
+                        break;
+                    case 6:
+                        RequestStatusScreen.interactionWithRequestStatus(connection);
+                        break;
+                    case 7:
+                        PaymentScreen.interactionWithPayment(connection);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
         } catch (SQLException  e) {
-            obj.printf(e.getMessage());
-            return null;
+            console().printf(e.getMessage());
         }
-    }
 
-    public static void main(String[] args) throws SQLException {
-        CRUD db = new CRUD(connect());
-
-        obj.printf("Connected to the PostgreSQL database.\n");
-
-        // for table Role
-        obj.printf("Select an action: \n");
-        obj.printf("\t1 - Create\n");
-        obj.printf("\t2 - Read\n");
-        obj.printf("\t3 - Update\n");
-        obj.printf("\t4 - Delete\n");
-
-        obj.printf("Enter the action value: ");
-        int action = in.nextInt();
-
-        switch (action) {
-            case 1:
-                obj.printf("Enter the role name: ");
-                String roleName = in.nextLine();
-                db.createRole(roleName);
-                break;
-            case 2:
-                db.readRoleTable();
-                break;
-            case 3:
-                obj.printf("Enter the old role name: ");
-                String oldRoleName = in.nextLine();
-                obj.printf("Enter the new role name: ");
-                String newRoleName = in.nextLine();
-                db.updateRole(oldRoleName, newRoleName);
-                break;
-            case 4:
-                obj.printf("Enter the role name: ");
-                var roleID = db.getRoleID(in.nextLine());
-                db.deleteRole(roleID);
-                break;
-            default:
-                break;
-        }
     }
 }
 
