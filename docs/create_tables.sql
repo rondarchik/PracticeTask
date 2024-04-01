@@ -20,10 +20,10 @@ CREATE TABLE IF NOT EXISTS "role" (
 
 
 CREATE TABLE IF NOT EXISTS "user_role" (
-    "id" UUID PRIMARY KEY NOT NULL,
     "id_user" UUID NOT NULL,
     "id_role" UUID NOT NULL,
 	
+	CONSTRAINT pk_user_role PRIMARY KEY (id_user, id_role),
     CONSTRAINT fk_user FOREIGN KEY (id_user) REFERENCES "user"(id) ON DELETE CASCADE,
     CONSTRAINT fk_role FOREIGN KEY (id_role) REFERENCES "role"(id) ON DELETE CASCADE
 );	
