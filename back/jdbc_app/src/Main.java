@@ -13,15 +13,12 @@ public class Main {
 
 
     public static void main(String[] args) throws SQLException, ParseException {
-        try {
-            // Get database credentials from DatabaseConfig class
-            var jdbcUrl = DatabaseConfig.getDbUrl();
-            var user = DatabaseConfig.getDbUsername();
-            var password = DatabaseConfig.getDbPassword();
+        // Get database credentials from DatabaseConfig class
+        var jdbcUrl = DatabaseConfig.getDbUrl();
+        var user = DatabaseConfig.getDbUsername();
+        var password = DatabaseConfig.getDbPassword();
 
-            // Open a connection
-            var connection =  DriverManager.getConnection(jdbcUrl, user, password);
-
+        try (var connection =  DriverManager.getConnection(jdbcUrl, user, password)) {
             while (true) {
                 console().printf("Select a table: \n");
                 console().printf("\t1 - Role\n");
@@ -68,8 +65,7 @@ public class Main {
 
         } catch (SQLException  e) {
             console().printf(e.getMessage());
-        }
-
+        } 
     }
 }
 
