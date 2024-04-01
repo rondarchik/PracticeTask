@@ -13,19 +13,13 @@ import java.util.UUID;
 import static java.lang.System.console;
 
 public class CreditScreen {
-    private CreditScreen() {
-
-    }
+    private CreditScreen() {}
 
     public static void interactionWithCredit(Connection connection) throws SQLException, ParseException {
         CreditRepository repository = new CreditRepository(connection);
 
         while (true) {
-            Base.printActionSelect();
-
-            console().printf("Enter the action value: ");
-            int action = Base.in.nextInt();
-
+            int action = Base.interaction();
             if (action == 0) {
                 break;
             }

@@ -9,19 +9,13 @@ import java.sql.SQLException;
 import static java.lang.System.console;
 
 public class RoleScreen {
-    private RoleScreen() {
-
-    }
+    private RoleScreen() {}
 
     public static void interactionWithRole(Connection connection) throws SQLException {
         RoleRepository repository = new RoleRepository(connection);
 
         while (true) {
-            Base.printActionSelect();
-
-            console().printf("Enter the action value: ");
-            int action = Base.in.nextInt();
-
+            int action = Base.interaction();
             if (action == 0) {
                 break;
             }

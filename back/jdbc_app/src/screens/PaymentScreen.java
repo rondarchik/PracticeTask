@@ -13,19 +13,13 @@ import java.util.UUID;
 import static java.lang.System.console;
 
 public class PaymentScreen {
-    private PaymentScreen() {
-
-    }
+    private PaymentScreen() {}
 
     public static void interactionWithPayment(Connection connection) throws SQLException, ParseException {
         PaymentRepository repository = new PaymentRepository(connection);
 
         while (true) {
-            Base.printActionSelect();
-
-            console().printf("Enter the action value: ");
-            int action = Base.in.nextInt();
-
+            int action = Base.interaction();
             if (action == 0) {
                 break;
             }

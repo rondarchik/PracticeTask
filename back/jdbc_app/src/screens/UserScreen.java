@@ -21,11 +21,7 @@ public class UserScreen {
         RoleRepository roleRepository = new RoleRepository(connection);
 
         while (true) {
-            Base.printActionSelect();
-
-            console().printf("Enter the action value: ");
-            int action = Base.in.nextInt();
-
+            int action = Base.interaction();
             if (action == 0) {
                 break;
             }

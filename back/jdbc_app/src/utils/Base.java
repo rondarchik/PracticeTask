@@ -34,12 +34,17 @@ public class Base {
         }
     }
 
-    public static void printActionSelect() {
+    public static int interaction() {
         console().printf("Select an action: \n");
         console().printf("\t1 - Create\n");
         console().printf("\t2 - Read\n");
         console().printf("\t3 - Update\n");
         console().printf("\t4 - Delete\n");
         console().printf("\t0 - EXIT\n");
+
+        console().printf("Enter the action value: ");
+        int action = Base.in.nextInt();
+
+        return action;
     }
 }

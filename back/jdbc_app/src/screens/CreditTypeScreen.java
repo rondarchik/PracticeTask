@@ -10,19 +10,13 @@ import java.util.UUID;
 import static java.lang.System.console;
 
 public class CreditTypeScreen {
-    private CreditTypeScreen() {
-
-    }
+    private CreditTypeScreen() {}
 
     public static void interactionWithCreditType(Connection connection) throws SQLException {
         CreditTypeRepository repository = new CreditTypeRepository(connection);
 
         while (true) {
-            Base.printActionSelect();
-
-            console().printf("Enter the action value: ");
-            int action = Base.in.nextInt();
-
+            int action = Base.interaction();
             if (action == 0) {
                 break;
             }
