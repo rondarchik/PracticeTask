@@ -1,30 +1,33 @@
 package repositories;
 
 import entities.CreditRequest;
-import utils.Base;
+import utils.BaseUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
-public class CreditRequestRepository {
+public class CreditRequestRepository implements IBaseRepository<CreditRequest> {
     private final Connection connection;
-
+    private static final Logger logger = Logger.getLogger(CreditRequestRepository.class.getName());
+    
     public CreditRequestRepository(Connection connection) {
         this.connection = connection;
     }
 
-    public ArrayList<CreditRequest> readCreditRequestTable() throws SQLException {
-        ArrayList<CreditRequest> creditRequests = new ArrayList<>();
+    @Override
+    public List<CreditRequest> readTable() {
+        List<CreditRequest> creditRequests = new ArrayList<>();
         String query = "SELECT * FROM credit_request;";
 
         try (var statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
             if (!rs.next()) {
-                System.out.println("0 rows selected");
+                logger.info("0 rows selected");
             }
             while (rs.next()) {
                 creditRequests.add(new CreditRequest(UUID.fromString(rs.getString("id")),
@@ -32,49 +35,48 @@ public class CreditRequestRepository {
                         UUID.fromString(rs.getString("id_credit")),
                         rs.getDate("date_of_request"),
                         UUID.fromString(rs.getString("id_status")),
-                        rs.getString("rejection_message")));
-                System.out.println(STR."\{rs.getString("id")}, \{rs.getString("id_manager")}, \{rs.getString("id_credit")}, \{rs.getDate("date_of_request")}, \{rs.getString("id_status")}, \{rs.getString("rejection_message")}");
-            }
+                        rs.getString("rejection_message")));            }
         } catch (SQLException e) {
-            Base.printSQLException(e);
+            BaseUtil.printSQLException(e);
         }
 
         return creditRequests;
     }
 
-    public void createCreditRequest(UUID managerID, UUID creditID, Date dateOfRequest,
-                                    UUID statusID, String rejectionMessage) throws SQLException {
+    @Override
+    public void create(CreditRequest request) {
         String query = String.format("INSERT INTO credit_request VALUES ('%s', '%s', '%s', '%s', '%s', '%s');",
-                Base.generateUUID(), managerID.toString(), creditID.toString(),
-                dateOfRequest.toString(), statusID.toString(), rejectionMessage);
+                BaseUtil.generateUUID(), request.getManagerId().toString(), request.getCreditId().toString(),
+                request.getDateOfRequest().toString(), request.getStatusId().toString(), request.getRejectionMessage());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
-            System.out.println("Record created.");
+            logger.info("Record created.");
         } catch (SQLException e) {
-            Base.printSQLException(e);
+            BaseUtil.printSQLException(e);
         }
     }
 
-    public void updateCreditRequest(UUID managerID, UUID creditID, Date dateOfRequest,
-                                    UUID statusID, String rejectionMessage, UUID id) throws SQLException {
+    @Override
+    public void update(CreditRequest request) {
         String query = String.format("UPDATE credit_request SET id_manager = '%s', id_client = '%s', date_of_request = '%s', id_status = '%s', rejection_message = '%s' WHERE id = '%s'",
-                managerID.toString(), creditID.toString(), dateOfRequest.toString(),
-                statusID.toString(), rejectionMessage, id.toString());
+                request.getManagerId().toString(), request.getCreditId().toString(), request.getDateOfRequest().toString(),
+                request.getStatusId().toString(), request.getRejectionMessage(), request.getId().toString());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
-            System.out.println("Record updated.");
+            logger.info("Record updated.");
         } catch (SQLException e) {
-            Base.printSQLException(e);
+            BaseUtil.printSQLException(e);
         }
     }
 
-    public void deleteCreditRequest(UUID id) throws SQLException {
+    @Override
+    public void delete(UUID id) {
         String query = String.format("DELETE FROM credit_request WHERE id = '%s';", id.toString());
         try (var statement = connection.createStatement()) {
             statement.executeUpdate(query);
-            System.out.println("Record deleted.");
+            logger.info("Record deleted.");
         } catch (SQLException e) {
-            Base.printSQLException(e);
+            BaseUtil.printSQLException(e);
         }
     }
 

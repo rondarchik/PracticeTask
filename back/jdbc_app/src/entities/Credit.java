@@ -5,12 +5,25 @@ import java.util.UUID;
 
 public class Credit {
     private UUID id;
-    private UUID clientID;
-    private UUID creditTypeID;
+    private UUID clientId;
+    private UUID creditTypeId;
     private Double paidAmount;
     private Date startDate;
     private Date endDate;
     private Boolean status;
+
+    public Credit() {}
+
+    public Credit(UUID id, UUID clientId, UUID creditTypeId, Double paidAmount,
+                  Date startDate, Date endDate, Boolean status) {
+        this.id = id;
+        this.clientId = clientId;
+        this.creditTypeId = creditTypeId;
+        this.paidAmount = paidAmount;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+    }
 
     public UUID getId() {
         return id;
@@ -20,20 +33,20 @@ public class Credit {
         this.id = id;
     }
 
-    public UUID getClientID() {
-        return clientID;
+    public UUID getClientId() {
+        return clientId;
     }
 
-    public void setClientID(UUID clientID) {
-        this.clientID = clientID;
+    public void setClientId(UUID clientId) {
+        this.clientId = clientId;
     }
 
-    public UUID getCreditTypeID() {
-        return creditTypeID;
+    public UUID getCreditTypeId() {
+        return creditTypeId;
     }
 
-    public void setCreditTypeID(UUID creditTypeID) {
-        this.creditTypeID = creditTypeID;
+    public void setCreditTypeId(UUID creditTypeId) {
+        this.creditTypeId = creditTypeId;
     }
 
     public Double getPaidAmount() {
@@ -68,16 +81,8 @@ public class Credit {
         this.status = status;
     }
 
-    public Credit() {}
-
-    public Credit(UUID id, UUID clientID, UUID creditTypeID, Double paidAmount,
-                  Date startDate, Date endDate, Boolean status) {
-        this.id = id;
-        this.clientID = clientID;
-        this.creditTypeID = creditTypeID;
-        this.paidAmount = paidAmount;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.status = status;
+    @Override
+    public String toString() {
+        return STR."\{id.toString()}, \{clientId.toString()}, \{creditTypeId.toString()}, \{paidAmount.toString()}, \{startDate.toString()}, \{endDate.toString()}, \{status.toString()}";
     }
 }

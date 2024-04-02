@@ -9,6 +9,16 @@ public class CreditType {
     private Double interestRate;
     private int termInMonths;
 
+    public CreditType() {}
+
+    public CreditType(UUID id, String name, Double creditAmount, Double interestRate, int termInMonths) {
+        this.id = id;
+        this.name = name;
+        this.creditAmount = creditAmount;
+        this.interestRate = interestRate;
+        this.termInMonths = termInMonths;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -49,13 +59,8 @@ public class CreditType {
         this.termInMonths = termInMonths;
     }
 
-    public CreditType() {}
-
-    public CreditType(UUID id, String name, Double creditAmount, Double interestRate, int termInMonths) {
-        this.id = id;
-        this.name = name;
-        this.creditAmount = creditAmount;
-        this.interestRate = interestRate;
-        this.termInMonths = termInMonths;
+    @Override
+    public String toString() {
+        return STR."\{id.toString()}, \{name}, \{creditAmount.toString()}, \{interestRate.toString()}, \{termInMonths}";
     }
 }

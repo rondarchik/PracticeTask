@@ -5,11 +5,23 @@ import java.util.UUID;
 
 public class CreditRequest {
     private UUID id;
-    private UUID managerID;
-    private UUID creditID;
+    private UUID managerId;
+    private UUID creditId;
     private Date dateOfRequest;
-    private UUID statusID;
+    private UUID statusId;
     private String rejectionMessage;
+
+    public CreditRequest() {}
+
+    public CreditRequest(UUID id, UUID managerId, UUID creditId, Date dateOfRequest,
+                         UUID statusId, String rejectionMessage) {
+        this.id = id;
+        this.managerId = managerId;
+        this.creditId = creditId;
+        this.dateOfRequest = dateOfRequest;
+        this.statusId = statusId;
+        this.rejectionMessage = rejectionMessage;
+    }
 
     public UUID getId() {
         return id;
@@ -19,20 +31,20 @@ public class CreditRequest {
         this.id = id;
     }
 
-    public UUID getManagerID() {
-        return managerID;
+    public UUID getManagerId() {
+        return managerId;
     }
 
-    public void setManagerID(UUID managerID) {
-        this.managerID = managerID;
+    public void setManagerId(UUID managerId) {
+        this.managerId = managerId;
     }
 
-    public UUID getCreditID() {
-        return creditID;
+    public UUID getCreditId() {
+        return creditId;
     }
 
-    public void setCreditID(UUID creditID) {
-        this.creditID = creditID;
+    public void setCreditId(UUID creditId) {
+        this.creditId = creditId;
     }
 
     public Date getDateOfRequest() {
@@ -43,12 +55,12 @@ public class CreditRequest {
         this.dateOfRequest = dateOfRequest;
     }
 
-    public UUID getStatus() {
-        return statusID;
+    public UUID getStatusId() {
+        return statusId;
     }
 
-    public void setStatus(UUID statusID) {
-        this.statusID = statusID;
+    public void setStatusId(UUID statusId) {
+        this.statusId = statusId;
     }
 
     public String getRejectionMessage() {
@@ -59,15 +71,8 @@ public class CreditRequest {
         this.rejectionMessage = rejectionMessage;
     }
 
-    public CreditRequest() {}
-
-    public CreditRequest(UUID id, UUID managerID, UUID creditID, Date dateOfRequest,
-                         UUID statusID, String rejectionMessage) {
-        this.id = id;
-        this.managerID = managerID;
-        this.creditID = creditID;
-        this.dateOfRequest = dateOfRequest;
-        this.statusID = statusID;
-        this.rejectionMessage = rejectionMessage;
+    @Override
+    public String toString() {
+        return STR."\{id.toString()}, \{managerId.toString()}, \{creditId.toString()}, \{dateOfRequest.toString()}, \{statusId.toString()}, \{rejectionMessage}";
     }
 }

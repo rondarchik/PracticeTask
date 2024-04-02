@@ -1,14 +1,16 @@
 package screens;
 
+import entities.Role;
+import entities.User;
 import repositories.RoleRepository;
 import repositories.UserRepository;
-import utils.Base;
+import utils.BaseUtil;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static java.lang.System.console;
@@ -16,56 +18,86 @@ import static java.lang.System.console;
 public class UserScreen {
     private UserScreen() {}
 
-    public static void interactionWithUser(Connection connection) throws ParseException, SQLException {
+    public static void interactionWithUser(Connection connection) throws ParseException {
         UserRepository repository = new UserRepository(connection);
-        RoleRepository roleRepository = new RoleRepository(connection);
 
         while (true) {
-            int action = Base.interaction();
+            int action = BaseUtil.interaction();
             if (action == 0) {
                 break;
             }
 
+            User user = new User();
             switch (action) {
                 case 1:
                     console().printf("Enter the name: ");
-                    String name = Base.in.nextLine();
+                    user.setName(BaseUtil.in.next());
                     console().printf("Enter the surname: ");
-                    String surname = Base.in.nextLine();
+                    user.setSurname(BaseUtil.in.next());
                     console().printf("Enter the email: ");
-                    String email = Base.in.nextLine();
+                    user.setEmail(BaseUtil.in.next());
                     console().printf("Enter the birth date (yyyy-mm-dd): ");
-                    Date birthDate = new SimpleDateFormat(Base.datePattern).parse(Base.in.nextLine());
+                    user.setBirthDate(new SimpleDateFormat(BaseUtil.DATE_PATTERN).parse(BaseUtil.in.next()));
                     console().printf("Enter the password: ");
-                    String password = Base.in.nextLine();
-                    console().printf("Enter the role name: ");
-                    String roleName = Base.in.nextLine();
-                    repository.createUser(name, surname, email, birthDate, password, roleRepository.getRoleID(roleName));
+                    user.setPasswordHash(BaseUtil.in.next());
+                    List<UUID> roles = addRoles(connection);
+                    user.setRoles(roles);
+                    repository.create(user);
                     break;
                 case 2:
-                    repository.readUserTable();
+                    List<User> users = repository.readTable();
+                    for (User i : users) {
+                        console().printf(i.toString());
+                    }
                     break;
                 case 3:
                     console().printf("Enter the user ID you want to change: ");
-                    UUID id = UUID.fromString(Base.in.nextLine());
+                    user.setId(UUID.fromString(BaseUtil.in.next()));
                     console().printf("Enter the new name: ");
-                    String newName = Base.in.nextLine();
+                    user.setName(BaseUtil.in.next());
                     console().printf("Enter the new surname: ");
-                    String newSurname = Base.in.nextLine();
+                    user.setSurname(BaseUtil.in.next());
                     console().printf("Enter the new email: ");
-                    String newEmail = Base.in.nextLine();
+                    user.setEmail(BaseUtil.in.next());
                     console().printf("Enter the new birth date (yyyy-mm-dd): ");
-                    Date newBirthDate = new SimpleDateFormat(Base.datePattern).parse(Base.in.nextLine());
-                    repository.updateUser(newName, newSurname, newEmail, newBirthDate, id);
+                    user.setBirthDate(new SimpleDateFormat(BaseUtil.DATE_PATTERN).parse(BaseUtil.in.next()));
+                    repository.update(user);
                     break;
                 case 4:
                     console().printf("Enter the user ID you want to delete: ");
-                    UUID userID = UUID.fromString(Base.in.nextLine());
-                    repository.deleteUser(userID);
+                    UUID userID = UUID.fromString(BaseUtil.in.next());
+                    repository.delete(userID);
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    private static List<UUID> addRoles(Connection connection) {
+        RoleRepository roleRepository = new RoleRepository(connection);
+
+        List<Role> allRoles = roleRepository.readTable();
+        List<UUID> roleIdList = new ArrayList<>();
+        while (true) {
+            console().printf("Select roles for user: \n");
+            for (Role role : allRoles) {
+                console().printf(role.toString());
+            }
+            console().printf("\nEnter the role id (or write 0 to exit): ");
+            String value = BaseUtil.in.next();
+            if (value.equals("0")) {
+                break;
+            }
+            UUID roleID = UUID.fromString(value);
+            if (!roleIdList.contains(roleID)) {
+                roleIdList.add(roleID);
+                console().printf("Role added successfully.\n");
+            } else {
+                console().printf("The user already has such role!\n");
+            }
+        }
+
+        return roleIdList;
     }
 }

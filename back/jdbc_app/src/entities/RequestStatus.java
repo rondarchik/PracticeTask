@@ -6,6 +6,13 @@ public class RequestStatus {
     private UUID id;
     private String status;
 
+    public RequestStatus() {}
+
+    public RequestStatus(UUID id, String status) {
+        this.id = id;
+        this.status = status;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -22,12 +29,9 @@ public class RequestStatus {
         this.status = status;
     }
 
-    public RequestStatus() {
-
+    @Override
+    public String toString() {
+        return STR."\{id.toString()}, \{status}";
     }
 
-    public RequestStatus(UUID id, String status) {
-        this.id = id;
-        this.status = status;
-    }
 }

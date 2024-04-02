@@ -5,10 +5,20 @@ import java.util.UUID;
 
 public class Payment {
     private UUID id;
-    private UUID clientID;
-    private UUID creditID;
+    private UUID clientId;
+    private UUID creditId;
     private Double amount;
     private Date paymentDate;
+
+    public Payment() {}
+
+    public Payment(UUID id, UUID clientId, UUID creditId, Double amount, Date paymentDate) {
+        this.id = id;
+        this.clientId = clientId;
+        this.creditId = creditId;
+        this.amount = amount;
+        this.paymentDate = paymentDate;
+    }
 
     public UUID getId() {
         return id;
@@ -18,20 +28,20 @@ public class Payment {
         this.id = id;
     }
 
-    public UUID getClientID() {
-        return clientID;
+    public UUID getClientId() {
+        return clientId;
     }
 
-    public void setClientID(UUID clientID) {
-        this.clientID = clientID;
+    public void setClientId(UUID clientId) {
+        this.clientId = clientId;
     }
 
-    public UUID getCreditID() {
-        return creditID;
+    public UUID getCreditId() {
+        return creditId;
     }
 
-    public void setCreditID(UUID creditID) {
-        this.creditID = creditID;
+    public void setCreditId(UUID creditId) {
+        this.creditId = creditId;
     }
 
     public Double getAmount() {
@@ -50,15 +60,8 @@ public class Payment {
         this.paymentDate = paymentDate;
     }
 
-    public Payment() {
-
-    }
-
-    public Payment(UUID id, UUID clientID, UUID creditID, Double amount, Date paymentDate) {
-        this.id = id;
-        this.clientID = clientID;
-        this.creditID = creditID;
-        this.amount = amount;
-        this.paymentDate = paymentDate;
+    @Override
+    public String toString() {
+        return STR."\{id.toString()}, \{clientId.toString()}, \{creditId.toString()}, \{amount.toString()}, \{paymentDate.toString()}";
     }
 }

@@ -4,7 +4,7 @@ import java.text.ParseException;
 
 import config.DatabaseConfig;
 import screens.*;
-import utils.Base;
+import utils.BaseUtil;
 
 import static java.lang.System.*;
 
@@ -28,7 +28,7 @@ public class Main {
                 console().printf("\t0 - EXIT\n");
 
                 console().printf("Enter the action value: ");
-                int selectTableAction = Base.in.nextInt();
+                int selectTableAction = BaseUtil.in.nextInt();
                 if (selectTableAction == 0) {
                     break;
                 }

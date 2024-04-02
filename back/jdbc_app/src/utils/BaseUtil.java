@@ -6,12 +6,12 @@ import java.util.UUID;
 
 import static java.lang.System.console;
 
-public class Base {
-    public final static String datePattern = "yyyy-MM-dd";
+public class BaseUtil {
+    public static final String DATE_PATTERN = "yyyy-MM-dd";
 
     public static final Scanner in = new Scanner(System.in);
 
-    private Base() {}
+    private BaseUtil() {}
 
     public static String generateUUID() {
         UUID uuid = UUID.randomUUID();
@@ -43,8 +43,6 @@ public class Base {
         console().printf("\t0 - EXIT\n");
 
         console().printf("Enter the action value: ");
-        int action = Base.in.nextInt();
-
-        return action;
+        return BaseUtil.in.nextInt();
     }
 }

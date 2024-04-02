@@ -6,6 +6,13 @@ public class Role {
     private UUID id;
     private String roleName;
 
+    public Role() {}
+
+    public Role(UUID id, String roleName) {
+        this.id = id;
+        this.roleName = roleName;
+    }
+
     public UUID getId() {
         return this.id;
     }
@@ -22,10 +29,8 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public Role() {}
-
-    public Role(UUID id, String roleName) {
-        this.id = id;
-        this.roleName = roleName;
+    @Override
+    public String toString() {
+        return STR."\{id.toString()}, \{roleName}";
     }
 }

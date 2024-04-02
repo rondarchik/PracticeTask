@@ -1,6 +1,8 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class User {
@@ -10,6 +12,18 @@ public class User {
     private String email;
     private Date birthDate;
     private String passwordHash;  //while without hash
+    private List<UUID> roles;
+
+    public User() {}
+
+    public User(UUID id, String name, String surname, String email, Date birthDate, String passwordHash) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.passwordHash = passwordHash;
+    }
 
     public UUID getId() {
         return id;
@@ -59,14 +73,16 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public User() {}
+    public void setRoles(List<UUID> roles) {
+        this.roles = new ArrayList<>(roles);
+    }
 
-    public User(UUID id, String name, String surname, String email, Date birthDate, String passwordHash) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.passwordHash = passwordHash;
+    public List<UUID> getRoles() {
+        return roles;
+    }
+
+    @Override
+    public String toString() {
+        return STR."\{id.toString()}, \{name}, \{surname}, \{email}, \{birthDate}";
     }
 }
