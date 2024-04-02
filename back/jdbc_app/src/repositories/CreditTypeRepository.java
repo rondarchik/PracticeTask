@@ -48,12 +48,8 @@ public class CreditTypeRepository implements IBaseRepository<CreditType> {
         String query = String.format("INSERT INTO credit_type VALUES ('%s', '%s', '%s', '%s', '%s');",
                 BaseUtil.generateUUID(), type.getName(), type.getCreditAmount().toString(),
                 type.getInterestRate().toString(), type.getTermInMonths());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record created.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records created.");
     }
 
     @Override
@@ -61,23 +57,15 @@ public class CreditTypeRepository implements IBaseRepository<CreditType> {
         String query = String.format("UPDATE credit_type SET name = '%s', credit_amount = '%s', interest_rate = '%s', term_in_months = '%s' WHERE id = '%s'",
                 type.getName(), type.getCreditAmount().toString(), type.getInterestRate().toString(),
                 type.getTermInMonths(), type.getId().toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record updated.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Record updated.");
     }
 
     @Override
     public void delete(UUID id) {
         String query = String.format("DELETE FROM credit_type WHERE id = '%s';", id.toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record deleted.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records deleted.");
     }
 
 }

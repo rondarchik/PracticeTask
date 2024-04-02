@@ -55,13 +55,8 @@ public class UserRepository implements IBaseRepository<User> {
             queryUserRole.append(String.format("('%s', '%s'), ", userID, roleID.toString()));
         }
         queryUserRole = new StringBuilder(queryUserRole.substring(0, queryUserRole.length() - 2));
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(queryUser);
-            statement.executeUpdate(queryUserRole.toString());
-            logger.info("Records created.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, queryUser, queryUserRole.toString(), "Records created.");
     }
 
     @Override
@@ -69,12 +64,8 @@ public class UserRepository implements IBaseRepository<User> {
         String query = String.format("UPDATE \"user\" SET name = '%s', surname = '%s', email = '%s', birth_date = '%s' WHERE id = '%s'",
                 user.getName(), user.getSurname(), user.getEmail(),
                 user.getBirthDate().toString(), user.getId().toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record updated.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Record updated.");
     }
 
     @Override
@@ -82,13 +73,7 @@ public class UserRepository implements IBaseRepository<User> {
         String queryUser = String.format("DELETE FROM \"user\" WHERE id = '%s';", id.toString());
         String queryUserRole = String.format("DELETE FROM user_role WHERE id_user = '%s';", id);
 
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(queryUser);
-            statement.executeUpdate(queryUserRole);
-            logger.info("Records deleted.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+        BaseRepository.executeQuery(connection, queryUser, queryUserRole, "Records deleted.");
     }
 
 }

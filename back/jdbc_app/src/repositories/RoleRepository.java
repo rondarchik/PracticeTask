@@ -43,35 +43,23 @@ public class RoleRepository implements IBaseRepository<Role> {
     public void create(Role role) {
         String query = String.format("INSERT INTO role VALUES ('%s', '%s');",
                 BaseUtil.generateUUID(), role.getRoleName());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record created.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records created.");
     }
 
     @Override
     public void update(Role role) {
         String query = String.format("UPDATE role SET role_name = '%s' WHERE id = '%s';",
                 role.getRoleName(), role.getId());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record updated.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Record updated.");
     }
 
     @Override
     public void delete(UUID id) {
         String query = String.format("DELETE FROM role WHERE id = '%s';", id.toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record deleted.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records deleted.");
     }
 
 }

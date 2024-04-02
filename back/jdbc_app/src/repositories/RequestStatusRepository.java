@@ -43,35 +43,23 @@ public class RequestStatusRepository implements IBaseRepository<RequestStatus> {
     public void create(RequestStatus status) {
         String query = String.format("INSERT INTO request_status VALUES ('%s', '%s');",
                 BaseUtil.generateUUID(), status.getStatus());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record created.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records created.");
     }
 
     @Override
     public void update(RequestStatus status) {
         String query = String.format("UPDATE request_status SET status = '%s' WHERE id = '%s';",
                 status.getStatus(), status.getId());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record updated.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Record updated.");
     }
 
     @Override
     public void delete(UUID id) {
         String query = String.format("DELETE FROM request_status WHERE id = '%s';", id.toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record deleted.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records deleted.");
     }
 
 }

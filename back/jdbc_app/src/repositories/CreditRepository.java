@@ -51,12 +51,8 @@ public class CreditRepository implements IBaseRepository<Credit> {
                 BaseUtil.generateUUID(), credit.getClientId().toString(),
                 credit.getCreditTypeId().toString(), credit.getPaidAmount().toString(),
                 credit.getStartDate().toString(), credit.getEndDate().toString(), credit.getStatus().toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record created.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records created.");
     }
 
     @Override
@@ -65,23 +61,15 @@ public class CreditRepository implements IBaseRepository<Credit> {
                 credit.getClientId().toString(), credit.getCreditTypeId().toString(), credit.getPaidAmount().toString(),
                 credit.getStartDate().toString(), credit.getEndDate().toString(),
                 credit.getStatus().toString(), credit.getId().toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record updated.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Record updated.");
     }
 
     @Override
     public void delete(UUID id) {
         String query = String.format("DELETE FROM credit WHERE id = '%s';", id.toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record deleted.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records deleted.");
     }
 
 }

@@ -48,12 +48,8 @@ public class PaymentRepository implements IBaseRepository<Payment> {
         String query = String.format("INSERT INTO payment VALUES ('%s', '%s', '%s', '%s', '%s');",
                 BaseUtil.generateUUID(), payment.getClientId().toString(), payment.getCreditId().toString(),
                 payment.getAmount().toString(), payment.getPaymentDate().toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record created.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records created.");
     }
 
     @Override
@@ -61,23 +57,15 @@ public class PaymentRepository implements IBaseRepository<Payment> {
         String query = String.format("UPDATE payment SET id_client = '%s', id_credit = '%s', amount = '%s', payment_date = '%s' WHERE id = '%s'",
                 payment.getClientId().toString(), payment.getCreditId().toString(),
                 payment.getAmount().toString(), payment.getPaymentDate().toString(), payment.getId().toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record updated.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Record updated.");
     }
 
     @Override
     public void delete(UUID id) {
         String query = String.format("DELETE FROM payment WHERE id = '%s';", id.toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record deleted.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records deleted.");
     }
 
 }

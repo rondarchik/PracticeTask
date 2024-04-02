@@ -48,12 +48,8 @@ public class CreditRequestRepository implements IBaseRepository<CreditRequest> {
         String query = String.format("INSERT INTO credit_request VALUES ('%s', '%s', '%s', '%s', '%s', '%s');",
                 BaseUtil.generateUUID(), request.getManagerId().toString(), request.getCreditId().toString(),
                 request.getDateOfRequest().toString(), request.getStatusId().toString(), request.getRejectionMessage());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record created.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records created.");
     }
 
     @Override
@@ -61,23 +57,15 @@ public class CreditRequestRepository implements IBaseRepository<CreditRequest> {
         String query = String.format("UPDATE credit_request SET id_manager = '%s', id_client = '%s', date_of_request = '%s', id_status = '%s', rejection_message = '%s' WHERE id = '%s'",
                 request.getManagerId().toString(), request.getCreditId().toString(), request.getDateOfRequest().toString(),
                 request.getStatusId().toString(), request.getRejectionMessage(), request.getId().toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record updated.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Record updated.");
     }
 
     @Override
     public void delete(UUID id) {
         String query = String.format("DELETE FROM credit_request WHERE id = '%s';", id.toString());
-        try (var statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-            logger.info("Record deleted.");
-        } catch (SQLException e) {
-            BaseUtil.printSQLException(e);
-        }
+
+        BaseRepository.executeQuery(connection, query, "Records deleted.");
     }
 
 }
