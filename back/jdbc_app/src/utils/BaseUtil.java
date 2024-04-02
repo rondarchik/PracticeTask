@@ -1,6 +1,10 @@
 package utils;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -35,7 +39,7 @@ public class BaseUtil {
     }
 
     public static int interaction() {
-        console().printf("Select an action: \n");
+        console().printf("\nSelect an action: \n");
         console().printf("\t1 - Create\n");
         console().printf("\t2 - Read\n");
         console().printf("\t3 - Update\n");
@@ -44,5 +48,42 @@ public class BaseUtil {
 
         console().printf("Enter the action value: ");
         return BaseUtil.in.nextInt();
+    }
+
+    public static <T> void display(List<T> list) {
+        for (T entity : list) {
+            console().printf(entity.toString());
+            console().printf("\n");
+        }
+    }
+
+    public static String getStringInput(String prompt) {
+        console().printf(prompt);
+        return BaseUtil.in.next();
+    }
+
+    public static UUID getIdInput(String prompt) {
+        console().printf(prompt);
+        return UUID.fromString(BaseUtil.in.next());
+    }
+
+    public static Date getDateInput(String prompt) throws ParseException {
+        console().printf(prompt);
+        return new SimpleDateFormat(BaseUtil.DATE_PATTERN).parse(BaseUtil.in.next());
+    }
+
+    public static Double getDoubleInput(String prompt) {
+        console().printf(prompt);
+        return BaseUtil.in.nextDouble();
+    }
+
+    public static int getIntInput(String prompt) {
+        console().printf(prompt);
+        return BaseUtil.in.nextInt();
+    }
+
+    public static Boolean getBooleanInput(String prompt) {
+        console().printf(prompt);
+        return BaseUtil.in.nextBoolean();
     }
 }

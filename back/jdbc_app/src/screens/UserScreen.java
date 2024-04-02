@@ -1,6 +1,5 @@
 package screens;
 
-import entities.Role;
 import entities.User;
 import repositories.RoleRepository;
 import repositories.UserRepository;
@@ -8,7 +7,6 @@ import utils.BaseUtil;
 
 import java.sql.Connection;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -30,43 +28,28 @@ public class UserScreen {
             User user = new User();
             switch (action) {
                 case 1:
-                    console().printf("Enter the name: ");
-                    user.setName(BaseUtil.in.next());
-                    console().printf("Enter the surname: ");
-                    user.setSurname(BaseUtil.in.next());
-                    console().printf("Enter the email: ");
-                    user.setEmail(BaseUtil.in.next());
-                    console().printf("Enter the birth date (yyyy-mm-dd): ");
-                    user.setBirthDate(new SimpleDateFormat(BaseUtil.DATE_PATTERN).parse(BaseUtil.in.next()));
-                    console().printf("Enter the password: ");
-                    user.setPasswordHash(BaseUtil.in.next());
+                    user.setName(BaseUtil.getStringInput("Enter the name: "));
+                    user.setSurname(BaseUtil.getStringInput("Enter the surname: "));
+                    user.setEmail(BaseUtil.getStringInput("Enter the email: "));
+                    user.setBirthDate(BaseUtil.getDateInput("Enter the birth date (yyyy-mm-dd): "));
+                    user.setPasswordHash(BaseUtil.getStringInput("Enter the password: "));
                     List<UUID> roles = addRoles(connection);
                     user.setRoles(roles);
                     repository.create(user);
                     break;
                 case 2:
-                    List<User> users = repository.readTable();
-                    for (User i : users) {
-                        console().printf(i.toString());
-                    }
+                    BaseUtil.display(repository.readTable());
                     break;
                 case 3:
-                    console().printf("Enter the user ID you want to change: ");
-                    user.setId(UUID.fromString(BaseUtil.in.next()));
-                    console().printf("Enter the new name: ");
-                    user.setName(BaseUtil.in.next());
-                    console().printf("Enter the new surname: ");
-                    user.setSurname(BaseUtil.in.next());
-                    console().printf("Enter the new email: ");
-                    user.setEmail(BaseUtil.in.next());
-                    console().printf("Enter the new birth date (yyyy-mm-dd): ");
-                    user.setBirthDate(new SimpleDateFormat(BaseUtil.DATE_PATTERN).parse(BaseUtil.in.next()));
+                    user.setId(BaseUtil.getIdInput("Enter the user ID you want to change: "));
+                    user.setName(BaseUtil.getStringInput("Enter the new name: "));
+                    user.setSurname(BaseUtil.getStringInput("Enter the new surname: "));
+                    user.setEmail(BaseUtil.getStringInput("Enter the new email: "));
+                    user.setBirthDate(BaseUtil.getDateInput("Enter the new birth date (yyyy-mm-dd): "));
                     repository.update(user);
                     break;
                 case 4:
-                    console().printf("Enter the user ID you want to delete: ");
-                    UUID userID = UUID.fromString(BaseUtil.in.next());
-                    repository.delete(userID);
+                    repository.delete(BaseUtil.getIdInput("Enter the user ID you want to delete: "));
                     break;
                 default:
                     break;
@@ -77,13 +60,11 @@ public class UserScreen {
     private static List<UUID> addRoles(Connection connection) {
         RoleRepository roleRepository = new RoleRepository(connection);
 
-        List<Role> allRoles = roleRepository.readTable();
         List<UUID> roleIdList = new ArrayList<>();
         while (true) {
             console().printf("Select roles for user: \n");
-            for (Role role : allRoles) {
-                console().printf(role.toString());
-            }
+            BaseUtil.display(roleRepository.readTable());
+
             console().printf("\nEnter the role id (or write 0 to exit): ");
             String value = BaseUtil.in.next();
             if (value.equals("0")) {
@@ -100,4 +81,5 @@ public class UserScreen {
 
         return roleIdList;
     }
+
 }

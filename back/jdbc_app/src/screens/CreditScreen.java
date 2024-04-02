@@ -5,18 +5,12 @@ import repositories.CreditRepository;
 import utils.BaseUtil;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.UUID;
-
-import static java.lang.System.console;
 
 public class CreditScreen {
     private CreditScreen() {}
 
-    public static void interactionWithCredit(Connection connection) throws SQLException, ParseException {
+    public static void interactionWithCredit(Connection connection) throws ParseException {
         CreditRepository repository = new CreditRepository(connection);
 
         while (true) {
@@ -28,46 +22,29 @@ public class CreditScreen {
             Credit credit = new Credit();
             switch (action) {
                 case 1:
-                    console().printf("Enter the client ID: ");
-                    credit.setClientId(UUID.fromString(BaseUtil.in.next()));
-                    console().printf("Enter the credit type ID: ");
-                    credit.setCreditTypeId(UUID.fromString(BaseUtil.in.next()));
-                    console().printf("Enter the paid amount: ");
-                    credit.setPaidAmount(BaseUtil.in.nextDouble());
-                    console().printf("Enter the start date (yyyy-mm-dd): ");
-                    credit.setStartDate(new SimpleDateFormat(BaseUtil.DATE_PATTERN).parse(BaseUtil.in.next()));
-                    console().printf("Enter the end date (yyyy-mm-dd): ");
-                    credit.setEndDate(new SimpleDateFormat(BaseUtil.DATE_PATTERN).parse(BaseUtil.in.next()));
-                    console().printf("Enter the status: ");
-                    credit.setStatus(BaseUtil.in.nextBoolean());
+                    credit.setClientId(BaseUtil.getIdInput("Enter the client ID: "));
+                    credit.setCreditTypeId(BaseUtil.getIdInput("Enter the credit type ID: "));
+                    credit.setPaidAmount(BaseUtil.getDoubleInput("Enter the paid amount: "));
+                    credit.setStartDate(BaseUtil.getDateInput("Enter the start date (yyyy-mm-dd): "));
+                    credit.setEndDate(BaseUtil.getDateInput("Enter the end date (yyyy-mm-dd): "));
+                    credit.setStatus(BaseUtil.getBooleanInput("Enter the status: "));
                     repository.create(credit);
                     break;
                 case 2:
-                    List<Credit> credits =  repository.readTable();
-                    for (Credit i : credits) {
-                        console().printf(i.toString());
-                    }
+                    BaseUtil.display(repository.readTable());
                     break;
                 case 3:
-                    console().printf("Enter the credit type ID you want to change: ");
-                    credit.setId(UUID.fromString(BaseUtil.in.next()));
-                    console().printf("Enter the new client ID: ");
-                    credit.setClientId(UUID.fromString(BaseUtil.in.next()));
-                    console().printf("Enter the new credit type ID: ");
-                    credit.setCreditTypeId(UUID.fromString(BaseUtil.in.next()));
-                    console().printf("Enter the new paid amount: ");
-                    credit.setPaidAmount(BaseUtil.in.nextDouble());
-                    console().printf("Enter the new start date (yyyy-mm-dd): ");
-                    credit.setStartDate(new SimpleDateFormat(BaseUtil.DATE_PATTERN).parse(BaseUtil.in.next()));
-                    console().printf("Enter the new end date (yyyy-mm-dd): ");
-                    credit.setEndDate(new SimpleDateFormat(BaseUtil.DATE_PATTERN).parse(BaseUtil.in.next()));
-                    console().printf("Enter the new status: ");
-                    credit.setStatus(BaseUtil.in.nextBoolean());
+                    credit.setId(BaseUtil.getIdInput("Enter the credit type ID you want to change: "));
+                    credit.setClientId(BaseUtil.getIdInput("Enter the new client ID: "));
+                    credit.setCreditTypeId(BaseUtil.getIdInput("Enter the new credit type ID: "));
+                    credit.setPaidAmount(BaseUtil.getDoubleInput("Enter the new paid amount: "));
+                    credit.setStartDate(BaseUtil.getDateInput("Enter the new start date (yyyy-mm-dd): "));
+                    credit.setEndDate(BaseUtil.getDateInput("Enter the new end date (yyyy-mm-dd): "));
+                    credit.setStatus(BaseUtil.getBooleanInput("Enter the new status: "));
                     repository.update(credit);
                     break;
                 case 4:
-                    console().printf("Enter the credit ID you want to delete: ");
-                    repository.delete(UUID.fromString(BaseUtil.in.next()));
+                    repository.delete(BaseUtil.getIdInput("Enter the credit ID you want to delete: "));
                     break;
                 default:
                     break;
