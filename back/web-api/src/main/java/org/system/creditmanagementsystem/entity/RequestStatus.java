@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,5 +26,5 @@ public class RequestStatus {
     private String status;
 
     @OneToMany(mappedBy = "requestStatus", cascade = CascadeType.ALL)
-    private Set<CreditRequest> creditRequests;
+    private Set<CreditRequest> creditRequests = new LinkedHashSet<>();
 }

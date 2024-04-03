@@ -17,7 +17,7 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
-    public List<Payment> getPayments() {
+    public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
 
@@ -25,18 +25,22 @@ public class PaymentService {
         return paymentRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
     }
 
-    public void addPayment(Payment payment) {
-        paymentRepository.save(payment);
+    public List<Payment> getCreditPayments(UUID creditId) {
+        return paymentRepository.findByCreditId(creditId);
     }
 
-    public void updatePayment(Payment payment) {
+    public Payment addPayment(Payment payment) {
+        return paymentRepository.save(payment);
+    }
+
+    public Payment updatePayment(Payment payment) {
         var existingPayment = paymentRepository.findById(payment.getId());
 
         if (existingPayment.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
         }
 
-        paymentRepository.save(payment);
+        return paymentRepository.save(payment);
     }
 
     public void removePaymentById(UUID id) {

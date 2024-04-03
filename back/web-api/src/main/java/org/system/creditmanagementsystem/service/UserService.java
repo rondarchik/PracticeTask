@@ -17,7 +17,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -25,18 +25,18 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
     }
 
-    public void addUser(User user) {
-        userRepository.save(user);
+    public User addUser(User user) {
+        return userRepository.save(user);
     }
 
-    public void updateUser(User user) {
+    public User updateUser(User user) {
         var existingUser = userRepository.findById(user.getId());
 
         if (existingUser.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
         }
 
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public void removeUserById(UUID id) {

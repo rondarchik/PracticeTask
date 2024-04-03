@@ -17,7 +17,7 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    public List<Role> getRoles() {
+    public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
 
@@ -25,18 +25,19 @@ public class RoleService {
         return roleRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
     }
 
-    public void addRole(Role role) {
-        roleRepository.save(role);
+    public Role addRole(Role role) {
+
+        return roleRepository.save(role);
     }
 
-    public void updateRole(Role role) {
+    public Role updateRole(Role role) {
         var existingRole = roleRepository.findById(role.getId());
 
         if (existingRole.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
         }
 
-        roleRepository.save(role);
+        return roleRepository.save(role);
     }
 
     public void removeRoleById(UUID id) {

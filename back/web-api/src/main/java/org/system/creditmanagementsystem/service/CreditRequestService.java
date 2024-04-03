@@ -17,7 +17,7 @@ public class CreditRequestService {
         this.creditRequestRepository = creditRequestRepository;
     }
 
-    public List<CreditRequest> getCreditRequests() {
+    public List<CreditRequest> getAllCreditRequests() {
         return creditRequestRepository.findAll();
     }
 
@@ -25,18 +25,22 @@ public class CreditRequestService {
         return creditRequestRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
     }
 
-    public void addCreditRequest(CreditRequest creditRequest) {
-        creditRequestRepository.save(creditRequest);
+    public List<CreditRequest> getStatusRequests(UUID statusId) {
+        return creditRequestRepository.findByRequestStatusId(statusId);
     }
 
-    public void updateCreditRequest(CreditRequest creditRequest) {
+    public CreditRequest addCreditRequest(CreditRequest creditRequest) {
+        return creditRequestRepository.save(creditRequest);
+    }
+
+    public CreditRequest updateCreditRequest(CreditRequest creditRequest) {
         var existingCreditRequest = creditRequestRepository.findById(creditRequest.getId());
 
         if (existingCreditRequest.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
         }
 
-        creditRequestRepository.save(creditRequest);
+        return creditRequestRepository.save(creditRequest);
     }
 
     public void removeCreditRequestById(UUID id) {

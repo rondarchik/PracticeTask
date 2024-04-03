@@ -1,7 +1,6 @@
 package org.system.creditmanagementsystem.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.system.creditmanagementsystem.entity.RequestStatus;
 import org.system.creditmanagementsystem.service.RequestStatusService;
@@ -13,42 +12,33 @@ import java.util.UUID;
 public class RequestStatusController {
     private final RequestStatusService requestStatusService;
 
+    @Autowired
     public RequestStatusController(RequestStatusService requestStatusService) {
         this.requestStatusService = requestStatusService;
     }
 
     @GetMapping("/request_statuses")
-    public ResponseEntity<List<RequestStatus>> getRequestStatuses() {
-        var requestStatuses = requestStatusService.getRequestStatuses();
-
-        return new ResponseEntity<>(requestStatuses, HttpStatus.OK);
+    public List<RequestStatus> getAllRequestStatuses() {
+        return requestStatusService.getAllRequestStatuses();
     }
 
     @GetMapping("/request_statuses/{id}")
-    public ResponseEntity<RequestStatus> getRequestStatusById(@PathVariable UUID id) {
-        var requestStatus = requestStatusService.getRequestStatusById(id);
-
-        return new ResponseEntity<>(requestStatus, HttpStatus.OK);
+    public RequestStatus getRequestStatusById(@PathVariable UUID id) {
+        return requestStatusService.getRequestStatusById(id);
     }
 
-    @PostMapping("/request_statuses")
-    public ResponseEntity<Object> addRequestStatus(RequestStatus requestStatus) {
-        requestStatusService.addRequestStatus(requestStatus);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @PostMapping("/request_statuses/add")
+    public RequestStatus addRequestStatus(@RequestBody RequestStatus requestStatus) {
+        return requestStatusService.addRequestStatus(requestStatus);
     }
 
-    @PutMapping("/request_statuses")
-    public ResponseEntity<Object> updateRequestStatus(RequestStatus requestStatus) {
-        requestStatusService.updateRequestStatus(requestStatus);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("/request_statuses/update")
+    public RequestStatus updateRequestStatus(@RequestBody RequestStatus requestStatus) {
+        return requestStatusService.updateRequestStatus(requestStatus);
     }
 
-    @DeleteMapping("/request_statuses/{id}")
-    public ResponseEntity<Object> removeRequestStatusById(@PathVariable UUID id) {
+    @DeleteMapping("/request_statuses/delete/{id}")
+    public void removeRequestStatusById(@PathVariable UUID id) {
         requestStatusService.removeRequestStatusById(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

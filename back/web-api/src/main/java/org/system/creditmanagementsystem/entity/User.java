@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -39,14 +40,14 @@ public class User {
     private String passwordHash;
 
     @ManyToMany(mappedBy = "users")
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Credit> credits;
+    private Set<Credit> credits = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<CreditRequest> creditRequests;
+    private Set<CreditRequest> creditRequests = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Payment> payments;
+    private Set<Payment> payments = new LinkedHashSet<>();
 }

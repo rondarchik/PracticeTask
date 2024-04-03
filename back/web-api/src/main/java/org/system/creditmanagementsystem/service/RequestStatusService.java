@@ -17,7 +17,7 @@ public class RequestStatusService {
         this.requestStatusRepository = requestStatusRepository;
     }
 
-    public List<RequestStatus> getRequestStatuses() {
+    public List<RequestStatus> getAllRequestStatuses() {
         return requestStatusRepository.findAll();
     }
 
@@ -25,18 +25,18 @@ public class RequestStatusService {
         return requestStatusRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
     }
 
-    public void addRequestStatus(RequestStatus requestStatus) {
-        requestStatusRepository.save(requestStatus);
+    public RequestStatus addRequestStatus(RequestStatus requestStatus) {
+        return requestStatusRepository.save(requestStatus);
     }
 
-    public void updateRequestStatus(RequestStatus requestStatus) {
+    public RequestStatus updateRequestStatus(RequestStatus requestStatus) {
         var existingRequestStatus = requestStatusRepository.findById(requestStatus.getId());
 
         if (existingRequestStatus.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
         }
 
-        requestStatusRepository.save(requestStatus);
+        return requestStatusRepository.save(requestStatus);
     }
 
     public void removeRequestStatusById(UUID id) {

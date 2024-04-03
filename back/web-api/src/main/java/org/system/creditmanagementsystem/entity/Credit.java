@@ -5,11 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -48,5 +47,5 @@ public class Credit {
     private CreditType creditType;
 
     @OneToMany(mappedBy = "credit", cascade = CascadeType.ALL)
-    private List<Payment> payments;
+    private Set<Payment> payments = new LinkedHashSet<>();
 }

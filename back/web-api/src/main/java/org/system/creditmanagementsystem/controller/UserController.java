@@ -1,7 +1,6 @@
 package org.system.creditmanagementsystem.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.system.creditmanagementsystem.entity.User;
 import org.system.creditmanagementsystem.service.UserService;
@@ -13,42 +12,33 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getUsers() {
-        var users = userService.getUsers();
-
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
-        var user = userService.getUserById(id);
-
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public User getUserById(@PathVariable UUID id) {
+        return userService.getUserById(id);
     }
 
-    @PostMapping("/users")
-    public ResponseEntity<Object> addUser(User user) {
-        userService.addUser(user);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @PostMapping("/users/add")
+    public User addUser(@RequestBody User user) {
+        return userService.addUser(user);
     }
 
-    @PutMapping("/users")
-    public ResponseEntity<Object> updateUser(User user) {
-        userService.updateUser(user);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("/users/update")
+    public User updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
     }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<Object> removeUserById(@PathVariable UUID id) {
+    @DeleteMapping("/users/delete/{id}")
+    public void removeUserById(@PathVariable UUID id) {
         userService.removeUserById(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

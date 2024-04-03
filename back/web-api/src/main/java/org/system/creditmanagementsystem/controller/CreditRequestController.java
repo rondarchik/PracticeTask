@@ -1,9 +1,6 @@
 package org.system.creditmanagementsystem.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.system.creditmanagementsystem.entity.CreditRequest;
 import org.system.creditmanagementsystem.service.CreditRequestService;
@@ -15,42 +12,38 @@ import java.util.UUID;
 public class CreditRequestController {
     private final CreditRequestService creditRequestService;
 
+    @Autowired
     public CreditRequestController(CreditRequestService creditRequestService) {
         this.creditRequestService = creditRequestService;
     }
 
-    @GetMapping("/credit_requests")
-    public ResponseEntity<List<CreditRequest>> getCreditRequests() {
-        var creditRequests = creditRequestService.getCreditRequests();
+    @GetMapping("/request_statuses/{statusId}")
+    public List<CreditRequest> getStatusRequests(@PathVariable UUID statusId) {
+        return creditRequestService.getStatusRequests(statusId);
+    }
 
-        return new ResponseEntity<>(creditRequests, HttpStatus.OK);
+    @GetMapping("/credit_requests")
+    public List<CreditRequest> getAllCreditRequests() {
+        return creditRequestService.getAllCreditRequests();
     }
 
     @GetMapping("/credit_requests/{id}")
-    public ResponseEntity<CreditRequest> getCreditRequestById(@PathVariable UUID id) {
-        var creditRequest = creditRequestService.getCreditRequestById(id);
-
-        return new ResponseEntity<>(creditRequest, HttpStatus.OK);
+    public CreditRequest getCreditRequestById(@PathVariable UUID id) {
+        return creditRequestService.getCreditRequestById(id);
     }
 
-    @PostMapping("/credit_requests")
-    public ResponseEntity<Object> addCreditRequest(CreditRequest creditRequest) {
-        creditRequestService.addCreditRequest(creditRequest);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @PostMapping("/credit_requests/add")
+    public CreditRequest addCreditRequest(@RequestBody CreditRequest creditRequest) {
+        return creditRequestService.addCreditRequest(creditRequest);
     }
 
-    @PutMapping("/credit_requests")
-    public ResponseEntity<Object> updateCreditRequest(CreditRequest creditRequest) {
-        creditRequestService.updateCreditRequest(creditRequest);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("/credit_requests/update")
+    public CreditRequest updateCreditRequest(@RequestBody CreditRequest creditRequest) {
+        return creditRequestService.updateCreditRequest(creditRequest);
     }
 
-    @DeleteMapping("/credit_requests/{id}")
-    public ResponseEntity<Object> removeCreditRequestById(@PathVariable UUID id) {
+    @DeleteMapping("/credit_requests/delete/{id}")
+    public void removeCreditRequestById(@PathVariable UUID id) {
         creditRequestService.removeCreditRequestById(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

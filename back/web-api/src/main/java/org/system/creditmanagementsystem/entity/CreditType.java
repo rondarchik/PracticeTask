@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -34,5 +35,5 @@ public class CreditType {
     private int termInMonths;
 
     @OneToMany(mappedBy = "creditType", cascade = CascadeType.ALL)
-    private List<Credit> credits;
+    private Set<Credit> credits = new LinkedHashSet<>();
 }

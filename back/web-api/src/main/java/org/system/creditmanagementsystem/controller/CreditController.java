@@ -1,9 +1,6 @@
 package org.system.creditmanagementsystem.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.system.creditmanagementsystem.entity.Credit;
 import org.system.creditmanagementsystem.service.CreditService;
@@ -15,42 +12,38 @@ import java.util.UUID;
 public class CreditController {
     private final CreditService creditService;
 
+    @Autowired
     public CreditController(CreditService creditService) {
         this.creditService = creditService;
     }
 
-    @GetMapping("/credits")
-    public ResponseEntity<List<Credit>> getCredits() {
-        var credits = creditService.getCredits();
+    @GetMapping("/credit_types/{typeId}")
+    public List<Credit> getStatusRequests(@PathVariable UUID typeId) {
+        return creditService.getTypeCredits(typeId);
+    }
 
-        return new ResponseEntity<>(credits, HttpStatus.OK);
+    @GetMapping("/credits")
+    public List<Credit> getAllCredits() {
+        return creditService.getAllCredits();
     }
 
     @GetMapping("/credits/{id}")
-    public ResponseEntity<Credit> getCreditById(@PathVariable UUID id) {
-        var credit = creditService.getCreditById(id);
-
-        return new ResponseEntity<>(credit, HttpStatus.OK);
+    public Credit getCreditById(@PathVariable UUID id) {
+        return creditService.getCreditById(id);
     }
 
-    @PostMapping("/credits")
-    public ResponseEntity<Object> addCredit(Credit credit) {
-        creditService.addCredit(credit);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @PostMapping("/credits/add")
+    public Credit addCredit(Credit credit) {
+        return creditService.addCredit(credit);
     }
 
-    @PutMapping("/credits")
-    public ResponseEntity<Object> updateCredit(Credit credit) {
-        creditService.updateCredit(credit);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("/credits/update")
+    public Credit updateCredit(Credit credit) {
+        return creditService.updateCredit(credit);
     }
 
-    @DeleteMapping("/credits/{id}")
-    public ResponseEntity<Object> removeCreditById(@PathVariable UUID id) {
+    @DeleteMapping("/credits/delete/{id}")
+    public void removeCreditById(@PathVariable UUID id) {
         creditService.removeCreditById(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
