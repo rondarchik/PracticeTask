@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS "credit_type" (
     "id" UUID PRIMARY KEY NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "credit_amount" DECIMAL(15, 2) NOT NULL,
-    "interest_rate" DECIMAL(2, 2) NOT NULL,
+    "interest_rate" DECIMAL(4, 2) NOT NULL,
     "term_in_months" INTEGER NOT NULL
 );
 
