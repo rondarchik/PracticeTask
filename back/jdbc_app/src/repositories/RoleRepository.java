@@ -26,7 +26,7 @@ public class RoleRepository implements IBaseRepository<Role> {
 
         try (var statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
-            if (!rs.next()) {
+            if (!rs.isBeforeFirst()) {
                 logger.info("0 rows selected");
             }
             while (rs.next()) {
