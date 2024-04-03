@@ -1,4 +1,4 @@
-package org.system.creditmanagementsystem.model;
+package org.system.creditmanagementsystem.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,22 +14,24 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name="payment")
+@Table(name = "payment")
 public class Payment {
     @Id
     @GeneratedValue
-    @Column(name="id")
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name="id_client")
-    private UUID clientID;
-
-    @Column(name="id_credit")
-    private UUID creditID;
-
-    @Column(name="amount")
+    @Column(name = "amount")
     private Double amount;
 
-    @Column(name="payment_date")
+    @Column(name = "payment_date")
     private Date paymentDate;
+
+    @ManyToOne
+    @JoinColumn(name = "id_client")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "id_credit")
+    private Credit credit;
 }
