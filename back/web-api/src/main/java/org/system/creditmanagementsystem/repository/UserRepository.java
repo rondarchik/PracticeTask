@@ -2,7 +2,7 @@ package org.system.creditmanagementsystem.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.system.creditmanagementsystem.model.User;
+import org.system.creditmanagementsystem.entity.User;
 
 import java.util.UUID;
 
