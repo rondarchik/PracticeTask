@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/api")
 public class CreditController {
     private final CreditService creditService;
 

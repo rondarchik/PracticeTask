@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/api")
 public class PaymentController {
     private final PaymentService paymentService;
 
