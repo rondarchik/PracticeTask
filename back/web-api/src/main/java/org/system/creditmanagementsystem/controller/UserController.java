@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -18,12 +18,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable UUID id) {
         return userService.getUserById(id);
     }
@@ -33,12 +33,12 @@ public class UserController {
 //        return userService.addUser(user);
 //    }
 
-    @PutMapping("/users/update/{id}")
+    @PutMapping("/update/{id}")
     public UserDto updateUser(@RequestBody UserDto user, @PathVariable UUID id) {
         return userService.updateUser(user, id);
     }
 
-    @DeleteMapping("/users/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void removeUserById(@PathVariable UUID id) {
         userService.removeUserById(id);
     }

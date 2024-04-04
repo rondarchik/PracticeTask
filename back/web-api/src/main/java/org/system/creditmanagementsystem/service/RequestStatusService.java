@@ -46,9 +46,9 @@ public class RequestStatusService {
         return requestStatusMapper.toDto(status);
     }
 
-    public RequestStatusDto updateRequestStatus(RequestStatusDto requestStatusDto) {
+    public RequestStatusDto updateRequestStatus(RequestStatusDto requestStatusDto, UUID id) {
         var status = requestStatusMapper.fromDto(requestStatusDto);
-        var existingRequestStatus = requestStatusRepository.findById(requestStatusDto.getId());
+        var existingRequestStatus = requestStatusRepository.findById(id);
 
         if (existingRequestStatus.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);

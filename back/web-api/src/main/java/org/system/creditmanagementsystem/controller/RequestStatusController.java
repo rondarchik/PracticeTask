@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/request_statuses")
 public class RequestStatusController {
     private final RequestStatusService requestStatusService;
 
@@ -18,27 +18,27 @@ public class RequestStatusController {
         this.requestStatusService = requestStatusService;
     }
 
-    @GetMapping("/request_statuses")
+    @GetMapping
     public List<RequestStatusDto> getAllRequestStatuses() {
         return requestStatusService.getAllRequestStatuses();
     }
 
-    @GetMapping("/request_statuses/{id}")
+    @GetMapping("/{id}")
     public RequestStatusDto getRequestStatusById(@PathVariable UUID id) {
         return requestStatusService.getRequestStatusById(id);
     }
 
-    @PostMapping("/request_statuses/add")
+    @PostMapping("/add")
     public RequestStatusDto addRequestStatus(@RequestBody RequestStatusDto requestStatus) {
         return requestStatusService.addRequestStatus(requestStatus);
     }
 
-    @PutMapping("/request_statuses/update")
-    public RequestStatusDto updateRequestStatus(@RequestBody RequestStatusDto requestStatus) {
-        return requestStatusService.updateRequestStatus(requestStatus);
+    @PutMapping("/update/{id}")
+    public RequestStatusDto updateRequestStatus(@RequestBody RequestStatusDto requestStatus, @PathVariable UUID id) {
+        return requestStatusService.updateRequestStatus(requestStatus, id);
     }
 
-    @DeleteMapping("/request_statuses/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void removeRequestStatusById(@PathVariable UUID id) {
         requestStatusService.removeRequestStatusById(id);
     }

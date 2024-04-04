@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/credit_types")
 public class CreditController {
     private final CreditService creditService;
 
@@ -18,32 +18,32 @@ public class CreditController {
         this.creditService = creditService;
     }
 
-    @GetMapping("/credit_types/{typeId}")
+    @GetMapping("/{typeId}")
     public List<CreditDto> getStatusRequests(@PathVariable UUID typeId) {
         return creditService.getTypeCredits(typeId);
     }
 
-    @GetMapping("/credits")
+    @GetMapping
     public List<CreditDto> getAllCredits() {
         return creditService.getAllCredits();
     }
 
-    @GetMapping("/credits/{id}")
+    @GetMapping("/{id}")
     public CreditDto getCreditById(@PathVariable UUID id) {
         return creditService.getCreditById(id);
     }
 
-    @PostMapping("/credits/add")
+    @PostMapping("/add")
     public CreditDto addCredit(CreditDto credit) {
         return creditService.addCredit(credit);
     }
 
-    @PutMapping("/credits/update/{id}")
+    @PutMapping("/update/{id}")
     public CreditDto updateCredit(CreditDto credit, @PathVariable UUID id) {
         return creditService.updateCredit(credit, id);
     }
 
-    @DeleteMapping("/credits/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void removeCreditById(@PathVariable UUID id) {
         creditService.removeCreditById(id);
     }

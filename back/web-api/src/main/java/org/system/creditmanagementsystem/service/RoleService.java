@@ -46,9 +46,9 @@ public class RoleService {
         return roleMapper.toDto(role);
     }
 
-    public RoleDto updateRole(RoleDto roleDto) {
+    public RoleDto updateRole(RoleDto roleDto, UUID id) {
         var role = roleMapper.fromDto(roleDto);
-        var existingRole = roleRepository.findById(role.getId());
+        var existingRole = roleRepository.findById(id);
 
         if (existingRole.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);

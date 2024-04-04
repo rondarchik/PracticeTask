@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/request_statuses")
 public class CreditRequestController {
     private final CreditRequestService creditRequestService;
 
@@ -18,32 +18,32 @@ public class CreditRequestController {
         this.creditRequestService = creditRequestService;
     }
 
-    @GetMapping("/request_statuses/{statusId}")
+    @GetMapping("/{statusId}")
     public List<CreditRequestDto> getStatusRequests(@PathVariable UUID statusId) {
         return creditRequestService.getStatusRequests(statusId);
     }
 
-    @GetMapping("/credit_requests")
+    @GetMapping
     public List<CreditRequestDto> getAllCreditRequests() {
         return creditRequestService.getAllCreditRequests();
     }
 
-    @GetMapping("/credit_requests/{id}")
+    @GetMapping("/{id}")
     public CreditRequestDto getCreditRequestById(@PathVariable UUID id) {
         return creditRequestService.getCreditRequestById(id);
     }
 
-    @PostMapping("/credit_requests/add")
+    @PostMapping("/add")
     public CreditRequestDto addCreditRequest(@RequestBody CreditRequestDto creditRequest) {
         return creditRequestService.addCreditRequest(creditRequest);
     }
 
-    @PutMapping("/credit_requests/update/{id}")
+    @PutMapping("/update/{id}")
     public CreditRequestDto updateCreditRequest(@RequestBody CreditRequestDto creditRequest, @PathVariable UUID id) {
         return creditRequestService.updateCreditRequest(creditRequest, id);
     }
 
-    @DeleteMapping("/credit_requests/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void removeCreditRequestById(@PathVariable UUID id) {
         creditRequestService.removeCreditRequestById(id);
     }

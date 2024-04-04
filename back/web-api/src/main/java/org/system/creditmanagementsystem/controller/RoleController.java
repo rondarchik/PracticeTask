@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/roles")
 public class RoleController {
     private final RoleService roleService;
 
@@ -18,27 +18,27 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/roles")
+    @GetMapping
     public List<RoleDto> getAllRoles() {
         return roleService.getAllRoles();
     }
 
-    @GetMapping("/roles/{id}")
+    @GetMapping("/{id}")
     public RoleDto getRoleById(@PathVariable UUID id) {
         return roleService.getRoleById(id);
     }
 
-    @PostMapping("/roles/add")
+    @PostMapping("/add")
     public RoleDto addRole(@RequestBody RoleDto role) {
         return roleService.addRole(role);
     }
 
-    @PutMapping("/roles/update")
-    public RoleDto updateRole(@RequestBody RoleDto role) {
-        return roleService.updateRole(role);
+    @PutMapping("/update/{id}")
+    public RoleDto updateRole(@RequestBody RoleDto role, @PathVariable UUID id) {
+        return roleService.updateRole(role, id);
     }
 
-    @DeleteMapping("/roles/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void removeRoleById(@PathVariable UUID id) {
         roleService.removeRoleById(id);
     }
