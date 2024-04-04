@@ -35,7 +35,7 @@ public class RoleService {
     }
 
     public RoleDto addRole(RoleDto roleDto) {
-        var optionalRole = roleRepository.findByName(roleDto.getRoleName());
+        var optionalRole = roleRepository.findByRoleName(roleDto.getRoleName());
 
         if (optionalRole.isPresent()) {
             throw new AlreadyExistsException(CONFLICT);

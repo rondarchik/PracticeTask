@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/credit_types")
+@RequestMapping("/api/credit")
 public class CreditController {
     private final CreditService creditService;
 
@@ -18,7 +18,7 @@ public class CreditController {
         this.creditService = creditService;
     }
 
-    @GetMapping("/{typeId}")
+    @GetMapping("/type/{typeId}")
     public List<CreditDto> getStatusRequests(@PathVariable UUID typeId) {
         return creditService.getTypeCredits(typeId);
     }

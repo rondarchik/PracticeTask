@@ -52,7 +52,7 @@ public class UserService {
         }
 
         var user = userMapper.fromDto(userDto);
-        var role = roleRepository.findByName(roleName).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        var role = roleRepository.findByRoleName(roleName).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
         user.setRoles((Set<Role>) role);
         userRepository.save(user);
         return userMapper.toDto(user);

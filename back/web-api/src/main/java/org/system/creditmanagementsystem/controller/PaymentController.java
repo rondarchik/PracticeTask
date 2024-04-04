@@ -18,7 +18,7 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @GetMapping("/{creditId}")
+    @GetMapping("/credit/{creditId}")
     public List<PaymentDto> getCreditPayments(@PathVariable UUID creditId) {
         return paymentService.getCreditPayments(creditId);
     }
