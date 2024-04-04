@@ -2,7 +2,7 @@ package org.system.creditmanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.system.creditmanagementsystem.entity.Credit;
+import org.system.creditmanagementsystem.dto.CreditDto;
 import org.system.creditmanagementsystem.service.CreditService;
 
 import java.util.List;
@@ -19,28 +19,28 @@ public class CreditController {
     }
 
     @GetMapping("/credit_types/{typeId}")
-    public List<Credit> getStatusRequests(@PathVariable UUID typeId) {
+    public List<CreditDto> getStatusRequests(@PathVariable UUID typeId) {
         return creditService.getTypeCredits(typeId);
     }
 
     @GetMapping("/credits")
-    public List<Credit> getAllCredits() {
+    public List<CreditDto> getAllCredits() {
         return creditService.getAllCredits();
     }
 
     @GetMapping("/credits/{id}")
-    public Credit getCreditById(@PathVariable UUID id) {
+    public CreditDto getCreditById(@PathVariable UUID id) {
         return creditService.getCreditById(id);
     }
 
     @PostMapping("/credits/add")
-    public Credit addCredit(Credit credit) {
+    public CreditDto addCredit(CreditDto credit) {
         return creditService.addCredit(credit);
     }
 
-    @PutMapping("/credits/update")
-    public Credit updateCredit(Credit credit) {
-        return creditService.updateCredit(credit);
+    @PutMapping("/credits/update/{id}")
+    public CreditDto updateCredit(CreditDto credit, @PathVariable UUID id) {
+        return creditService.updateCredit(credit, id);
     }
 
     @DeleteMapping("/credits/delete/{id}")

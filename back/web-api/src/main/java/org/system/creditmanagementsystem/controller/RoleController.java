@@ -2,7 +2,7 @@ package org.system.creditmanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.system.creditmanagementsystem.entity.Role;
+import org.system.creditmanagementsystem.dto.RoleDto;
 import org.system.creditmanagementsystem.service.RoleService;
 
 import java.util.List;
@@ -19,22 +19,22 @@ public class RoleController {
     }
 
     @GetMapping("/roles")
-    public List<Role> getAllRoles() {
+    public List<RoleDto> getAllRoles() {
         return roleService.getAllRoles();
     }
 
     @GetMapping("/roles/{id}")
-    public Role getRoleById(@PathVariable UUID id) {
+    public RoleDto getRoleById(@PathVariable UUID id) {
         return roleService.getRoleById(id);
     }
 
     @PostMapping("/roles/add")
-    public Role addRole(@RequestBody Role role) {
+    public RoleDto addRole(@RequestBody RoleDto role) {
         return roleService.addRole(role);
     }
 
     @PutMapping("/roles/update")
-    public Role updateRole(@RequestBody Role role) {
+    public RoleDto updateRole(@RequestBody RoleDto role) {
         return roleService.updateRole(role);
     }
 

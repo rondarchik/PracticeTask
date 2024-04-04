@@ -2,7 +2,7 @@ package org.system.creditmanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.system.creditmanagementsystem.entity.CreditRequest;
+import org.system.creditmanagementsystem.dto.CreditRequestDto;
 import org.system.creditmanagementsystem.service.CreditRequestService;
 
 import java.util.List;
@@ -19,28 +19,28 @@ public class CreditRequestController {
     }
 
     @GetMapping("/request_statuses/{statusId}")
-    public List<CreditRequest> getStatusRequests(@PathVariable UUID statusId) {
+    public List<CreditRequestDto> getStatusRequests(@PathVariable UUID statusId) {
         return creditRequestService.getStatusRequests(statusId);
     }
 
     @GetMapping("/credit_requests")
-    public List<CreditRequest> getAllCreditRequests() {
+    public List<CreditRequestDto> getAllCreditRequests() {
         return creditRequestService.getAllCreditRequests();
     }
 
     @GetMapping("/credit_requests/{id}")
-    public CreditRequest getCreditRequestById(@PathVariable UUID id) {
+    public CreditRequestDto getCreditRequestById(@PathVariable UUID id) {
         return creditRequestService.getCreditRequestById(id);
     }
 
     @PostMapping("/credit_requests/add")
-    public CreditRequest addCreditRequest(@RequestBody CreditRequest creditRequest) {
+    public CreditRequestDto addCreditRequest(@RequestBody CreditRequestDto creditRequest) {
         return creditRequestService.addCreditRequest(creditRequest);
     }
 
-    @PutMapping("/credit_requests/update")
-    public CreditRequest updateCreditRequest(@RequestBody CreditRequest creditRequest) {
-        return creditRequestService.updateCreditRequest(creditRequest);
+    @PutMapping("/credit_requests/update/{id}")
+    public CreditRequestDto updateCreditRequest(@RequestBody CreditRequestDto creditRequest, @PathVariable UUID id) {
+        return creditRequestService.updateCreditRequest(creditRequest, id);
     }
 
     @DeleteMapping("/credit_requests/delete/{id}")
