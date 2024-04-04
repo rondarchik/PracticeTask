@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/credit")
+@RequestMapping("/api/credits")
 public class CreditController {
     private final CreditService creditService;
 
