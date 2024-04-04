@@ -22,9 +22,9 @@
 ### Задание 3
 * Создать приложение с использованием на SpringBoot + Hibernate
 
-#### [Результаты работы](https://github.com/rondarchik/PracticeTask/tree/main/back/credit-system/credit-system "Java Spring приложение")
+#### [Результаты работы](https://github.com/rondarchik/PracticeTask/tree/main/back/web-api/src/main/java/org/system/creditmanagementsystem "Java Spring приложение")
 * Ориентировачное время выполнения: 12 часов.
-* Фактическое время выполнения: в процессе.
+* Фактическое время выполнения: 12 часов.
 
 ### Задание 4
 * Angular - Frontend
