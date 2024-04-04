@@ -17,11 +17,10 @@ import java.util.UUID;
 @Table(name = "role")
 public class Role {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "role_name")
+    @Column(name = "role_name", nullable = false)
     private String roleName;
 
     @ManyToMany

@@ -18,20 +18,19 @@ import java.util.UUID;
 @Table(name = "credit_type")
 public class CreditType {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "credit_amount")
+    @Column(name = "credit_amount", nullable = false)
     private Double creditAmount;
 
-    @Column(name = "interest_rate")
+    @Column(name = "interest_rate", nullable = false)
     private Double interestRate;
 
-    @Column(name = "term_in_months")
+    @Column(name = "term_in_months", nullable = false)
     private int termInMonths;
 
     @OneToMany(mappedBy = "creditType", cascade = CascadeType.ALL)

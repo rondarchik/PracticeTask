@@ -17,11 +17,10 @@ import java.util.UUID;
 @Table(name = "credit_request")
 public class CreditRequest {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "date_of_request")
+    @Column(name = "date_of_request", nullable = false)
     private Date dateOfRequest;
 
     @Column(name = "rejection_message")

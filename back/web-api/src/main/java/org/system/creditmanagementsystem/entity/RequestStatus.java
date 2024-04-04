@@ -18,11 +18,10 @@ import java.util.UUID;
 @Table(name = "request_status")
 public class RequestStatus {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private String status;
 
     @OneToMany(mappedBy = "requestStatus", cascade = CascadeType.ALL)

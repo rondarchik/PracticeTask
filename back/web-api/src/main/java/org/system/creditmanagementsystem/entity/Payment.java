@@ -17,14 +17,13 @@ import java.util.UUID;
 @Table(name = "payment")
 public class Payment {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @Column(name = "payment_date")
+    @Column(name = "payment_date", nullable = false)
     private Date paymentDate;
 
     @ManyToOne
