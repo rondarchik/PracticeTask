@@ -44,7 +44,7 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
-    public UserDto addUser(UserDto userDto, String roleName) {
+    public UserDto addUser(UserDto userDto, Set<Role> roles) {
         var optionalUser = userRepository.findByEmail(userDto.getEmail());
 
         if (optionalUser.isPresent()) {
@@ -52,8 +52,7 @@ public class UserService {
         }
 
         var user = userMapper.fromDto(userDto);
-        var role = roleRepository.findByRoleName(roleName).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
-        user.setRoles((Set<Role>) role);
+        user.setRoles(roles);
         userRepository.save(user);
         return userMapper.toDto(user);
     }

@@ -3,9 +3,11 @@ package org.system.creditmanagementsystem.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.system.creditmanagementsystem.dto.UserDto;
+import org.system.creditmanagementsystem.entity.Role;
 import org.system.creditmanagementsystem.service.UserService;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -28,10 +30,10 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-//    @PostMapping("/users/add") -- будет регистрация?
-//    public UserDto addUser(@RequestBody UserDto user) {
-//        return userService.addUser(user);
-//    }
+    @PostMapping("/users/add")
+    public UserDto addUser(@RequestBody UserDto user, Set<Role> roles) {
+        return userService.addUser(user, roles);
+    }
 
     @PutMapping("/update/{id}")
     public UserDto updateUser(@RequestBody UserDto user, @PathVariable UUID id) {
