@@ -12,6 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin("http://localhost:3000")
 public class UserController {
     private final UserService userService;
 
@@ -43,5 +44,10 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public void removeUserById(@PathVariable UUID id) {
         userService.removeUserById(id);
+    }
+
+    @GetMapping("/roles/{id}")
+    public Set<Role> getUserRoles(@PathVariable UUID id) {
+        return userService.getUserRoles(id);
     }
 }

@@ -82,4 +82,9 @@ public class UserService {
 
         userRepository.deleteById(id);
     }
+
+    public Set<Role> getUserRoles(UUID id) {
+        var user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        return roleRepository.findByUsers_Id(user.getId());
+    }
 }
