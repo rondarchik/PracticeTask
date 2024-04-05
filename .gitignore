@@ -21,8 +21,6 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-*/src/db.properties
-
 ### Java ###
 # Compiled class file
 *.class
@@ -54,7 +52,6 @@ replay_pid*
 .mvn/
 mvnw
 mvnw.cmd
-application.properties
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
