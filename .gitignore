@@ -82,3 +82,8 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+### React ###
+/react-front/node_modules/
+package.json
+package-lock.json
