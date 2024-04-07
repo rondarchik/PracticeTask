@@ -1,26 +1,33 @@
 import React from 'react';
 import UserService from '../services/UserService';
-// import RoleService from '../services/RoleService';
+import '../App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 class UserComponent extends React.Component {
     constructor(props) {
         super(props); 
-        this.state = { users:[], userRoles:[] }
+        this.state = { users:[] }
     }
 
     componentDidMount(){
-        UserService.getUsers().then((response) => {
+        UserService.getUsersWithRoles().then((response) => {
             this.setState({ users: response.data})
         });
-
-        // UserService.getUserRoles().then((response) => {
-        //     this.setState({ userRoles: response.data})
-        // });
     }
 
     formatDate(dateString) {
         const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+
+    handleDelete(id) {
+        UserService.removeUserById(id)
+            .then(() => {
+                this.setState(prevState => ({
+                    users: prevState.users.filter(user => user.id !== id)
+                }));
+            });
     }
 
     render (){
@@ -35,7 +42,7 @@ class UserComponent extends React.Component {
                             <td>User Surname</td>
                             <td>User Email</td>
                             <td>User Birthday</td>
-                            {/* <td>User Roles</td> */}
+                            <td>User Roles</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,11 +55,15 @@ class UserComponent extends React.Component {
                                     <td>{user.surname}</td>   
                                     <td>{user.email}</td>     
                                     <td>{this.formatDate(user.birthDate)}</td> 
-                                    {/* <td>{this.state.userRoles[user.id]?.join(', ')}</td> */}
+                                    <td>{user.roles.join('\n')}</td>
+                                    <td>
+                                        <button className="delete-button" onClick={() => this.handleDelete(user.id)}>
+                                            <FontAwesomeIcon icon={faTimes} />
+                                        </button>
+                                    </td>
                                 </tr>
                             )
                         }
-
                     </tbody>
                 </table>
             </div>

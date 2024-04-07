@@ -40,3 +40,19 @@
     transform: rotate(360deg);
   }
 }
+
+td {
+  white-space: pre-line;
+}
+
+.delete-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  color: red;
+}
+

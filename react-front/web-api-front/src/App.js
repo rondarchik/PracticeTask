@@ -1,8 +1,12 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-// import { useHistory } from 'react-router';
 import UserComponent from './components/UserComponent';
 import RoleComponent from './components/RoleComponent';
+import RequestStatusComponent from './components/RequestStatusComponent';
+import PaymentComponent from './components/PaymentComponent';
+import CreditTypeComponent from './components/CreditTypeComponent';
+import CreditRequestComponent from './components/CreditRequestComponent';
+import CreditComponent from './components/CreditComponent';
 
 function App() {
     return (
@@ -27,6 +31,11 @@ function App() {
         <Routes>
           <Route path="/api/users" element={<UserComponent />} />
           <Route path="/api/roles" element={<RoleComponent />} />
+          <Route path="/api/roles" element={<RequestStatusComponent />} />
+          <Route path="/api/roles" element={<PaymentComponent />} />
+          <Route path="/api/roles" element={<CreditTypeComponent />} />
+          <Route path="/api/roles" element={<CreditRequestComponent />} />
+          <Route path="/api/roles" element={<CreditComponent />} />
         </Routes>
       </div>
     </Router>
