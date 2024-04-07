@@ -10,7 +10,6 @@ import org.system.creditmanagementsystem.repository.RequestStatusRepository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class RequestStatusService {
@@ -26,7 +25,7 @@ public class RequestStatusService {
     }
 
     public List<RequestStatusDto> getAllRequestStatuses() {
-        return requestStatusRepository.findAll().stream().map(requestStatusMapper::toDto).collect(Collectors.toList());
+        return requestStatusRepository.findAll().stream().map(requestStatusMapper::toDto).toList();
     }
 
     public RequestStatusDto getRequestStatusById(UUID id) {

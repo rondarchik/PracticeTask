@@ -10,7 +10,6 @@ import org.system.creditmanagementsystem.repository.RoleRepository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class RoleService {
@@ -26,7 +25,7 @@ public class RoleService {
     }
 
     public List<RoleDto> getAllRoles() {
-        return roleRepository.findAll().stream().map(roleMapper::toDto).collect(Collectors.toList()); // или просто toList()?
+        return roleRepository.findAll().stream().map(roleMapper::toDto).toList();
     }
 
     public RoleDto getRoleById(UUID id) {

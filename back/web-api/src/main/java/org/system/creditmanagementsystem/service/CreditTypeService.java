@@ -9,7 +9,6 @@ import org.system.creditmanagementsystem.repository.CreditTypeRepository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class CreditTypeService {
@@ -24,7 +23,7 @@ public class CreditTypeService {
     }
 
     public List<CreditTypeDto> getAllCreditTypes() {
-        return creditTypeRepository.findAll().stream().map(creditTypeMapper::toDto).collect(Collectors.toList());
+        return creditTypeRepository.findAll().stream().map(creditTypeMapper::toDto).toList();
     }
 
     public CreditTypeDto getCreditTypeById(UUID id) {

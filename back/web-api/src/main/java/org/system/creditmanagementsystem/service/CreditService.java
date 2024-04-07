@@ -9,7 +9,6 @@ import org.system.creditmanagementsystem.repository.CreditRepository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class CreditService {
@@ -24,7 +23,7 @@ public class CreditService {
     }
 
     public List<CreditDto> getAllCredits() {
-        return creditRepository.findAll().stream().map(creditMapper::toDto).collect(Collectors.toList());
+        return creditRepository.findAll().stream().map(creditMapper::toDto).toList();
     }
 
     public CreditDto getCreditById(UUID id) {
@@ -33,7 +32,7 @@ public class CreditService {
     }
 
     public List<CreditDto> getTypeCredits(UUID typeId) {
-        return creditRepository.findByCreditTypeId(typeId).stream().map(creditMapper::toDto).collect(Collectors.toList());
+        return creditRepository.findByCreditTypeId(typeId).stream().map(creditMapper::toDto).toList();
     }
 
     public CreditDto addCredit(CreditDto creditDto) {

@@ -22,9 +22,10 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+    public List<UserDto> getAllUsersWithRoles() {
+        return userService.getAllUsersWithRoles();
     }
+
 
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable UUID id) {

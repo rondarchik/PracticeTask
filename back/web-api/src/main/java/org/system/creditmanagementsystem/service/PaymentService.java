@@ -9,7 +9,6 @@ import org.system.creditmanagementsystem.repository.PaymentRepository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PaymentService {
@@ -24,7 +23,7 @@ public class PaymentService {
     }
 
     public List<PaymentDto> getAllPayments() {
-        return paymentRepository.findAll().stream().map(paymentMapper::toDto).collect(Collectors.toList());
+        return paymentRepository.findAll().stream().map(paymentMapper::toDto).toList();
     }
 
     public PaymentDto getPaymentById(UUID id) {
@@ -33,7 +32,7 @@ public class PaymentService {
     }
 
     public List<PaymentDto> getCreditPayments(UUID creditId) {
-        return paymentRepository.findByCreditId(creditId).stream().map(paymentMapper::toDto).collect(Collectors.toList());
+        return paymentRepository.findByCreditId(creditId).stream().map(paymentMapper::toDto).toList();
     }
 
     public PaymentDto addPayment(PaymentDto paymentDto) {

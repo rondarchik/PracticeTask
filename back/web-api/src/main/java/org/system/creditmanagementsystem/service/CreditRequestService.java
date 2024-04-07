@@ -9,7 +9,6 @@ import org.system.creditmanagementsystem.repository.CreditRequestRepository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class CreditRequestService {
@@ -24,7 +23,7 @@ public class CreditRequestService {
     }
 
     public List<CreditRequestDto> getAllCreditRequests() {
-        return creditRequestRepository.findAll().stream().map(creditRequestMapper::toDto).collect(Collectors.toList());
+        return creditRequestRepository.findAll().stream().map(creditRequestMapper::toDto).toList();
     }
 
     public CreditRequestDto getCreditRequestById(UUID id) {
@@ -33,7 +32,7 @@ public class CreditRequestService {
     }
 
     public List<CreditRequestDto> getStatusRequests(UUID statusId) {
-        return creditRequestRepository.findByRequestStatusId(statusId).stream().map(creditRequestMapper::toDto).collect(Collectors.toList());
+        return creditRequestRepository.findByRequestStatusId(statusId).stream().map(creditRequestMapper::toDto).toList();
     }
 
     public CreditRequestDto addCreditRequest(CreditRequestDto creditRequestDto) {
