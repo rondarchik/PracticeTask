@@ -24,10 +24,18 @@
 
 #### [Результаты работы](https://github.com/rondarchik/PracticeTask/tree/main/back/web-api/src/main/java/org/system/creditmanagementsystem "Java Spring приложение")
 * Ориентировачное время выполнения: 12 часов.
-* Фактическое время выполнения: 12 часов.
+* Фактическое время выполнения: 18 часов.
 
 ### Задание 4
 * Angular - Frontend
 
+#### [Результаты работы]
+* Ориентировачное время выполнения: 6 часов.
+* Фактическое время выполнения: не приступила.
+
 ### Задание 5
 * React - Frontend
+
+#### [Результаты работы](https://github.com/rondarchik/PracticeTask/tree/main/react-front/web-api-front/src "Фронт React")
+* Ориентировачное время выполнения: 12 часов.
+* Фактическое время выполнения: в процессе.
