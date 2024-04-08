@@ -7,7 +7,6 @@ import PaymentComponent from './components/PaymentComponent';
 import CreditTypeComponent from './components/CreditTypeComponent';
 import CreditRequestComponent from './components/CreditRequestComponent';
 import CreditComponent from './components/CreditComponent';
-
 function App() {
     return (
       <Router>
@@ -29,13 +28,13 @@ function App() {
         </header>
 
         <Routes>
-          <Route path="/api/users" element={<UserComponent />} />
+          <Route path="/api/users/*" element={<UserComponent />} />
           <Route path="/api/roles" element={<RoleComponent />} />
-          <Route path="/api/roles" element={<RequestStatusComponent />} />
-          <Route path="/api/roles" element={<PaymentComponent />} />
-          <Route path="/api/roles" element={<CreditTypeComponent />} />
-          <Route path="/api/roles" element={<CreditRequestComponent />} />
-          <Route path="/api/roles" element={<CreditComponent />} />
+          <Route path="/api/request_statuses" element={<RequestStatusComponent />} />
+          <Route path="/api/payments" element={<PaymentComponent />} />
+          <Route path="/api/credit_type" element={<CreditTypeComponent />} />
+          <Route path="/api/credit_requests" element={<CreditRequestComponent />} />
+          <Route path="/api/credits" element={<CreditComponent />} />
         </Routes>
       </div>
     </Router>

@@ -1,13 +1,16 @@
 import React from 'react';
-import UserService from '../services/UserService';
 import '../App.css';
+import UserService from '../services/UserService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 class UserComponent extends React.Component {
     constructor(props) {
-        super(props); 
-        this.state = { users:[] }
+        super(props);
+        this.state = {
+            users: []
+        }
     }
 
     componentDidMount(){
@@ -32,8 +35,13 @@ class UserComponent extends React.Component {
 
     render (){
         return (
-            <div>
+            <div className='list-container '>
                 <h1 className = "text-center">Users List</h1>
+                <div className="add-button-container">
+                    <Link to="/api/users/add" className="add-button">
+                        <FontAwesomeIcon icon={faPlus} />    Add User
+                    </Link>
+                </div>
                 <table className = "table table-striped">
                     <thead>
                         <tr>
@@ -43,23 +51,27 @@ class UserComponent extends React.Component {
                             <td>User Email</td>
                             <td>User Birthday</td>
                             <td>User Roles</td>
+                            <td>Actions</td>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             this.state.users.map(
-                                user => 
+                                user =>
                                 <tr key = {user.id}>
                                     {/* <td> {user.id}</td>    */}
-                                    <td>{user.name}</td>   
-                                    <td>{user.surname}</td>   
-                                    <td>{user.email}</td>     
-                                    <td>{this.formatDate(user.birthDate)}</td> 
+                                    <td>{user.name}</td>
+                                    <td>{user.surname}</td>
+                                    <td>{user.email}</td>
+                                    <td>{this.formatDate(user.birthDate)}</td>
                                     <td>{user.roles.join('\n')}</td>
                                     <td>
                                         <button className="delete-button" onClick={() => this.handleDelete(user.id)}>
                                             <FontAwesomeIcon icon={faTimes} />
                                         </button>
+                                        <Link to={`/update/${user.id}`} className="update-button">
+                                            <FontAwesomeIcon icon={faEdit} />
+                                        </Link>
                                     </td>
                                 </tr>
                             )
