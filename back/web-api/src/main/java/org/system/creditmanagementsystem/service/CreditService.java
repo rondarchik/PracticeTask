@@ -3,11 +3,13 @@ package org.system.creditmanagementsystem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.system.creditmanagementsystem.dto.CreditDto;
+import org.system.creditmanagementsystem.entity.Credit;
 import org.system.creditmanagementsystem.exception.NotFoundException;
 import org.system.creditmanagementsystem.mapper.CreditMapper;
 import org.system.creditmanagementsystem.repository.CreditRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,7 +29,7 @@ public class CreditService {
     }
 
     public CreditDto getCreditById(UUID id) {
-        var credit = creditRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        Credit credit = creditRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
         return creditMapper.toDto(credit);
     }
 
@@ -36,14 +38,14 @@ public class CreditService {
     }
 
     public CreditDto addCredit(CreditDto creditDto) {
-        var credit = creditMapper.fromDto(creditDto);
+        Credit credit = creditMapper.fromDto(creditDto);
         creditRepository.save(credit);
         return creditMapper.toDto(credit);
     }
 
     public CreditDto updateCredit(CreditDto creditDto, UUID id) {
-        var credit = creditMapper.fromDto(creditDto);
-        var existingCredit = creditRepository.findById(id);
+        Credit credit = creditMapper.fromDto(creditDto);
+        Optional<Credit> existingCredit = creditRepository.findById(id);
 
         if (existingCredit.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
@@ -53,12 +55,12 @@ public class CreditService {
         credit.setStartDate(creditDto.getStartDate());
         credit.setEndDate(creditDto.getEndDate());
         credit.setStatus(creditDto.getStatus());
-        var updatedCredit = creditRepository.save(credit);
+        Credit updatedCredit = creditRepository.save(credit);
         return creditMapper.toDto(updatedCredit);
     }
 
     public void removeCreditById(UUID id) {
-        var existingCredit = creditRepository.findById(id);
+        Optional<Credit> existingCredit = creditRepository.findById(id);
 
         if (existingCredit.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);

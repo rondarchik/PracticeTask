@@ -3,12 +3,14 @@ package org.system.creditmanagementsystem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.system.creditmanagementsystem.dto.RoleDto;
+import org.system.creditmanagementsystem.entity.Role;
 import org.system.creditmanagementsystem.exception.AlreadyExistsException;
 import org.system.creditmanagementsystem.exception.NotFoundException;
 import org.system.creditmanagementsystem.mapper.RoleMapper;
 import org.system.creditmanagementsystem.repository.RoleRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,37 +31,37 @@ public class RoleService {
     }
 
     public RoleDto getRoleById(UUID id) {
-        var role = roleRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        Role role = roleRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
         return roleMapper.toDto(role);
     }
 
     public RoleDto addRole(RoleDto roleDto) {
-        var optionalRole = roleRepository.findByRoleName(roleDto.getRoleName());
+        Optional<Role> optionalRole = roleRepository.findByRoleName(roleDto.getRoleName());
 
         if (optionalRole.isPresent()) {
             throw new AlreadyExistsException(CONFLICT);
         }
 
-        var role = roleMapper.fromDto(roleDto);
+        Role role = roleMapper.fromDto(roleDto);
         roleRepository.save(role);
         return roleMapper.toDto(role);
     }
 
     public RoleDto updateRole(RoleDto roleDto, UUID id) {
-        var role = roleMapper.fromDto(roleDto);
-        var existingRole = roleRepository.findById(id);
+        Role role = roleMapper.fromDto(roleDto);
+        Optional<Role> existingRole = roleRepository.findById(id);
 
         if (existingRole.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
         }
 
         role.setRoleName(roleDto.getRoleName());
-        var updatedRole = roleRepository.save(role);
+        Role updatedRole = roleRepository.save(role);
         return roleMapper.toDto(updatedRole);
     }
 
     public void removeRoleById(UUID id) {
-        var existingRole = roleRepository.findById(id);
+        Optional<Role> existingRole = roleRepository.findById(id);
 
         if (existingRole.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);

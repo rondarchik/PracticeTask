@@ -12,6 +12,7 @@ import org.system.creditmanagementsystem.repository.RoleRepository;
 import org.system.creditmanagementsystem.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -42,26 +43,26 @@ public class UserService {
 
 
     public UserDto getUserById(UUID id) {
-        var user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
         return userMapper.toDto(user);
     }
 
     public UserDto addUser(UserDto userDto, Set<Role> roles) {
-        var optionalUser = userRepository.findByEmail(userDto.getEmail());
+        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
 
         if (optionalUser.isPresent()) {
             throw new AlreadyExistsException(CONFLICT);
         }
 
-        var user = userMapper.fromDto(userDto);
+        User user = userMapper.fromDto(userDto);
         user.setRoles(roles);
         userRepository.save(user);
         return userMapper.toDto(user);
     }
 
     public UserDto updateUser(UserDto userDto, UUID id) {
-        var user = userMapper.fromDto(userDto);
-        var existingUser = userRepository.findById(id);
+        User user = userMapper.fromDto(userDto);
+        Optional<User> existingUser = userRepository.findById(id);
 
         if (existingUser.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
@@ -72,12 +73,12 @@ public class UserService {
         user.setEmail(userDto.getEmail());
         user.setBirthDate(userDto.getBirthDate());
         user.setPasswordHash(user.getPasswordHash());
-        var updatedUser = userRepository.save(user);
+        User updatedUser = userRepository.save(user);
         return userMapper.toDto(updatedUser);
     }
 
     public void removeUserById(UUID id) {
-        var user = userRepository.findById(id);
+        Optional<User> user = userRepository.findById(id);
 
         if (user.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
@@ -87,7 +88,7 @@ public class UserService {
     }
 
     public Set<Role> getUserRoles(UUID id) {
-        var user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
         return roleRepository.findByUsers_Id(user.getId());
     }
 }

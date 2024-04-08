@@ -3,11 +3,13 @@ package org.system.creditmanagementsystem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.system.creditmanagementsystem.dto.CreditRequestDto;
+import org.system.creditmanagementsystem.entity.CreditRequest;
 import org.system.creditmanagementsystem.exception.NotFoundException;
 import org.system.creditmanagementsystem.mapper.CreditRequestMapper;
 import org.system.creditmanagementsystem.repository.CreditRequestRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,7 +29,7 @@ public class CreditRequestService {
     }
 
     public CreditRequestDto getCreditRequestById(UUID id) {
-        var creditRequest = creditRequestRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        CreditRequest creditRequest = creditRequestRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
         return creditRequestMapper.toDto(creditRequest);
     }
 
@@ -36,14 +38,14 @@ public class CreditRequestService {
     }
 
     public CreditRequestDto addCreditRequest(CreditRequestDto creditRequestDto) {
-        var creditRequest = creditRequestMapper.fromDto(creditRequestDto);
+        CreditRequest creditRequest = creditRequestMapper.fromDto(creditRequestDto);
         creditRequestRepository.save(creditRequest);
         return creditRequestMapper.toDto(creditRequest);
     }
 
     public CreditRequestDto updateCreditRequest(CreditRequestDto creditRequestDto, UUID id) {
-        var creditRequest = creditRequestMapper.fromDto(creditRequestDto);
-        var existingCreditRequest = creditRequestRepository.findById(id);
+        CreditRequest creditRequest = creditRequestMapper.fromDto(creditRequestDto);
+        Optional<CreditRequest> existingCreditRequest = creditRequestRepository.findById(id);
 
         if (existingCreditRequest.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
@@ -51,12 +53,12 @@ public class CreditRequestService {
 
         creditRequest.setDateOfRequest(creditRequestDto.getDateOfRequest());
         creditRequest.setRejectionMessage(creditRequestDto.getRejectionMessage());
-        var updatedCreditRequest = creditRequestRepository.save(creditRequest);
+        CreditRequest updatedCreditRequest = creditRequestRepository.save(creditRequest);
         return creditRequestMapper.toDto(updatedCreditRequest);
     }
 
     public void removeCreditRequestById(UUID id) {
-        var existingCreditRequest = creditRequestRepository.findById(id);
+        Optional<CreditRequest> existingCreditRequest = creditRequestRepository.findById(id);
 
         if (existingCreditRequest.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);

@@ -3,11 +3,13 @@ package org.system.creditmanagementsystem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.system.creditmanagementsystem.dto.PaymentDto;
+import org.system.creditmanagementsystem.entity.Payment;
 import org.system.creditmanagementsystem.exception.NotFoundException;
 import org.system.creditmanagementsystem.mapper.PaymentMapper;
 import org.system.creditmanagementsystem.repository.PaymentRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,7 +29,7 @@ public class PaymentService {
     }
 
     public PaymentDto getPaymentById(UUID id) {
-        var payment = paymentRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        Payment payment = paymentRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
         return paymentMapper.toDto(payment);
     }
 
@@ -36,14 +38,14 @@ public class PaymentService {
     }
 
     public PaymentDto addPayment(PaymentDto paymentDto) {
-        var payment = paymentMapper.fromDto(paymentDto);
+        Payment payment = paymentMapper.fromDto(paymentDto);
         paymentRepository.save(payment);
         return paymentMapper.toDto(payment);
     }
 
     public PaymentDto updatePayment(PaymentDto paymentDto, UUID id) {
-        var payment = paymentMapper.fromDto(paymentDto);
-        var existingPayment = paymentRepository.findById(id);
+        Payment payment = paymentMapper.fromDto(paymentDto);
+        Optional<Payment> existingPayment = paymentRepository.findById(id);
 
         if (existingPayment.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
@@ -51,12 +53,12 @@ public class PaymentService {
 
         payment.setAmount(paymentDto.getAmount());
         payment.setPaymentDate(paymentDto.getPaymentDate());
-        var updatedPayment = paymentRepository.save(payment);
+        Payment updatedPayment = paymentRepository.save(payment);
         return paymentMapper.toDto(updatedPayment);
     }
 
     public void removePaymentById(UUID id) {
-        var existingPayment = paymentRepository.findById(id);
+        Optional<Payment> existingPayment = paymentRepository.findById(id);
 
         if (existingPayment.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
