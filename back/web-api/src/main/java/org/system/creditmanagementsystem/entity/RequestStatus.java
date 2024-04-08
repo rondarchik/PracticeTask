@@ -18,6 +18,7 @@ import java.util.UUID;
 @Table(name = "request_status")
 public class RequestStatus {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
 

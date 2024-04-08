@@ -17,6 +17,7 @@ import java.util.UUID;
 @Table(name = "credit_request")
 public class CreditRequest {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
 

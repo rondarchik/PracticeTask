@@ -13,5 +13,6 @@ public class UserDto {
     private String surname;
     private String email;
     private Date birthDate;
+    private String passwordHash;
     private Set<String> roles;
 }

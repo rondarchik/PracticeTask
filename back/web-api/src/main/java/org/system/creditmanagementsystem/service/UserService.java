@@ -46,11 +46,6 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
-    public UserDto findUserByEmail(String email) {
-        var user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
-        return userMapper.toDto(user);
-    }
-
     public UserDto addUser(UserDto userDto, Set<Role> roles) {
         var optionalUser = userRepository.findByEmail(userDto.getEmail());
 
@@ -76,6 +71,7 @@ public class UserService {
         user.setSurname(userDto.getSurname());
         user.setEmail(userDto.getEmail());
         user.setBirthDate(userDto.getBirthDate());
+        user.setPasswordHash(user.getPasswordHash());
         var updatedUser = userRepository.save(user);
         return userMapper.toDto(updatedUser);
     }
