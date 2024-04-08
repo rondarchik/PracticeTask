@@ -1,6 +1,6 @@
 import React from 'react';
-import '../App.css';
-import UserService from '../services/UserService';
+import '../../App.css';
+import UserService from '../../services/UserService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
