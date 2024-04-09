@@ -1,13 +1,16 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import UserComponent from './components/user/UserComponent';
+import AddUserComponent from './components/user/AddUserComponent';
 import RoleComponent from './components/RoleComponent';
 import RequestStatusComponent from './components/RequestStatusComponent';
 import PaymentComponent from './components/PaymentComponent';
 import CreditTypeComponent from './components/CreditTypeComponent';
 import CreditRequestComponent from './components/CreditRequestComponent';
 import CreditComponent from './components/CreditComponent';
-function App() {
+import React from "react";
+import UserComponent from "./components/user/UserComponent";
+
+export default function App() {
     return (
       <Router>
       <div className="App">
@@ -29,6 +32,8 @@ function App() {
 
         <Routes>
           <Route path="/api/users/*" element={<UserComponent />} />
+          <Route path="/api/users/add" element={<AddUserComponent />} />
+          <Route path="/api/users/upadate/:id" element={<AddUserComponent />} />
           <Route path="/api/roles" element={<RoleComponent />} />
           <Route path="/api/request_statuses" element={<RequestStatusComponent />} />
           <Route path="/api/payments" element={<PaymentComponent />} />
@@ -41,4 +46,3 @@ function App() {
   );
 }
 
-export default App;

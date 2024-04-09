@@ -1,16 +1,14 @@
 package org.system.creditmanagementsystem.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,7 +38,8 @@ public class User {
     private String passwordHash;
 
     @ManyToMany(mappedBy = "users")
-    private Set<Role> roles;
+    @JsonManagedReference
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Credit> credits = new LinkedHashSet<>();

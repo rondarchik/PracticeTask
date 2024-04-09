@@ -1,6 +1,7 @@
-package org.system.creditmanagementsystem.dto;
+package org.system.creditmanagementsystem.dto.user;
 
-import lombok.*;
+import lombok.Data;
+import org.system.creditmanagementsystem.entity.Role;
 
 import java.util.Date;
 import java.util.Set;

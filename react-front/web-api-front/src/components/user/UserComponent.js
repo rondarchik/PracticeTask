@@ -3,7 +3,7 @@ import '../../App.css';
 import UserService from '../../services/UserService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 class UserComponent extends React.Component {
     constructor(props) {
@@ -34,6 +34,7 @@ class UserComponent extends React.Component {
     }
 
     render (){
+        const { users } = this.state;
         return (
             <div className='list-container '>
                 <h1 className = "text-center">Users List</h1>
@@ -45,7 +46,6 @@ class UserComponent extends React.Component {
                 <table className = "table table-striped">
                     <thead>
                         <tr>
-                            {/* <td> User Id</td> */}
                             <td>User Name</td>
                             <td>User Surname</td>
                             <td>User Email</td>
@@ -56,10 +56,9 @@ class UserComponent extends React.Component {
                     </thead>
                     <tbody>
                         {
-                            this.state.users.map(
+                            users.map(
                                 user =>
                                 <tr key = {user.id}>
-                                    {/* <td> {user.id}</td>    */}
                                     <td>{user.name}</td>
                                     <td>{user.surname}</td>
                                     <td>{user.email}</td>

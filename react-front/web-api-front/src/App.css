@@ -70,6 +70,7 @@ td {
 
 .list-container {
   position: relative;
+  padding-bottom: 100px;
 }
 
 .add-button-container {

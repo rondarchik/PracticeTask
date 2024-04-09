@@ -1,5 +1,6 @@
 package org.system.creditmanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,5 +29,6 @@ public class Role {
     @JoinTable(name = "user_role",
                joinColumns = {@JoinColumn(name = "id_role")},
                inverseJoinColumns = {@JoinColumn(name = "id_user")})
+    @JsonBackReference
     private List<User> users;
 }

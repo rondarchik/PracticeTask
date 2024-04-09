@@ -2,7 +2,8 @@ package org.system.creditmanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.system.creditmanagementsystem.dto.UserDto;
+import org.system.creditmanagementsystem.dto.user.AddUserDto;
+import org.system.creditmanagementsystem.dto.user.UserDto;
 import org.system.creditmanagementsystem.entity.Role;
 import org.system.creditmanagementsystem.service.UserService;
 
@@ -33,9 +34,15 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public UserDto addUser(@RequestBody UserDto user, Set<Role> roles) {
-        return userService.addUser(user, roles);
+    public UserDto addUser(@RequestBody AddUserDto user) {
+        return userService.addUser(user);
     }
+
+//    @PostMapping("/add")
+//    public ResponseEntity<UserDto> addUser(@RequestBody AddUserDto user) {
+//    public ResponseEntity<UserDto> addUser(@RequestBody UserDto user) {
+//        return new ResponseEntity<>(userService.addUser(user), HttpStatus.OK);
+//    }
 
     @PutMapping("/update/{id}")
     public UserDto updateUser(@RequestBody UserDto user, @PathVariable UUID id) {

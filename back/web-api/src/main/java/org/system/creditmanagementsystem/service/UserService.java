@@ -2,7 +2,8 @@ package org.system.creditmanagementsystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.system.creditmanagementsystem.dto.UserDto;
+import org.system.creditmanagementsystem.dto.user.AddUserDto;
+import org.system.creditmanagementsystem.dto.user.UserDto;
 import org.system.creditmanagementsystem.entity.Role;
 import org.system.creditmanagementsystem.entity.User;
 import org.system.creditmanagementsystem.exception.AlreadyExistsException;
@@ -11,10 +12,7 @@ import org.system.creditmanagementsystem.mapper.UserMapper;
 import org.system.creditmanagementsystem.repository.RoleRepository;
 import org.system.creditmanagementsystem.repository.UserRepository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +34,7 @@ public class UserService {
         List<User> users = userRepository.findAll();
         return users.stream().map(user -> {
             UserDto userDto = userMapper.toDto(user);
+            userDto.setId(user.getId());
             userDto.setRoles(user.getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet()));
             return userDto;
         }).toList();
@@ -47,34 +46,40 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
-    public UserDto addUser(UserDto userDto, Set<Role> roles) {
+
+    public UserDto addUser(AddUserDto userDto) {
         Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
 
         if (optionalUser.isPresent()) {
             throw new AlreadyExistsException(CONFLICT);
         }
 
+        Set<Role> roles = userDto.getRoles();
         User user = userMapper.fromDto(userDto);
-        user.setRoles(roles);
+        if (roles != null) {
+            roles.forEach(role -> user.getRoles().add(role));
+        }
         userRepository.save(user);
         return userMapper.toDto(user);
     }
 
+
     public UserDto updateUser(UserDto userDto, UUID id) {
-        User user = userMapper.fromDto(userDto);
-        Optional<User> existingUser = userRepository.findById(id);
-
-        if (existingUser.isEmpty()) {
-            throw new NotFoundException(NOT_FOUND_MESSAGE);
-        }
-
-        user.setName(userDto.getName());
-        user.setSurname(userDto.getSurname());
-        user.setEmail(userDto.getEmail());
-        user.setBirthDate(userDto.getBirthDate());
-        user.setPasswordHash(user.getPasswordHash());
-        User updatedUser = userRepository.save(user);
-        return userMapper.toDto(updatedUser);
+//        User user = userMapper.fromDto(userDto);
+//        Optional<User> existingUser = userRepository.findById(id);
+//
+//        if (existingUser.isEmpty()) {
+//            throw new NotFoundException(NOT_FOUND_MESSAGE);
+//        }
+//
+//        user.setName(userDto.getName());
+//        user.setSurname(userDto.getSurname());
+//        user.setEmail(userDto.getEmail());
+//        user.setBirthDate(userDto.getBirthDate());
+//        user.setPasswordHash(user.getPasswordHash());
+//        User updatedUser = userRepository.save(user);
+//        return userMapper.toDto(updatedUser);
+        return null;
     }
 
     public void removeUserById(UUID id) {
@@ -83,7 +88,6 @@ public class UserService {
         if (user.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
         }
-
         userRepository.deleteById(id);
     }
 
