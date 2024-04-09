@@ -25,7 +25,18 @@ public class CreditService {
     }
 
     public List<CreditDto> getAllCredits() {
-        return creditRepository.findAll().stream().map(creditMapper::toDto).toList();
+        List<Credit> credits =  creditRepository.findAll();
+        return credits.stream().map(credit -> {
+            CreditDto creditDto = creditMapper.toDto(credit);
+            String user = credit.getUser().getName() +
+                    " " +
+                    credit.getUser().getSurname();
+            creditDto.setClient(user);
+            String type = credit.getCreditType().getName() + " (" +
+                    credit.getCreditType().getTermInMonths() + " months)";
+            creditDto.setCreditType(type);
+            return creditDto;
+        }).toList();
     }
 
     public CreditDto getCreditById(UUID id) {

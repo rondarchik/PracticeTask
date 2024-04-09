@@ -14,6 +14,8 @@ class RoleComponent extends React.Component {
     }
 
     render (){
+        const { roles } = this.state;
+
         return (
             <div>
                 <h1 className = "text-center">Roles List</h1>
@@ -26,7 +28,7 @@ class RoleComponent extends React.Component {
                     </thead>
                     <tbody>
                         {
-                            this.state.roles.map(
+                            roles.map(
                                 role => 
                                 <tr key = {role.id}>
                                     <td>{role.id}</td>   

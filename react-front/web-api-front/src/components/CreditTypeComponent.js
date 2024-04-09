@@ -14,6 +14,8 @@ class CreditTypeComponent extends React.Component {
     }
 
     render (){
+        const { types } = this.state;
+
         return (
             <div>
                 <h1 className = "text-center">Credit Types List</h1>
@@ -28,7 +30,7 @@ class CreditTypeComponent extends React.Component {
                     </thead>
                     <tbody>
                     {
-                        this.state.types.map(
+                        types.map(
                             type =>
                                 <tr key={type.id}>
                                     <td>{type.name}</td>

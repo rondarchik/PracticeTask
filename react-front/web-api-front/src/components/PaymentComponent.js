@@ -13,14 +13,21 @@ class PaymentComponent extends React.Component {
         });
     }
 
+    formatDate(dateString) {
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+
     render (){
+        const { payments } = this.state;
+
         return (
             <div>
                 <h1 className = "text-center">Payments List</h1>
                 <table className = "table table-striped">
                     <thead>
                     <tr>
-                        <td>Client Id</td>
+                        <td>Client</td>
                         <td>Credit Id</td>
                         <td>Amount</td>
                         <td>Payment Date</td>
@@ -28,19 +35,19 @@ class PaymentComponent extends React.Component {
                     </thead>
                     <tbody>
                     {
-                        this.state.payments.map(
+                        payments.map(
                             payment =>
-                                <tr key={payment.id}>
-                                    <td>{payment.idClient}</td>
-                                    <td>{payment.idCredit}</td>
-                                    <td>{payment.amount}</td>
-                                    <td>{payment.paymentDate}</td>
-                                </tr>
+                            <tr key={payment.id}>
+                                <td>{payment.client}</td>
+                                <td>{payment.credit}</td>
+                                <td>{payment.amount}</td>
+                                <td>{this.formatDate(payment.paymentDate)}</td>
+                            </tr>
                         )
                     }
                     </tbody>
                 </table>
-            </div>
+    </div>
         );
     }
 }

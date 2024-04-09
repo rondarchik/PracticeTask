@@ -25,7 +25,17 @@ public class CreditRequestService {
     }
 
     public List<CreditRequestDto> getAllCreditRequests() {
-        return creditRequestRepository.findAll().stream().map(creditRequestMapper::toDto).toList();
+        List<CreditRequest> requests = creditRequestRepository.findAll();
+        return requests.stream().map(request -> {
+            CreditRequestDto requestDto = creditRequestMapper.toDto(request);
+            String user = request.getUser().getName() +
+                    " " +
+                    request.getUser().getSurname();
+            requestDto.setManager(user);
+            requestDto.setCredit(request.getCredit().getId());
+            requestDto.setStatus(request.getRequestStatus().getStatus());
+            return requestDto;
+        }).toList();
     }
 
     public CreditRequestDto getCreditRequestById(UUID id) {

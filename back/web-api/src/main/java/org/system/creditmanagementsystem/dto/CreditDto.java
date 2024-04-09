@@ -8,8 +8,8 @@ import java.util.UUID;
 @Data
 public class CreditDto {
     private UUID id;
-    private UUID clientID;
-    private UUID creditTypeID;
+    private String client;
+    private String creditType;
     private Double paidAmount;
     private Date startDate;
     private Date endDate;

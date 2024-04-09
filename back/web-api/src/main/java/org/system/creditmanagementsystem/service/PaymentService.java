@@ -25,8 +25,18 @@ public class PaymentService {
     }
 
     public List<PaymentDto> getAllPayments() {
-        return paymentRepository.findAll().stream().map(paymentMapper::toDto).toList();
+        List<Payment> payments = paymentRepository.findAll();
+        return payments.stream().map(payment -> {
+            PaymentDto paymentDto = paymentMapper.toDto(payment);
+            String user = payment.getUser().getName() +
+                    " " +
+                    payment.getUser().getSurname();
+            paymentDto.setClient(user);
+            paymentDto.setCredit(payment.getCredit().getId());
+            return paymentDto;
+        }).toList();
     }
+
 
     public PaymentDto getPaymentById(UUID id) {
         Payment payment = paymentRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));

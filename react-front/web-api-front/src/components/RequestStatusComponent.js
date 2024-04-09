@@ -14,6 +14,8 @@ class RequestStatusComponent extends React.Component {
     }
 
     render (){
+        const { statuses } = this.state;
+
         return (
             <div>
                 <h1 className = "text-center">Request Statuses List</h1>
@@ -26,7 +28,7 @@ class RequestStatusComponent extends React.Component {
                     </thead>
                     <tbody>
                         {
-                            this.state.statuses.map(
+                            statuses.map(
                                 status => 
                                 <tr key = {status.id}>
                                     <td>{status.id}</td>   

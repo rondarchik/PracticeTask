@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import UserComponent from './components/UserComponent';
+import UserComponent from './components/user/UserComponent';
 import RoleComponent from './components/RoleComponent';
 import RequestStatusComponent from './components/RequestStatusComponent';
 import PaymentComponent from './components/PaymentComponent';

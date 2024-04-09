@@ -13,7 +13,14 @@ class CreditComponent extends React.Component {
         });
     }
 
+    formatDate(dateString) {
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+
     render (){
+        const { credits } = this.state;
+
         return (
             <div>
                 <h1 className = "text-center">Credits List</h1>
@@ -30,15 +37,15 @@ class CreditComponent extends React.Component {
                     </thead>
                     <tbody>
                     {
-                        this.state.credits.map(
+                        credits.map(
                             credit =>
                                 <tr key={credit.id}>
-                                    <td>{credit.idClient}</td>
-                                    <td>{credit.idCreditType}</td>
+                                    <td>{credit.client}</td>
+                                    <td>{credit.creditType}</td>
                                     <td>{credit.paidAmount}</td>
-                                    <td>{credit.startDate}</td>
-                                    <td>{credit.endDate}</td>
-                                    <td>{credit.status}</td>
+                                    <td>{this.formatDate(credit.startDate)}</td>
+                                    <td>{this.formatDate(credit.endDate)}</td>
+                                    <td>{credit.status ? "Active" : "Inactive"}</td>
                                 </tr>
                         )
                     }

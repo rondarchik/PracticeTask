@@ -26,7 +26,7 @@ public class PaymentController {
 
     @GetMapping
     public List<PaymentDto> getAllPayments() {
-        return paymentService.getAllPayments();
+         return paymentService.getAllPayments();
     }
 
     @GetMapping("/{id}")
