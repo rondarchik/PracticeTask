@@ -34,6 +34,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/role/{id}")
+    public ResponseEntity<List<GetUserDto>> getRoleUsers(@PathVariable UUID id) {
+        return new ResponseEntity<>(userService.getRoleUsers(id), HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<GetUserDto> addUser(@RequestBody AddUserDto user) {
         return new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
