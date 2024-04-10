@@ -3,7 +3,6 @@ package org.system.creditmanagementsystem.mapper;
 import org.mapstruct.Mapper;
 import org.system.creditmanagementsystem.dto.PaymentDto;
 import org.system.creditmanagementsystem.entity.Credit;
-import org.system.creditmanagementsystem.entity.CreditRequest;
 import org.system.creditmanagementsystem.entity.Payment;
 
 import java.util.UUID;

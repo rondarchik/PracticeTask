@@ -13,7 +13,6 @@ import org.system.creditmanagementsystem.repository.RoleRepository;
 import org.system.creditmanagementsystem.repository.UserRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -30,7 +29,6 @@ public class UserService {
     }
 
     public List<GetUserDto> getAllUsers() {
-//        return userRepository.findAll().stream().map(userMapper::toDto).toList();
         List<User> users = userRepository.findAll();
         return users.stream().map(user -> {
             GetUserDto userDto = userMapper.toDto(user);
