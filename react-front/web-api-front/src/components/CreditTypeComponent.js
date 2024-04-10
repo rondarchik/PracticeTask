@@ -29,18 +29,21 @@ class CreditTypeComponent extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {
-                        types.map(
-                            type =>
-                                <tr key={type.id}>
-                                    <td>{type.name}</td>
-                                    <td>{type.interestRate}</td>
-                                    <td>{type.creditAmount}</td>
-                                    <td>{type.termInMonths}</td>
+                        {types.length > 0 ? (
+                            types.map(
+                                type =>
+                                    <tr key={type.id}>
+                                        <td>{type.name}</td>
+                                        <td>{type.interestRate}</td>
+                                        <td>{type.creditAmount}</td>
+                                        <td>{type.termInMonths}</td>
+                                    </tr>
+                            ) ) : (
+                                <tr>
+                                    <td colSpan="4">No credit types found.</td>
                                 </tr>
-                        )
-                    }
-
+                            )
+                        }
                     </tbody>
                 </table>
             </div>

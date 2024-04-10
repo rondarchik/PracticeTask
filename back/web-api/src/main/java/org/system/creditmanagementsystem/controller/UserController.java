@@ -1,14 +1,15 @@
 package org.system.creditmanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.system.creditmanagementsystem.dto.user.AddUserDto;
-import org.system.creditmanagementsystem.dto.user.UserDto;
-import org.system.creditmanagementsystem.entity.Role;
+import org.system.creditmanagementsystem.dto.user.GetUserDto;
+import org.system.creditmanagementsystem.dto.user.UpdateUserDto;
 import org.system.creditmanagementsystem.service.UserService;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -23,39 +24,29 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDto> getAllUsersWithRoles() {
-        return userService.getAllUsersWithRoles();
+    public ResponseEntity<List<GetUserDto>> getAllUsersWithRoles() {
+        return new ResponseEntity<>(userService.getAllUsers(),HttpStatus.OK);
     }
 
 
     @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable UUID id) {
-        return userService.getUserById(id);
+    public ResponseEntity<GetUserDto> getUserById(@PathVariable UUID id) {
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public UserDto addUser(@RequestBody AddUserDto user) {
-        return userService.addUser(user);
+    public ResponseEntity<GetUserDto> addUser(@RequestBody AddUserDto user) {
+        return new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
     }
 
-//    @PostMapping("/add")
-//    public ResponseEntity<UserDto> addUser(@RequestBody AddUserDto user) {
-//    public ResponseEntity<UserDto> addUser(@RequestBody UserDto user) {
-//        return new ResponseEntity<>(userService.addUser(user), HttpStatus.OK);
-//    }
-
     @PutMapping("/update/{id}")
-    public UserDto updateUser(@RequestBody UserDto user, @PathVariable UUID id) {
-        return userService.updateUser(user, id);
+    public ResponseEntity<GetUserDto> updateUser(@RequestBody UpdateUserDto user, @PathVariable UUID id) {
+        return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void removeUserById(@PathVariable UUID id) {
+    public ResponseEntity<Object> removeUserById(@PathVariable UUID id) {
         userService.removeUserById(id);
-    }
-
-    @GetMapping("/roles/{id}")
-    public Set<Role> getUserRoles(@PathVariable UUID id) {
-        return userService.getUserRoles(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

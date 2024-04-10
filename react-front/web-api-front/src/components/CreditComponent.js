@@ -36,20 +36,23 @@ class CreditComponent extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {
-                        credits.map(
-                            credit =>
-                                <tr key={credit.id}>
-                                    <td>{credit.client}</td>
-                                    <td>{credit.creditType}</td>
-                                    <td>{credit.paidAmount}</td>
-                                    <td>{this.formatDate(credit.startDate)}</td>
-                                    <td>{this.formatDate(credit.endDate)}</td>
-                                    <td>{credit.status ? "Active" : "Inactive"}</td>
+                        {credits.length > 0 ? (
+                            credits.map(
+                                credit =>
+                                    <tr key={credit.id}>
+                                        <td>{credit.client}</td>
+                                        <td>{credit.creditType}</td>
+                                        <td>{credit.paidAmount}</td>
+                                        <td>{this.formatDate(credit.startDate)}</td>
+                                        <td>{this.formatDate(credit.endDate)}</td>
+                                        <td>{credit.status ? "Active" : "Inactive"}</td>
+                                    </tr>
+                            ) ) : (
+                                <tr>
+                                    <td colSpan="6">No credits found.</td>
                                 </tr>
-                        )
-                    }
-
+                            )
+                        }
                     </tbody>
                 </table>
             </div>

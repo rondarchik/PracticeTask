@@ -34,17 +34,21 @@ class PaymentComponent extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {
-                        payments.map(
-                            payment =>
-                            <tr key={payment.id}>
-                                <td>{payment.client}</td>
-                                <td>{payment.credit}</td>
-                                <td>{payment.amount}</td>
-                                <td>{this.formatDate(payment.paymentDate)}</td>
-                            </tr>
-                        )
-                    }
+                        {payments.length > 0 ? (
+                            payments.map(
+                                payment =>
+                                <tr key={payment.id}>
+                                    <td>{payment.client}</td>
+                                    <td>{payment.credit}</td>
+                                    <td>{payment.amount}</td>
+                                    <td>{this.formatDate(payment.paymentDate)}</td>
+                                </tr>
+                            ) ) : (
+                                <tr>
+                                    <td colSpan="5">No payments found.</td>
+                                </tr>
+                            )
+                        }
                     </tbody>
                 </table>
     </div>

@@ -27,7 +27,7 @@ public class CreditRequest {
     @Column(name = "rejection_message")
     private String rejectionMessage;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_manager")
     private User user;
 
@@ -35,7 +35,7 @@ public class CreditRequest {
     @JoinColumn(name = "id_credit")
     private Credit credit;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_status")
     private RequestStatus requestStatus;
 }

@@ -1,7 +1,6 @@
 package org.system.creditmanagementsystem.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,8 +37,7 @@ public class User {
     private String passwordHash;
 
     @ManyToMany(mappedBy = "users")
-    @JsonManagedReference
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Credit> credits = new LinkedHashSet<>();

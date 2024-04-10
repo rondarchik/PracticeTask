@@ -35,18 +35,22 @@ class CreditRequestComponent extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {
-                        requests.map(
-                            request =>
-                                <tr key={request.id}>
-                                    <td>{request.manager}</td>
-                                    <td>{request.credit}</td>
-                                    <td>{this.formatDate(request.dateOfRequest)}</td>
-                                    <td>{request.status}</td>
-                                    <td>{request.rejectionMessage}</td>
+                        {requests.length > 0 ? (
+                            requests.map(
+                                request =>
+                                    <tr key={request.id}>
+                                        <td>{request.manager}</td>
+                                        <td>{request.credit}</td>
+                                        <td>{this.formatDate(request.dateOfRequest)}</td>
+                                        <td>{request.status}</td>
+                                        <td>{request.rejectionMessage}</td>
+                                    </tr>
+                            ) ) : (
+                                <tr>
+                                    <td colSpan="5">No credit requests found.</td>
                                 </tr>
-                        )
-                    }
+                            )
+                        }
                     </tbody>
                 </table>
             </div>

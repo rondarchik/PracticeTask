@@ -47,6 +47,7 @@ td {
 
 .delete-button {
   background-color: transparent;
+  color: black;
   border: none;
   padding: 0;
   cursor: pointer;
@@ -55,9 +56,11 @@ td {
 
 .update-button {
   background-color: transparent;
+  color: black;
   border: none;
   padding: 0;
   cursor: pointer;
+  /*margin-right: 15px;*/
 }
 
 .delete-button:hover {
@@ -106,6 +109,17 @@ td {
   color: white;
 }
 
+.to-user-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.to-user-button:hover {
+  color: limegreen;
+}
+
 .form-control {
   max-width: 300px;
   min-width: 300px;
@@ -133,6 +147,7 @@ td {
 
 .form-btn-group {
   display: flex;
+  justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 20px;
 }

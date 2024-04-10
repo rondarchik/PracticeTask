@@ -1,8 +1,12 @@
 package org.system.creditmanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.system.creditmanagementsystem.dto.RoleDto;
+import org.system.creditmanagementsystem.dto.role.AddRoleDto;
+import org.system.creditmanagementsystem.dto.role.GetRoleDto;
+import org.system.creditmanagementsystem.dto.role.UpdateRoleDto;
 import org.system.creditmanagementsystem.service.RoleService;
 
 import java.util.List;
@@ -20,27 +24,30 @@ public class RoleController {
     }
 
     @GetMapping
-    public List<RoleDto> getAllRoles() {
-        return roleService.getAllRoles();
+    public ResponseEntity<List<GetRoleDto>> getAllRoles() {
+        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public RoleDto getRoleById(@PathVariable UUID id) {
-        return roleService.getRoleById(id);
+    public ResponseEntity<GetRoleDto> getRoleById(@PathVariable UUID id) {
+        return new ResponseEntity<>(roleService.getRoleById(id), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public RoleDto addRole(@RequestBody RoleDto role) {
-        return roleService.addRole(role);
+    public ResponseEntity<Object> addRole(@RequestBody AddRoleDto role) {
+        roleService.addRole(role);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public RoleDto updateRole(@RequestBody RoleDto role, @PathVariable UUID id) {
-        return roleService.updateRole(role, id);
+    public ResponseEntity<Object> updateRole(@RequestBody UpdateRoleDto role, @PathVariable UUID id) {
+        roleService.updateRole(role, id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void removeRoleById(@PathVariable UUID id) {
+    public ResponseEntity<Object> removeRoleById(@PathVariable UUID id) {
         roleService.removeRoleById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

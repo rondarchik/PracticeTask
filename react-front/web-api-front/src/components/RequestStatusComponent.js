@@ -27,16 +27,19 @@ class RequestStatusComponent extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {
+                        {statuses.length > 0 ? (
                             statuses.map(
                                 status => 
                                 <tr key = {status.id}>
                                     <td>{status.id}</td>   
                                     <td>{status.status}</td>   
                                 </tr>
+                            ) ) : (
+                                <tr>
+                                    <td colSpan="2">No request statuses found.</td>
+                                </tr>
                             )
                         }
-
                     </tbody>
                 </table>
             </div>

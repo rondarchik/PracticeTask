@@ -38,11 +38,11 @@ public class Credit {
     @OneToOne(mappedBy = "credit", cascade = CascadeType.ALL)
     private CreditRequest creditRequest;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_client")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_credit_type")
     private CreditType creditType;
 

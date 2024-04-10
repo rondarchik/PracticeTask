@@ -3,17 +3,17 @@ package org.system.creditmanagementsystem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.system.creditmanagementsystem.dto.user.AddUserDto;
-import org.system.creditmanagementsystem.dto.user.UserDto;
-import org.system.creditmanagementsystem.entity.Role;
+import org.system.creditmanagementsystem.dto.user.GetUserDto;
+import org.system.creditmanagementsystem.dto.user.UpdateUserDto;
 import org.system.creditmanagementsystem.entity.User;
-import org.system.creditmanagementsystem.exception.AlreadyExistsException;
 import org.system.creditmanagementsystem.exception.NotFoundException;
 import org.system.creditmanagementsystem.mapper.UserMapper;
 import org.system.creditmanagementsystem.repository.RoleRepository;
 import org.system.creditmanagementsystem.repository.UserRepository;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -30,69 +30,50 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public List<UserDto> getAllUsersWithRoles() {
-        List<User> users = userRepository.findAll();
-        return users.stream().map(user -> {
-            UserDto userDto = userMapper.toDto(user);
-            userDto.setId(user.getId());
-            userDto.setRoles(user.getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet()));
-            return userDto;
-        }).toList();
+    public List<GetUserDto> getAllUsers() {
+        return userRepository.findAll().stream().map(userMapper::toDto).toList();
     }
 
-
-    public UserDto getUserById(UUID id) {
+    public GetUserDto getUserById(UUID id) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
         return userMapper.toDto(user);
     }
 
 
-    public UserDto addUser(AddUserDto userDto) {
-        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
-
-        if (optionalUser.isPresent()) {
-            throw new AlreadyExistsException(CONFLICT);
-        }
-
-        Set<Role> roles = userDto.getRoles();
+    public GetUserDto addUser(AddUserDto userDto) {
         User user = userMapper.fromDto(userDto);
-        if (roles != null) {
-            roles.forEach(role -> user.getRoles().add(role));
-        }
         userRepository.save(user);
         return userMapper.toDto(user);
     }
 
 
-    public UserDto updateUser(UserDto userDto, UUID id) {
-//        User user = userMapper.fromDto(userDto);
-//        Optional<User> existingUser = userRepository.findById(id);
-//
-//        if (existingUser.isEmpty()) {
-//            throw new NotFoundException(NOT_FOUND_MESSAGE);
-//        }
-//
-//        user.setName(userDto.getName());
-//        user.setSurname(userDto.getSurname());
-//        user.setEmail(userDto.getEmail());
-//        user.setBirthDate(userDto.getBirthDate());
-//        user.setPasswordHash(user.getPasswordHash());
-//        User updatedUser = userRepository.save(user);
-//        return userMapper.toDto(updatedUser);
-        return null;
+    public GetUserDto updateUser(UpdateUserDto userDto, UUID id) {
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        if (userDto.getName() != null) {
+            existingUser.setName(userDto.getName());
+        }
+        if (userDto.getSurname() != null) {
+            existingUser.setSurname(userDto.getSurname());
+        }
+        if (userDto.getEmail() != null) {
+            existingUser.setEmail(userDto.getEmail());
+        }
+        if (userDto.getBirthDate() != null) {
+            existingUser.setBirthDate(userDto.getBirthDate());
+        }
+        if (userDto.getPasswordHash() != null) {
+            existingUser.setPasswordHash(userDto.getPasswordHash());
+        }
+        userRepository.save(existingUser);
+        return userMapper.toDto(existingUser);
     }
 
     public void removeUserById(UUID id) {
         Optional<User> user = userRepository.findById(id);
-
         if (user.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
         }
-        userRepository.deleteById(id);
-    }
 
-    public Set<Role> getUserRoles(UUID id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
-        return roleRepository.findByUsers_Id(user.getId());
+        userRepository.deleteById(id);
     }
 }

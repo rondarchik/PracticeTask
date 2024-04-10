@@ -1,13 +1,13 @@
 package org.system.creditmanagementsystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -27,8 +27,7 @@ public class Role {
 
     @ManyToMany
     @JoinTable(name = "user_role",
-               joinColumns = {@JoinColumn(name = "id_role")},
-               inverseJoinColumns = {@JoinColumn(name = "id_user")})
-    @JsonBackReference
-    private List<User> users;
+               joinColumns = {@JoinColumn(name = "id_role", referencedColumnName = "id")},
+               inverseJoinColumns = {@JoinColumn(name = "id_user", referencedColumnName = "id")})
+    private Set<User> users = new LinkedHashSet<>();
 }

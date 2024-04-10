@@ -1,6 +1,7 @@
 {
   "name": "web-api-front",
   "version": "0.1.0",
+  "homepage": "/api/users",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
