@@ -7,8 +7,6 @@ import '../../App.css';
 
 export async function loader({ params }) {
     const user = await getUserById(params.id);
-    console.log(params.id);
-    console.log(user);
     return { user };
 }
 
@@ -16,18 +14,22 @@ export default function UpdateUser() {
     const navigate = useNavigate();
 
     const { user } = useLoaderData();
-    console.log(user);
 
     const [name, setName] = useState(user.name);
     const [surname, setSurname] = useState(user.surname);
     const [email, setEmail] = useState(user.email);
     const [birthDate, setBirthDate] = useState(user.birthDate);
-    console.log(formatDate(birthDate));
     const [passwordHash, setPasswordHash] = useState(user.passwordHash);
-    // const [roles, setRoles] = useState([]);
 
-    // let rolesList = [];
-    // loadRoles();
+    console.log(user);
+
+    const [roles, setRoles] = useState(user.roles ?
+        user.roles.map(role => ({value: role, label: `${role.roleName}`})) : []);
+
+
+
+    let rolesList = [];
+    loadRoles();
 
     return (
         <section className="form-container">
@@ -69,20 +71,20 @@ export default function UpdateUser() {
                            onChange={(e) => setBirthDate(e.target.value)}
                            placeholder="Enter birth date"/>
                 </div>
-                {/*<div className="form-group">*/}
-                {/*    <label htmlFor="role">Role:</label>*/}
-                {/*    <Select*/}
-                {/*        className="form-control"*/}
-                {/*        placeholder="Roles"*/}
-                {/*        id="role"*/}
-                {/*        name="role"*/}
-                {/*        value={roles}*/}
-                {/*        options={rolesList}*/}
-                {/*        onChange={handleSelectRole}*/}
-                {/*        isSearchable={true}*/}
-                {/*        isMulti*/}
-                {/*    />*/}
-                {/*</div>*/}
+                <div className="form-group">
+                    <label htmlFor="role">Role:</label>
+                    <Select
+                        className="form-control"
+                        placeholder="Roles"
+                        id="role"
+                        name="role"
+                        defaultValue={roles}
+                        options={rolesList}
+                        onChange={handleSelectRole}
+                        isSearchable={true}
+                        isMulti
+                    />
+                </div>
                 <div className="form-btn-group">
                     <button type="submit" className="btn btn-primary" onClick={updateUserClick}>Save</button>
                     <Link to="/api/users">Back to Users</Link>
@@ -91,20 +93,20 @@ export default function UpdateUser() {
         </section>
     );
 
-    // async function loadRoles() {
-    //     const roles = await getRoles();
-    //     roles.map(role =>
-    //         rolesList.push({
-    //             key: role.id,
-    //             value: role,
-    //             label: role.roleName
-    //         })
-    //     );
-    // }
+    async function loadRoles() {
+        const roles = await getRoles();
+        roles.map(role =>
+            rolesList.push({
+                key: role.id,
+                value: role,
+                label: role.roleName
+            })
+        );
+    }
 
-    // function handleSelectRole(data) {
-    //     setRoles(data);
-    // }
+    function handleSelectRole(data) {
+        setRoles(data);
+    }
 
     async function updateUserClick() {
         user.name = name;
@@ -112,6 +114,8 @@ export default function UpdateUser() {
         user.email = email;
         user.birthDate = birthDate;
         user.passwordHash = passwordHash;
+        user.roles = roles.map(role => role.value)
+
         console.log(user);
 
         await updateUser(user, user.id);

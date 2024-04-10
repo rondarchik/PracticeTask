@@ -91,13 +91,14 @@ export default function AddUser() {
     }
 
     async function addNewUser() {
-        let user = {};
-        user.id = crypto.randomUUID();
-        user.name = name;
-        user.surname = surname;
-        user.email = email;
-        user.birthDate = birthDate;
-        user.passwordHash = passwordHash;
+        let user = {
+            name : name,
+            surname : surname,
+            email : email,
+            birthDate : birthDate,
+            passwordHash : passwordHash,
+            roles : roles.map(role => role.value)
+        };
         console.log(user);
 
         await addUser(user);

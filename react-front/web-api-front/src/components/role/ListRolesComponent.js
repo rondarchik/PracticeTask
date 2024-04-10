@@ -16,7 +16,7 @@ export default function ListRoles() {
         <div>
             <h1 className="text-center">Roles List</h1>
             <div className="add-button-container">
-                <Link className="add-button" to="/api/roles/add">
+                <Link className="add-button" to="add">
                     <FontAwesomeIcon icon={faPlus}/> Add Role
                 </Link>
             </div>

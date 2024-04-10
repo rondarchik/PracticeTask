@@ -10,7 +10,7 @@ import Root from "./components/RootComponent";
 import ListUsers from "./components/user/ListUsersComponent";
 import AddUser from "./components/user/AddUserComponent";
 import UpdateUser, { loader as UserLoader } from "./components/user/UpdateUserComponent";
-import ListRoles from "./components/role/ListRoleComponent";
+import ListRoles from "./components/role/ListRolesComponent";
 import AddRole from "./components/role/AddRoleComponent";
 import UpdateRole, { loader as RoleLoader } from "./components/role/UpdateRoleComponent";
 
@@ -37,10 +37,10 @@ const router = createBrowserRouter([
         path: "/api/roles",
         element: <ListRoles />
       },
-      // {
-      //   path: "/api/roles/add",
-      //   element: <AddRole />
-      // },
+      {
+        path: "/api/roles/add",
+        element: <AddRole />
+      },
       {
         path: "/api/roles/update/:id",
         element: <UpdateRole />,

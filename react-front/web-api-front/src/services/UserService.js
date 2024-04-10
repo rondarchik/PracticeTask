@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const USERS_REST_API_URL = 'http://localhost:8080/api/users';
+const USERS_REST_API_URL = `http://localhost:8080/api/users`;
 
 export async function getUsers() {
     const response = await axios.get(USERS_REST_API_URL);
@@ -8,7 +8,7 @@ export async function getUsers() {
 }
 
 export async function addUser(user) {
-    const response = await axios.post(`${USERS_REST_API_URL}/add'`, user);
+    const response = await axios.post(`${USERS_REST_API_URL}/add`, user);
     return response.data;
 }
 

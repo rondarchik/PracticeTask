@@ -8,7 +8,7 @@ export async function getRoles() {
 }
 
 export async function addRole(role) {
-    const response = await axios.post(`${ROLES_REST_API_URL}/add'`, role);
+    const response = await axios.post(`${ROLES_REST_API_URL}/add`, role);
     return response.data;
 }
 

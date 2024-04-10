@@ -29,6 +29,7 @@ export default function ListUsers() {
                     <td>User Surname</td>
                     <td>User Email</td>
                     <td>User Birthday</td>
+                    <td>Roles</td>
                     <td>Actions</td>
                 </tr>
                 </thead>
@@ -41,6 +42,7 @@ export default function ListUsers() {
                                     <td>{user.surname}</td>
                                     <td>{user.email}</td>
                                     <td>{formatDate(user.birthDate)}</td>
+                                    <td>{user.roles.map(role => role.roleName).join('\n')}</td>
                                     <td>
                                         <button className="delete-button" onClick={() => removeUser(user.id)}>
                                             <FontAwesomeIcon icon={faTimes}/>
@@ -52,7 +54,7 @@ export default function ListUsers() {
                                 </tr>
                         ) ) : (
                             <tr>
-                                <td colSpan="5">No users found.</td>
+                                <td colSpan="6">No users found.</td>
                             </tr>
                         )
                     }
