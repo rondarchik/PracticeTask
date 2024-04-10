@@ -26,3 +26,8 @@ export async function getRoleById(id) {
     const response = await axios.get(`${ROLES_REST_API_URL}/${id}`);
     return response.data;
 }
+
+export async function removeUserFromRole(roleId, userId) {
+    const response = await axios.delete(`${ROLES_REST_API_URL}/${roleId}/users/${userId}`);
+    return response.data;
+}

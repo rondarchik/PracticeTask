@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getRoles, removeRoleById } from '../../services/RoleService';
+import {getRoles, removeRoleById, removeUserFromRole} from '../../services/RoleService';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
@@ -25,6 +25,7 @@ export default function ListRoles() {
                 <tr>
                     <td>Role Id</td>
                     <td>Role Name</td>
+                    <td>Users</td>
                     <td>Actions</td>
                 </tr>
                 </thead>
@@ -35,11 +36,23 @@ export default function ListRoles() {
                             <tr key={role.id}>
                                 <td>{role.id}</td>
                                 <td>{role.roleName}</td>
+                                {/*<td>{role.users.map(user => user.email).join('\n')}</td>*/}
                                 <td>
-                                    <button className="delete-button" onClick={() => removeRole(role.id)}>
+                                    {role.users.map(user => (
+                                        <div key={user.id}>
+                                            {user.email}
+                                            <button className="delete-button left-15"
+                                                    onClick={() => deleteUserFromRole(role.id, user.id)}>
+                                                <FontAwesomeIcon icon={faTimes}/>
+                                            </button>
+                                        </div>
+                                    ))}
+                                </td>
+                                <td>
+                                    <button className="delete-button" onClick={() => deleteRole(role.id)}>
                                         <FontAwesomeIcon icon={faTimes}/>
                                     </button>
-                                    <Link className="update-button" to={`update/${role.id}`}>
+                                    <Link className="update-button left-15" to={`update/${role.id}`}>
                                         <FontAwesomeIcon icon={faEdit}/>
                                     </Link>
                                 </td>
@@ -60,8 +73,13 @@ export default function ListRoles() {
         setRoles(roles);
     }
 
-    async function removeRole(roleId) {
+    async function deleteRole(roleId) {
         await removeRoleById(roleId);
+        setReload(!reload);
+    }
+
+    async function deleteUserFromRole(roleId, userId) {
+        await removeUserFromRole(roleId, userId);
         setReload(!reload);
     }
 }

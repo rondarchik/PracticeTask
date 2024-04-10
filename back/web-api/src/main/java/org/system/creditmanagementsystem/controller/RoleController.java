@@ -48,4 +48,10 @@ public class RoleController {
         roleService.removeRoleById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @DeleteMapping("/{roleId}/users/{userId}")
+    public ResponseEntity<Object> removeUserFromRole(@PathVariable UUID roleId, @PathVariable UUID userId) {
+        roleService.removeUserFromRole(roleId, userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

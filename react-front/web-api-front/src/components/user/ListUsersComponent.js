@@ -44,10 +44,10 @@ export default function ListUsers() {
                                     <td>{formatDate(user.birthDate)}</td>
                                     <td>{user.roles.map(role => role.roleName).join('\n')}</td>
                                     <td>
-                                        <button className="delete-button" onClick={() => removeUser(user.id)}>
+                                        <button className="delete-button" onClick={() => deleteUser(user.id)}>
                                             <FontAwesomeIcon icon={faTimes}/>
                                         </button>
-                                        <Link className="update-button" to={`update/${user.id}`}>
+                                        <Link className="update-button left-15" to={`update/${user.id}`}>
                                             <FontAwesomeIcon icon={faEdit}/>
                                         </Link>
                                     </td>
@@ -68,7 +68,7 @@ export default function ListUsers() {
         setUsers(users);
     }
 
-    async function removeUser(userId) {
+    async function deleteUser(userId) {
         await removeUserById(userId);
         setReload(!reload);
     }
