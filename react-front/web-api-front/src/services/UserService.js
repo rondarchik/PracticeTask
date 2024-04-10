@@ -8,7 +8,7 @@ export async function getUsers() {
 }
 
 export async function addUser(user) {
-    const response = await axios.post(USERS_REST_API_URL + '/add', user);
+    const response = await axios.post(`${USERS_REST_API_URL}/add'`, user);
     return response.data;
 }
 

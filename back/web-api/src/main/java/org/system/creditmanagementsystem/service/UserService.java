@@ -21,7 +21,6 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private static final String NOT_FOUND_MESSAGE = "Such user not found!";
-    private static final String CONFLICT = "Such record already exists in user.";
 
     @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper) {

@@ -34,15 +34,13 @@ public class RoleController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Object> addRole(@RequestBody AddRoleDto role) {
-        roleService.addRole(role);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<GetRoleDto> addRole(@RequestBody AddRoleDto role) {
+        return new ResponseEntity<>(roleService.addRole(role), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Object> updateRole(@RequestBody UpdateRoleDto role, @PathVariable UUID id) {
-        roleService.updateRole(role, id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<GetRoleDto> updateRole(@RequestBody UpdateRoleDto role, @PathVariable UUID id) {
+        return new ResponseEntity<>(roleService.updateRole(role, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

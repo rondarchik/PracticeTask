@@ -1,7 +1,5 @@
 import './App.css';
-import {
-  RouterProvider, createBrowserRouter } from 'react-router-dom';
-import ListUsers from "./components/user/ListUsersComponent";
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import RequestStatusComponent from './components/RequestStatusComponent';
 import PaymentComponent from './components/PaymentComponent';
 import CreditTypeComponent from './components/CreditTypeComponent';
@@ -9,9 +7,12 @@ import CreditRequestComponent from './components/CreditRequestComponent';
 import CreditComponent from './components/CreditComponent';
 import React from "react";
 import Root from "./components/RootComponent";
-import Roles from "./components/role/RoleComponent";
+import ListUsers from "./components/user/ListUsersComponent";
 import AddUser from "./components/user/AddUserComponent";
-import UpdateUser, { loader } from "./components/user/UpdateUserComponent";
+import UpdateUser, { loader as UserLoader } from "./components/user/UpdateUserComponent";
+import ListRoles from "./components/role/ListRoleComponent";
+import AddRole from "./components/role/AddRoleComponent";
+import UpdateRole, { loader as RoleLoader } from "./components/role/UpdateRoleComponent";
 
 const router = createBrowserRouter([
   {
@@ -23,14 +24,10 @@ const router = createBrowserRouter([
         path: "/api/users",
         element: <ListUsers />
       },
-      // {
-      //   path: "/api/users/:id",
-      //   element: <User />
-      // },
       {
         path: "/api/users/update/:id",
         element: <UpdateUser />,
-        loader: loader
+        loader: UserLoader
       },
       {
         path: "/api/users/add",
@@ -38,7 +35,16 @@ const router = createBrowserRouter([
       },
       {
         path: "/api/roles",
-        element: <Roles />
+        element: <ListRoles />
+      },
+      // {
+      //   path: "/api/roles/add",
+      //   element: <AddRole />
+      // },
+      {
+        path: "/api/roles/update/:id",
+        element: <UpdateRole />,
+        loader: RoleLoader
       },
       {
         path: "/api/request_statuses",
