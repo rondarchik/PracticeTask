@@ -30,8 +30,8 @@
 * Angular - Frontend
 
 #### [Результаты работы](https://github.com/rondarchik/PracticeTask/tree/main/angular-front/web-api/src "Фронт Angular")
-* Ориентировачное время выполнения: ???.
-* Фактическое время выполнения: в процессе.
+* Ориентировачное время выполнения: 12 часов.
+* Фактическое время выполнения: 12 часов.
 
 ### Задание 5
 * React - Frontend
