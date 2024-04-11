@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/credit_types")
-@CrossOrigin("http://localhost:3000/")
 public class CreditTypeController {
     private final CreditTypeService creditTypeService;
 

@@ -14,7 +14,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin("http://localhost:3000")
 public class UserController {
     private final UserService userService;
 
@@ -27,7 +26,6 @@ public class UserController {
     public ResponseEntity<List<GetUserDto>> getAllUsersWithRoles() {
         return new ResponseEntity<>(userService.getAllUsers(),HttpStatus.OK);
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<GetUserDto> getUserById(@PathVariable UUID id) {
