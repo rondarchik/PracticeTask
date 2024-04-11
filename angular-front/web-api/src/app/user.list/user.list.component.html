@@ -1,0 +1,43 @@
+<section>
+  <div class='list-container '>
+    <h1 class="text-center">Users List</h1>
+    <div class="add-button-container">
+      <a class="add-button" routerLink="add">
+        <fa-icon [icon]="faPlus"></fa-icon>   Add User
+      </a>
+    </div>
+    <table class="table table-striped" aria-describedby="UserTable">
+      <thead>
+      <tr>
+        <td>User Name</td>
+        <td>User Surname</td>
+        <td>User Email</td>
+        <td>User Birthday</td>
+        <td>Roles</td>
+        <td>Actions</td>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{user.name}}</td>
+          <td>{{user.surname}}</td>
+          <td>{{user.email}}</td>
+          <td>{{formatDate(user.birthDate)}}</td>
+          <td>
+            <span *ngFor="let role of user.roles">
+              <p>{{role.roleName}}</p>
+            </span>
+          </td>
+          <td>
+            <button class="delete-button" (click)="removeUser(user.id)">
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </button>
+            <a class="update-button left-15" [routerLink]="['update/' ,user.id]">
+              <fa-icon [icon]="faEdit"></fa-icon>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
