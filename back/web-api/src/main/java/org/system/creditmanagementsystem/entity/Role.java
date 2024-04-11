@@ -1,5 +1,6 @@
 package org.system.creditmanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,9 +26,10 @@ public class Role {
     @Column(name = "role_name", nullable = false)
     private String roleName;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "id_role", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "id_user", referencedColumnName = "id")})
+    @JsonIgnore
     private Set<User> users = new LinkedHashSet<>();
 }

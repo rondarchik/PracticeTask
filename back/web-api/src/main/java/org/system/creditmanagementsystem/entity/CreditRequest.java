@@ -31,7 +31,7 @@ public class CreditRequest {
     @JoinColumn(name = "id_manager")
     private User user;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_credit")
     private Credit credit;
 

@@ -34,6 +34,6 @@ public class CreditType {
     @Column(name = "term_in_months", nullable = false)
     private int termInMonths;
 
-    @OneToMany(mappedBy = "creditType", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "creditType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Credit> credits = new LinkedHashSet<>();
 }

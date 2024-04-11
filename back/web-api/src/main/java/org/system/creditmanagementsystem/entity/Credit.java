@@ -35,7 +35,7 @@ public class Credit {
     @Column(name = "status", nullable = false)
     private Boolean status;
 
-    @OneToOne(mappedBy = "credit", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "credit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private CreditRequest creditRequest;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,6 +46,6 @@ public class Credit {
     @JoinColumn(name = "id_credit_type")
     private CreditType creditType;
 
-    @OneToMany(mappedBy = "credit", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "credit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Payment> payments = new LinkedHashSet<>();
 }

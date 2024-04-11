@@ -25,6 +25,6 @@ public class RequestStatus {
     @Column(name = "status", nullable = false)
     private String status;
 
-    @OneToMany(mappedBy = "requestStatus", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "requestStatus", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CreditRequest> creditRequests = new LinkedHashSet<>();
 }
