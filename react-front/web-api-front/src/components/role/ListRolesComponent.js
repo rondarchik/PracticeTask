@@ -36,7 +36,6 @@ export default function ListRoles() {
                             <tr key={role.id}>
                                 <td>{role.id}</td>
                                 <td>{role.roleName}</td>
-                                {/*<td>{role.users.map(user => user.email).join('\n')}</td>*/}
                                 <td>
                                     {role.users.map(user => (
                                         <div key={user.id}>

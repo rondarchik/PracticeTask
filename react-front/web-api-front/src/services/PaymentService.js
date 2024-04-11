@@ -2,11 +2,7 @@ import axios from 'axios'
 
 const PAYMENTS_REST_API_URL = 'http://localhost:8080/api/payments';
 
-class PaymentService {
-    getPayments() {
-        return axios.get(PAYMENTS_REST_API_URL);
-    }
+export async function getPayments() {
+    const response = await axios.get(PAYMENTS_REST_API_URL);
+    return response.data;
 }
-
-// eslint-disable-next-line import/no-anonymous-default-export
-export default new PaymentService();

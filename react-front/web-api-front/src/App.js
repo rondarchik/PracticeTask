@@ -1,10 +1,5 @@
 import './App.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import RequestStatusComponent from './components/RequestStatusComponent';
-import PaymentComponent from './components/PaymentComponent';
-import CreditTypeComponent from './components/CreditTypeComponent';
-import CreditRequestComponent from './components/CreditRequestComponent';
-import CreditComponent from './components/CreditComponent';
 import React from "react";
 import Root from "./components/RootComponent";
 import ListUsers from "./components/user/ListUsersComponent";
@@ -13,6 +8,15 @@ import UpdateUser, { loader as UserLoader } from "./components/user/UpdateUserCo
 import ListRoles from "./components/role/ListRolesComponent";
 import AddRole from "./components/role/AddRoleComponent";
 import UpdateRole, { loader as RoleLoader } from "./components/role/UpdateRoleComponent";
+import ListRequestStatuses from "./components/ListRequestStatusesComponent";
+import ListPayments from "./components/ListPaymentsComponent";
+import ListCreditTypes from "./components/ListCreditTypesComponent";
+import ListCreditRequests from "./components/ListCreditRequestsComponent";
+import ListCredits from "./components/ListCreditsComponent";
+
+function ListCredit() {
+  return null;
+}
 
 const router = createBrowserRouter([
   {
@@ -48,23 +52,23 @@ const router = createBrowserRouter([
       },
       {
         path: "/api/request_statuses",
-        element: <RequestStatusComponent />
+        element: <ListRequestStatuses />
       },
       {
         path: "/api/payments",
-        element: <PaymentComponent />
+        element: <ListPayments />
       },
       {
         path: "/api/credit_type",
-        element: <CreditTypeComponent />
+        element: <ListCreditTypes />
       },
       {
         path: "/api/credit_requests",
-        element: <CreditRequestComponent />
+        element: <ListCreditRequests />
       },
       {
         path: "/api/credits",
-        element: <CreditComponent />
+        element: <ListCredits />
       }
     ]
   }
