@@ -1,1 +1,50 @@
-<p>user.update works!</p>
+<section class="form-container">
+  <h2>Update User</h2>
+  <div class="form">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input class="form-control" type="text" id="name" name="name"
+             [(ngModel)]="user.name"
+             placeholder="Enter name"/>
+    </div>
+    <div class="form-group">
+      <label for="surname">Surname:</label>
+      <input class="form-control" type="text" id="surname" name="surname"
+             [(ngModel)]="user.surname"
+             placeholder="Enter surname"/>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input class="form-control" type="email" id="email" name="email"
+             aria-describedby="emailHelp"
+             [(ngModel)]="user.email"
+             placeholder="Enter email"/>
+    </div>
+    <div class="form-group">
+      <label for="passwordHash">Password:</label>
+      <input class="form-control" type="password" id="passwordHash" name="passwordHash"
+             [(ngModel)]="user.passwordHash"
+             placeholder="Enter password"/>
+    </div>
+    <div class="form-group">
+      <label for="birthDate">Birth Date:</label>
+      <input class="form-control" type="date" id="birthDate" name="birthDate"
+             [(ngModel)]="user.birthDate"
+             placeholder="Enter birth date"/>
+    </div>
+    <div class="form-group">
+      <label for="role">Role:</label>
+      <select
+        class="form-control"
+        id="role"
+        name="role"
+        [(ngModel)]="user.roles"
+        multiple>
+        <option *ngFor="let role of roleList" [ngValue]="role">{{role.roleName}}</option>
+      </select>
+    </div>
+    <div class="form-btn-group">
+      <button type="submit" class="btn btn-primary" (click)="updateUser()">Save</button>
+    </div>
+  </div>
+</section>

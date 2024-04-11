@@ -21,10 +21,12 @@
           <td>{{role.roleName}}</td>
           <td>
               <span *ngFor="let user of role.users">
-                <p>{{user.email}}</p>
-                <button class="delete-button left-15" (click)="removeUserInRole(role.id, user.id)">
-                  <fa-icon [icon]="faTimes"></fa-icon>
-                </button>
+                <p>
+                  {{user.email}}
+                  <button class="delete-button left-15" (click)="removeUserInRole(role.id, user.id)">
+                    <fa-icon [icon]="faTimes"></fa-icon>
+                  </button>
+                </p>
               </span>
           </td>
           <td>

@@ -1,54 +1,50 @@
-<section className="form-container">
+<section class="form-container">
   <h2>Add New User</h2>
-  <div className="form">
-    <div className="form-group">
-      <label htmlFor="name">Name:</label>
-      <input className="form-control" type="text" id="name" name="name"
-             onChange={(e) => setName(e.target.value)}
-      placeholder="Enter name"/>
+  <div class="form">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input class="form-control" type="text" id="name" name="name"
+             [(ngModel)]="user.name"
+             placeholder="Enter name"/>
     </div>
-    <div className="form-group">
-      <label htmlFor="surname">Surname:</label>
-      <input className="form-control" type="text" id="surname" name="surname"
-             onChange={(e) => setSurname(e.target.value)}
-      placeholder="Enter surname"/>
+    <div class="form-group">
+      <label for="surname">Surname:</label>
+      <input class="form-control" type="text" id="surname" name="surname"
+             [(ngModel)]="user.surname"
+             placeholder="Enter surname"/>
     </div>
-    <div className="form-group">
-      <label htmlFor="email">Email:</label>
-      <input className="form-control" type="email" id="email" name="email"
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input class="form-control" type="email" id="email" name="email"
              aria-describedby="emailHelp"
-             onChange={(e) => setEmail(e.target.value)}
-      placeholder="Enter email"/>
+             [(ngModel)]="user.email"
+             placeholder="Enter email"/>
     </div>
-    <div className="form-group">
-      <label htmlFor="passwordHash">Password:</label>
-      <input className="form-control" type="password" id="passwordHash" name="passwordHash"
-             onChange={(e) => setPasswordHash(e.target.value)}
-      placeholder="Enter password"/>
+    <div class="form-group">
+      <label for="passwordHash">Password:</label>
+      <input class="form-control" type="password" id="passwordHash" name="passwordHash"
+             [(ngModel)]="user.passwordHash"
+             placeholder="Enter password"/>
     </div>
-    <div className="form-group">
-      <label htmlFor="birthDate">Birth Date:</label>
-      <input className="form-control" type="date" id="birthDate" name="birthDate"
-             onChange={(e) => setBirthDate(e.target.value)}
-      placeholder="Enter birth date"/>
+    <div class="form-group">
+      <label for="birthDate">Birth Date:</label>
+      <input class="form-control" type="date" id="birthDate" name="birthDate"
+             [(ngModel)]="user.birthDate"
+             placeholder="Enter birth date"/>
     </div>
-    <div className="form-group">
-      <label htmlFor="role">Role:</label>
-      <Select
-        className="form-control"
-        placeholder="Roles"
+    <div class="form-group">
+      <label for="role">Role:</label>
+      <select
+        class="form-control"
+        multiple
         id="role"
         name="role"
-        value={roles}
-        options={rolesList}
-        onChange={handleSelectRole}
-        isSearchable={true}
-        isMulti
-      />
+        [(ngModel)]="user.roles" >
+        <option *ngFor="let role of roleList" [ngValue]="role">{{role.roleName}}</option>
+      </select>
     </div>
-    <div className="form-btn-group">
-      <button type="submit" className="btn btn-primary" onClick={addNewUser}>Save</button>
-      <Link to="/api/users">Back to Users</Link>
+    <div class="form-btn-group">
+      <button type="submit" class="btn btn-primary" (click)="addUser()">Save</button>
     </div>
   </div>
 </section>
