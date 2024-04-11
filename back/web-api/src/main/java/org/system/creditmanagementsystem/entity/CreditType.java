@@ -1,5 +1,6 @@
 package org.system.creditmanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,5 +36,6 @@ public class CreditType {
     private int termInMonths;
 
     @OneToMany(mappedBy = "creditType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Credit> credits = new LinkedHashSet<>();
 }

@@ -27,7 +27,7 @@ public class CreditRequest {
     @Column(name = "rejection_message")
     private String rejectionMessage;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_manager")
     private User user;
 

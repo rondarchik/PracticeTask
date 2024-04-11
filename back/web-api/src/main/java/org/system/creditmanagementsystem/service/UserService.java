@@ -100,6 +100,7 @@ public class UserService {
             }
             existingUser.setRoles(newRoles);
         }
+
         userRepository.save(existingUser);
         return userMapper.toDto(existingUser);
     }

@@ -2,7 +2,9 @@ package org.system.creditmanagementsystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.system.creditmanagementsystem.dto.PaymentDto;
+import org.system.creditmanagementsystem.dto.payment.AddPaymentDto;
+import org.system.creditmanagementsystem.dto.payment.GetPaymentDto;
+import org.system.creditmanagementsystem.dto.payment.UpdatePaymentDto;
 import org.system.creditmanagementsystem.entity.Payment;
 import org.system.creditmanagementsystem.exception.NotFoundException;
 import org.system.creditmanagementsystem.mapper.PaymentMapper;
@@ -24,10 +26,10 @@ public class PaymentService {
         this.paymentMapper = paymentMapper;
     }
 
-    public List<PaymentDto> getAllPayments() {
+    public List<GetPaymentDto> getAllPayments() {
         List<Payment> payments = paymentRepository.findAll();
         return payments.stream().map(payment -> {
-            PaymentDto paymentDto = paymentMapper.toDto(payment);
+            GetPaymentDto paymentDto = paymentMapper.toDto(payment);
             String user = payment.getUser().getName() +
                     " " +
                     payment.getUser().getSurname();
@@ -38,33 +40,34 @@ public class PaymentService {
     }
 
 
-    public PaymentDto getPaymentById(UUID id) {
+    public GetPaymentDto getPaymentById(UUID id) {
         Payment payment = paymentRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
         return paymentMapper.toDto(payment);
     }
 
-    public List<PaymentDto> getCreditPayments(UUID creditId) {
-        return paymentRepository.findByCreditId(creditId).stream().map(paymentMapper::toDto).toList();
-    }
 
-    public PaymentDto addPayment(PaymentDto paymentDto) {
+    public GetPaymentDto addPayment(AddPaymentDto paymentDto) {
         Payment payment = paymentMapper.fromDto(paymentDto);
         paymentRepository.save(payment);
         return paymentMapper.toDto(payment);
     }
 
-    public PaymentDto updatePayment(PaymentDto paymentDto, UUID id) {
-        Payment payment = paymentMapper.fromDto(paymentDto);
-        Optional<Payment> existingPayment = paymentRepository.findById(id);
-
-        if (existingPayment.isEmpty()) {
-            throw new NotFoundException(NOT_FOUND_MESSAGE);
+    public GetPaymentDto updatePayment(UpdatePaymentDto paymentDto, UUID id) {
+        Payment existingPayment = paymentRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        if (paymentDto.getAmount() != null) {
+            existingPayment.setAmount(paymentDto.getAmount());
         }
-
-        payment.setAmount(paymentDto.getAmount());
-        payment.setPaymentDate(paymentDto.getPaymentDate());
-        Payment updatedPayment = paymentRepository.save(payment);
-        return paymentMapper.toDto(updatedPayment);
+        if (paymentDto.getPaymentDate() != null) {
+            existingPayment.setPaymentDate(paymentDto.getPaymentDate());
+        }
+        if (paymentDto.getClient() != null) {
+            existingPayment.setUser(paymentDto.getClient());
+        }
+        if (paymentDto.getCredit() != null) {
+            existingPayment.setCredit(paymentDto.getCredit());
+        }
+        paymentRepository.save(existingPayment);
+        return paymentMapper.toDto(existingPayment);
     }
 
     public void removePaymentById(UUID id) {

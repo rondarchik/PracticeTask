@@ -1,8 +1,12 @@
 package org.system.creditmanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.system.creditmanagementsystem.dto.RequestStatusDto;
+import org.system.creditmanagementsystem.dto.status.AddRequestStatusDto;
+import org.system.creditmanagementsystem.dto.status.GetRequestStatusDto;
+import org.system.creditmanagementsystem.dto.status.UpdateRequestStatusDto;
 import org.system.creditmanagementsystem.service.RequestStatusService;
 
 import java.util.List;
@@ -19,27 +23,28 @@ public class RequestStatusController {
     }
 
     @GetMapping
-    public List<RequestStatusDto> getAllRequestStatuses() {
-        return requestStatusService.getAllRequestStatuses();
+    public ResponseEntity<List<GetRequestStatusDto>> getAllRequestStatuses() {
+        return new ResponseEntity<>(requestStatusService.getAllRequestStatuses(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public RequestStatusDto getRequestStatusById(@PathVariable UUID id) {
-        return requestStatusService.getRequestStatusById(id);
+    public ResponseEntity<GetRequestStatusDto> getRequestStatusById(@PathVariable UUID id) {
+        return new ResponseEntity<>(requestStatusService.getRequestStatusById(id), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public RequestStatusDto addRequestStatus(@RequestBody RequestStatusDto requestStatus) {
-        return requestStatusService.addRequestStatus(requestStatus);
+    public ResponseEntity<GetRequestStatusDto> addRequestStatus(@RequestBody AddRequestStatusDto requestStatus) {
+        return new ResponseEntity<>(requestStatusService.addRequestStatus(requestStatus), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public RequestStatusDto updateRequestStatus(@RequestBody RequestStatusDto requestStatus, @PathVariable UUID id) {
-        return requestStatusService.updateRequestStatus(requestStatus, id);
+    public ResponseEntity<GetRequestStatusDto> updateRequestStatus(@RequestBody UpdateRequestStatusDto requestStatus, @PathVariable UUID id) {
+        return new ResponseEntity<>(requestStatusService.updateRequestStatus(requestStatus, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void removeRequestStatusById(@PathVariable UUID id) {
+    public ResponseEntity<Object> removeRequestStatusById(@PathVariable UUID id) {
         requestStatusService.removeRequestStatusById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

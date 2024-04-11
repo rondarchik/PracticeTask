@@ -2,7 +2,9 @@ package org.system.creditmanagementsystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.system.creditmanagementsystem.dto.CreditTypeDto;
+import org.system.creditmanagementsystem.dto.type.AddCreditTypeDto;
+import org.system.creditmanagementsystem.dto.type.GetCreditTypeDto;
+import org.system.creditmanagementsystem.dto.type.UpdateCreditTypeDto;
 import org.system.creditmanagementsystem.entity.CreditType;
 import org.system.creditmanagementsystem.exception.NotFoundException;
 import org.system.creditmanagementsystem.mapper.CreditTypeMapper;
@@ -24,40 +26,42 @@ public class CreditTypeService {
         this.creditTypeMapper = creditTypeMapper;
     }
 
-    public List<CreditTypeDto> getAllCreditTypes() {
+    public List<GetCreditTypeDto> getAllCreditTypes() {
         return creditTypeRepository.findAll().stream().map(creditTypeMapper::toDto).toList();
     }
 
-    public CreditTypeDto getCreditTypeById(UUID id) {
+    public GetCreditTypeDto getCreditTypeById(UUID id) {
         CreditType creditType = creditTypeRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
         return creditTypeMapper.toDto(creditType);
     }
 
-    public CreditTypeDto addCreditType(CreditTypeDto creditTypeDto) {
+    public GetCreditTypeDto addCreditType(AddCreditTypeDto creditTypeDto) {
         CreditType creditType = creditTypeMapper.fromDto(creditTypeDto);
         creditTypeRepository.save(creditType);
         return creditTypeMapper.toDto(creditType);
     }
 
-    public CreditTypeDto updateCreditType(CreditTypeDto creditTypeDto, UUID id) {
-        CreditType creditType = creditTypeMapper.fromDto(creditTypeDto);
-        Optional<CreditType> existingCreditType = creditTypeRepository.findById(id);
-
-        if (existingCreditType.isEmpty()) {
-            throw new NotFoundException(NOT_FOUND_MESSAGE);
+    public GetCreditTypeDto updateCreditType(UpdateCreditTypeDto creditTypeDto, UUID id) {
+        CreditType existingCreditType = creditTypeRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        if (creditTypeDto.getName() != null) {
+            existingCreditType.setName(creditTypeDto.getName());
+        }
+        if (creditTypeDto.getCreditAmount() != null) {
+            existingCreditType.setCreditAmount(creditTypeDto.getCreditAmount());
+        }
+        if (creditTypeDto.getInterestRate() != null) {
+            existingCreditType.setInterestRate(creditTypeDto.getInterestRate());
+        }
+        if (creditTypeDto.getTermInMonths() != 0) {
+            existingCreditType.setTermInMonths(creditTypeDto.getTermInMonths());
         }
 
-        creditType.setName(creditTypeDto.getName());
-        creditType.setCreditAmount(creditTypeDto.getCreditAmount());
-        creditType.setInterestRate(creditTypeDto.getInterestRate());
-        creditType.setTermInMonths(creditTypeDto.getTermInMonths());
-        CreditType updatedCreditType = creditTypeRepository.save(creditType);
-        return creditTypeMapper.toDto(updatedCreditType);
+        creditTypeRepository.save(existingCreditType);
+        return creditTypeMapper.toDto(existingCreditType);
     }
 
     public void removeCreditTypeById(UUID id) {
         Optional<CreditType> existingCreditType = creditTypeRepository.findById(id);
-
         if (existingCreditType.isEmpty()) {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
         }

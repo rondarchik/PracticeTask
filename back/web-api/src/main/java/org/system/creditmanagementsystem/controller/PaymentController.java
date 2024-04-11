@@ -1,8 +1,12 @@
 package org.system.creditmanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.system.creditmanagementsystem.dto.PaymentDto;
+import org.system.creditmanagementsystem.dto.payment.AddPaymentDto;
+import org.system.creditmanagementsystem.dto.payment.GetPaymentDto;
+import org.system.creditmanagementsystem.dto.payment.UpdatePaymentDto;
 import org.system.creditmanagementsystem.service.PaymentService;
 
 import java.util.List;
@@ -18,33 +22,29 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @GetMapping("/credit/{creditId}")
-    public List<PaymentDto> getCreditPayments(@PathVariable UUID creditId) {
-        return paymentService.getCreditPayments(creditId);
-    }
-
     @GetMapping
-    public List<PaymentDto> getAllPayments() {
-         return paymentService.getAllPayments();
+    public ResponseEntity<List<GetPaymentDto>> getAllPayments() {
+         return new ResponseEntity<>(paymentService.getAllPayments(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public PaymentDto getPaymentById(@PathVariable UUID id) {
-        return paymentService.getPaymentById(id);
+    public ResponseEntity<GetPaymentDto> getPaymentById(@PathVariable UUID id) {
+        return new ResponseEntity<>(paymentService.getPaymentById(id), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public PaymentDto addPayment(@RequestBody PaymentDto payment) {
-        return paymentService.addPayment(payment);
+    public ResponseEntity<GetPaymentDto> addPayment(@RequestBody AddPaymentDto payment) {
+        return new ResponseEntity<>(paymentService.addPayment(payment), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public PaymentDto updatePayment(@RequestBody PaymentDto payment, @PathVariable UUID id) {
-        return paymentService.updatePayment(payment, id);
+    public ResponseEntity<GetPaymentDto> updatePayment(@RequestBody UpdatePaymentDto payment, @PathVariable UUID id) {
+        return new ResponseEntity<>(paymentService.updatePayment(payment, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void removePaymentById(@PathVariable UUID id) {
+    public ResponseEntity<Object> removePaymentById(@PathVariable UUID id) {
         paymentService.removePaymentById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

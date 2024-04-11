@@ -1,8 +1,12 @@
 package org.system.creditmanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.system.creditmanagementsystem.dto.CreditRequestDto;
+import org.system.creditmanagementsystem.dto.request.AddCreditRequestDto;
+import org.system.creditmanagementsystem.dto.request.GetCreditRequestDto;
+import org.system.creditmanagementsystem.dto.request.UpdateCreditRequestDto;
 import org.system.creditmanagementsystem.service.CreditRequestService;
 
 import java.util.List;
@@ -18,33 +22,29 @@ public class CreditRequestController {
         this.creditRequestService = creditRequestService;
     }
 
-    @GetMapping("/status/{statusId}")
-    public List<CreditRequestDto> getStatusRequests(@PathVariable UUID statusId) {
-        return creditRequestService.getStatusRequests(statusId);
-    }
-
     @GetMapping
-    public List<CreditRequestDto> getAllCreditRequests() {
-        return creditRequestService.getAllCreditRequests();
+    public ResponseEntity<List<GetCreditRequestDto>> getAllCreditRequests() {
+        return new ResponseEntity<>(creditRequestService.getAllCreditRequests(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public CreditRequestDto getCreditRequestById(@PathVariable UUID id) {
-        return creditRequestService.getCreditRequestById(id);
+    public ResponseEntity<GetCreditRequestDto> getCreditRequestById(@PathVariable UUID id) {
+        return new ResponseEntity<>(creditRequestService.getCreditRequestById(id), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public CreditRequestDto addCreditRequest(@RequestBody CreditRequestDto creditRequest) {
-        return creditRequestService.addCreditRequest(creditRequest);
+    public ResponseEntity<GetCreditRequestDto> addCreditRequest(@RequestBody AddCreditRequestDto creditRequest) {
+        return new ResponseEntity<>(creditRequestService.addCreditRequest(creditRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public CreditRequestDto updateCreditRequest(@RequestBody CreditRequestDto creditRequest, @PathVariable UUID id) {
-        return creditRequestService.updateCreditRequest(creditRequest, id);
+    public ResponseEntity<GetCreditRequestDto> updateCreditRequest(@RequestBody UpdateCreditRequestDto creditRequest, @PathVariable UUID id) {
+        return new ResponseEntity<>(creditRequestService.updateCreditRequest(creditRequest, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void removeCreditRequestById(@PathVariable UUID id) {
+    public ResponseEntity<Object> removeCreditRequestById(@PathVariable UUID id) {
         creditRequestService.removeCreditRequestById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

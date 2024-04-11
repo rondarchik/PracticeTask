@@ -1,12 +1,12 @@
-package org.system.creditmanagementsystem.dto;
+package org.system.creditmanagementsystem.dto.request;
 
-import lombok.*;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Data
-public class CreditRequestDto {
+public class GetCreditRequestDto {
     private UUID id;
     private String manager;
     private UUID credit;

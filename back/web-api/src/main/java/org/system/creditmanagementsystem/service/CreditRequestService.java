@@ -2,7 +2,9 @@ package org.system.creditmanagementsystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.system.creditmanagementsystem.dto.CreditRequestDto;
+import org.system.creditmanagementsystem.dto.request.AddCreditRequestDto;
+import org.system.creditmanagementsystem.dto.request.GetCreditRequestDto;
+import org.system.creditmanagementsystem.dto.request.UpdateCreditRequestDto;
 import org.system.creditmanagementsystem.entity.CreditRequest;
 import org.system.creditmanagementsystem.exception.NotFoundException;
 import org.system.creditmanagementsystem.mapper.CreditRequestMapper;
@@ -24,10 +26,10 @@ public class CreditRequestService {
         this.creditRequestMapper = creditRequestMapper;
     }
 
-    public List<CreditRequestDto> getAllCreditRequests() {
+    public List<GetCreditRequestDto> getAllCreditRequests() {
         List<CreditRequest> requests = creditRequestRepository.findAll();
         return requests.stream().map(request -> {
-            CreditRequestDto requestDto = creditRequestMapper.toDto(request);
+            GetCreditRequestDto requestDto = creditRequestMapper.toDto(request);
             String user = request.getUser().getName() +
                     " " +
                     request.getUser().getSurname();
@@ -38,33 +40,30 @@ public class CreditRequestService {
         }).toList();
     }
 
-    public CreditRequestDto getCreditRequestById(UUID id) {
+    public GetCreditRequestDto getCreditRequestById(UUID id) {
         CreditRequest creditRequest = creditRequestRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
         return creditRequestMapper.toDto(creditRequest);
     }
 
-    public List<CreditRequestDto> getStatusRequests(UUID statusId) {
-        return creditRequestRepository.findByRequestStatusId(statusId).stream().map(creditRequestMapper::toDto).toList();
-    }
-
-    public CreditRequestDto addCreditRequest(CreditRequestDto creditRequestDto) {
+    public GetCreditRequestDto addCreditRequest(AddCreditRequestDto creditRequestDto) {
         CreditRequest creditRequest = creditRequestMapper.fromDto(creditRequestDto);
         creditRequestRepository.save(creditRequest);
         return creditRequestMapper.toDto(creditRequest);
     }
 
-    public CreditRequestDto updateCreditRequest(CreditRequestDto creditRequestDto, UUID id) {
-        CreditRequest creditRequest = creditRequestMapper.fromDto(creditRequestDto);
-        Optional<CreditRequest> existingCreditRequest = creditRequestRepository.findById(id);
-
-        if (existingCreditRequest.isEmpty()) {
-            throw new NotFoundException(NOT_FOUND_MESSAGE);
+    public GetCreditRequestDto updateCreditRequest(UpdateCreditRequestDto creditRequestDto, UUID id) {
+        CreditRequest existingCreditRequest = creditRequestRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MESSAGE));
+        if (creditRequestDto.getDateOfRequest() != null) {
+            existingCreditRequest.setDateOfRequest(creditRequestDto.getDateOfRequest());
         }
-
-        creditRequest.setDateOfRequest(creditRequestDto.getDateOfRequest());
-        creditRequest.setRejectionMessage(creditRequestDto.getRejectionMessage());
-        CreditRequest updatedCreditRequest = creditRequestRepository.save(creditRequest);
-        return creditRequestMapper.toDto(updatedCreditRequest);
+        if (creditRequestDto.getStatus() != null) {
+            existingCreditRequest.setRequestStatus(creditRequestDto.getStatus());
+        }
+        if (creditRequestDto.getRejectionMessage() != null) {
+            existingCreditRequest.setRejectionMessage(creditRequestDto.getRejectionMessage());
+        }
+        creditRequestRepository.save(existingCreditRequest);
+        return creditRequestMapper.toDto(existingCreditRequest);
     }
 
     public void removeCreditRequestById(UUID id) {

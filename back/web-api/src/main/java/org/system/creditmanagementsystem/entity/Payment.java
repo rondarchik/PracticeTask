@@ -27,11 +27,11 @@ public class Payment {
     @Column(name = "payment_date", nullable = false)
     private Date paymentDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_client")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_credit")
     private Credit credit;
 }
