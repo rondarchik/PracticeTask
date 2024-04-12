@@ -1,0 +1,23 @@
+<section>
+  <div class='list-container '>
+    <h1 class="text-center">Payments List</h1>
+    <table class="table table-striped" aria-describedby="PaymentTable" aria-hidden="true">
+      <thead>
+      <tr>
+        <td>Amount</td>
+        <td>Payment Date</td>
+        <td>Client</td>
+        <td>Credit</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let payment of payments">
+        <td>{{payment.amount}}</td>
+        <td>{{formatDate(payment.paymentDate)}}</td>
+        <td>{{payment.client}}</td>
+        <td>{{payment.credit}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

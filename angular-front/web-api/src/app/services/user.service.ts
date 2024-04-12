@@ -14,27 +14,27 @@ export class UserService {
   }
 
   async getUsers() {
-    const response = await axios.get("http://localhost:8080/api/users");
+    const response = await axios.get(this.USER_URL);
     return response.data;
   }
 
   async addUser(user: User) {
-    const response = await axios.post("http://localhost:8080/api/users/add", user);
+    const response = await axios.post(`${this.USER_URL}/add`, user);
     return response.data;
   }
 
   async removeUserById(id: string) {
-    const response = await axios.delete(`http://localhost:8080/api/users/delete/${id}`);
+    const response = await axios.delete(`${this.USER_URL}/delete/${id}`);
     return response.data;
   }
 
   async updateUser(user: User, id: string) {
-    const response = await axios.put(`http://localhost:8080/api/users/update/${id}`, user);
+    const response = await axios.put(`${this.USER_URL}/update/${id}`, user);
     return response.data;
   }
 
   async getUserById(id: string) {
-    const response = await axios.get(`http://localhost:8080/api/users/${id}`);
+    const response = await axios.get(`${this.USER_URL}/${id}`);
     return response.data;
   }
 }

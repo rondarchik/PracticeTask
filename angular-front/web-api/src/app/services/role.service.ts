@@ -7,36 +7,39 @@ import {Role} from "../entites/role";
 })
 
 export class RoleService {
+  readonly ROLE_URL: string;
 
-  constructor() {}
+  constructor() {
+    this.ROLE_URL =  "http://localhost:8080/api/roles";
+  }
 
   async getRoles() {
-    const response = await axios.get("http://localhost:8080/api/roles");
+    const response = await axios.get(this.ROLE_URL);
     return response.data;
   }
 
   async getRoleById(id: string) {
-    const response = await axios.get(`http://localhost:8080/api/roles/${id}`);
+    const response = await axios.get(`${this.ROLE_URL}/${id}`);
     return response.data;
   }
 
   async addRole(role: Role) {
-    const response = await axios.post("http://localhost:8080/api/roles/add", role);
+    const response = await axios.post(`${this.ROLE_URL}/add`, role);
     return response.data;
   }
 
   async removeRoleById(id: string) {
-    const response = await axios.delete(`http://localhost:8080/api/roles/delete/${id}`);
+    const response = await axios.delete(`${this.ROLE_URL}/delete/${id}`);
     return response.data;
   }
 
   async updateRole(role: Role, id: string) {
-    const response = await axios.put(`http://localhost:8080/api/roles/update/${id}`, role);
+    const response = await axios.put(`${this.ROLE_URL}/update/${id}`, role);
     return response.data;
   }
 
   async removeUserFromRole(roleId: string, userId: string) {
-    const response = await axios.delete(`http://localhost:8080/api/roles/${roleId}/users/${userId}`);
+    const response = await axios.delete(`${this.ROLE_URL}/${roleId}/users/${userId}`);
     return response.data;
   }
 }

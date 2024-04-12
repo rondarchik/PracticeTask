@@ -1,0 +1,27 @@
+<section>
+  <div class='list-container '>
+    <h1 class="text-center">Credits List</h1>
+    <table class="table table-striped" aria-describedby="CreditTable" aria-hidden="true">
+      <thead>
+      <tr>
+        <td>Client</td>
+        <td>Credit Type</td>
+        <td>Paid Amount</td>
+        <td>Start Date</td>
+        <td>End Date</td>
+        <td>Status</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let credit of credits">
+        <td>{{credit.client}}</td>
+        <td>{{credit.creditType.name}} ({{credit.creditType.termInMonths}} months)</td>
+        <td>{{credit.paidAmount}}</td>
+        <td>{{formatDate(credit.startDate)}}</td>
+        <td>{{formatDate(credit.endDate)}}</td>
+        <td>{{credit.status}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

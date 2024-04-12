@@ -1,0 +1,19 @@
+<section>
+  <div class='list-container '>
+    <h1 class="text-center">Request Statuses List</h1>
+    <table class="table table-striped" aria-describedby="RequestStatusesTable" aria-hidden="true">
+      <thead>
+      <tr>
+        <td>Id</td>
+        <td>Status</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let requestStatus of requestStatuses">
+        <td>{{requestStatus.id}}</td>
+        <td>{{requestStatus.status}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

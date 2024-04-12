@@ -1,0 +1,25 @@
+<section>
+  <div class='list-container '>
+    <h1 class="text-center">Credit Requests List</h1>
+    <table class="table table-striped" aria-describedby="CreditRequestTable" aria-hidden="true">
+      <thead>
+      <tr>
+        <td>Manager</td>
+        <td>Credit</td>
+        <td>Request Date</td>
+        <td>Status</td>
+        <td>Rejection Message</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let creditRequest of creditsRequests">
+        <td>{{creditRequest.manager}}</td>
+        <td>{{creditRequest.credit}}</td>
+        <td>{{formatDate(creditRequest.dateOfRequest)}}</td>
+        <td>{{creditRequest.status}}</td>
+        <td>{{creditRequest.rejectionMessage}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

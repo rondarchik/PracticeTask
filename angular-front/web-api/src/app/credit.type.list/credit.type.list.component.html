@@ -1,0 +1,23 @@
+<section>
+  <div class='list-container '>
+    <h1 class="text-center">Credit Types List</h1>
+    <table class="table table-striped" aria-describedby="CreditTypeTable" aria-hidden="true">
+      <thead>
+      <tr>
+        <td>Name</td>
+        <td>Credit Amount</td>
+        <td>Interest Rate</td>
+        <td>Term (in months)</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let creditType of creditTypes">
+        <td>{{creditType.name}}</td>
+        <td>{{creditType.creditAmount}}</td>
+        <td>{{creditType.interestRate}}</td>
+        <td>{{creditType.termInMonths}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
