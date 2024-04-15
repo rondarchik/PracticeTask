@@ -1,6 +1,120 @@
-/* You can add global styles to this file, and also import other style files */
 @import '../node_modules/@fortawesome/fontawesome-free/css/all.css';
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+td {
+  white-space: pre-line;
+}
+
+.delete-button {
+  background-color: transparent;
+  color: black;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.update-button {
+  background-color: transparent;
+  color: black;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.left-15 {
+  margin-left: 15px;
+}
+
+.delete-button:hover {
+  color: red;
+}
+
+.update-button:hover {
+  color: blue;
+}
+
+.list-container {
+  position: relative;
+  padding-bottom: 100px;
+}
+
+.add-button-container {
+  position: absolute;
+  right: 0;
+  margin-right: 30px;
+  display: inline-block;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table {
+  margin-top: 80px;
+}
+
+.add-button {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 10px;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+.add-button:hover svg {
+  color: white;
+}
+
+.to-user-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.to-user-button:hover {
+  color: limegreen;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.form-control {
+  max-width: 300px;
+  min-width: 300px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.btn-primary {
+  margin-right: 10px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  align-items: center;
+}
+
+.form-btn-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
