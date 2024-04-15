@@ -6,11 +6,10 @@ import { Link } from "react-router-dom";
 
 export default function ListRoles() {
     const [roles, setRoles] = useState([]);
-    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         loadRolesList();
-    }, [reload]);
+    }, []);
 
     return (
         <div>
@@ -74,11 +73,18 @@ export default function ListRoles() {
 
     async function deleteRole(roleId) {
         await removeRoleById(roleId);
-        setReload(!reload);
+        let newRolesList = roles.filter(role => role.id !== roleId);
+        setRoles(newRolesList);
     }
 
     async function deleteUserFromRole(roleId, userId) {
         await removeUserFromRole(roleId, userId);
-        setReload(!reload);
+        let newRoleUsers = roles.map(role => {
+            if (role.id === roleId) {
+                role.users = role.users.filter(user => user.id !== userId);
+            }
+            return role;
+        });
+        setRoles(newRoleUsers);
     }
 }

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {getPayments} from "../services/PaymentService";
+import formatDate from "./FormatDateComponent";
 
 export default function ListPayments() {
     const [payments, setPayments] = useState([]);
@@ -45,11 +46,6 @@ export default function ListPayments() {
     async function loadPaymentsList() {
         const payments = await getPayments();
         setPayments(payments);
-    }
-
-    function formatDate(dateString) {
-        const options = {day: '2-digit', month: '2-digit', year: 'numeric'};
-        return new Date(dateString).toLocaleDateString(undefined, options);
     }
 }
 

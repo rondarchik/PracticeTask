@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {getCredits} from '../services/CreditService';
+import formatDate from "./FormatDateComponent";
 
 export default function ListCredits() {
     const [credits, setCredits] = useState([]);
@@ -48,10 +49,5 @@ export default function ListCredits() {
     async function loadCreditsList() {
         const credits = await getCredits();
         setCredits(credits);
-    }
-
-    function formatDate(dateString) {
-        const options = {day: '2-digit', month: '2-digit', year: 'numeric'};
-        return new Date(dateString).toLocaleDateString(undefined, options);
     }
 }

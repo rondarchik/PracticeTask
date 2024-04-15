@@ -14,10 +14,6 @@ import ListCreditTypes from "./components/ListCreditTypesComponent";
 import ListCreditRequests from "./components/ListCreditRequestsComponent";
 import ListCredits from "./components/ListCreditsComponent";
 
-function ListCredit() {
-  return null;
-}
-
 const router = createBrowserRouter([
   {
     path: "/",

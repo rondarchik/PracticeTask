@@ -4,15 +4,15 @@ import { getUsers, removeUserById } from '../../services/UserService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
+import formatDate from "../FormatDateComponent";
 
 
 export default function ListUsers() {
     const [users, setUsers] = useState([]);
-    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         loadUsersList();
-    }, [reload]);
+    }, []);
 
     return (
         <div className='list-container '>
@@ -70,11 +70,7 @@ export default function ListUsers() {
 
     async function deleteUser(userId) {
         await removeUserById(userId);
-        setReload(!reload);
-    }
-
-    function formatDate(dateString) {
-        const options = {day: '2-digit', month: '2-digit', year: 'numeric'};
-        return new Date(dateString).toLocaleDateString(undefined, options);
+        let newUsersList = users.filter(user => user.id !== userId);
+        setUsers(newUsersList);
     }
 }
